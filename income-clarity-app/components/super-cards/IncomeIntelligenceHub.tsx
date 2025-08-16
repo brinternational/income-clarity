@@ -37,6 +37,8 @@ import { logger } from '@/lib/logger'
 // Remove local definition since we import it now
 
 interface IncomeIntelligenceHubProps {
+  data?: any; // For unified view compatibility
+  isCompact?: boolean; // For unified view layout
   clarityData?: IncomeClarityResult;
   isLoading?: boolean;
   className?: string;
@@ -115,6 +117,8 @@ const TABS: TabConfig[] = [
 ];
 
 const IncomeIntelligenceHubComponent = ({ 
+  data,
+  isCompact = false,
   clarityData,
   isLoading = false,
   className = '',
@@ -195,8 +199,11 @@ const IncomeIntelligenceHubComponent = ({
     totalMonths: 24
   });
 
+  // If data prop is provided (from unified view), use it to override defaults
+  const effectiveClarityData = data?.incomeClarityData ?? clarityData ?? incomeClarityData;
+  
   // Use provided data or context data
-  const activeData = clarityData || incomeClarityData || {
+  const activeData = effectiveClarityData || {
     grossMonthly: 4500,
     taxOwed: 675,
     netMonthly: 3825,
@@ -630,6 +637,8 @@ const IncomeIntelligenceHubComponent = ({
 // Memoize component to prevent unnecessary re-renders
 export const IncomeIntelligenceHub = memo(IncomeIntelligenceHubComponent, (prevProps, nextProps) => {
   return (
+    prevProps.data === nextProps.data &&
+    prevProps.isCompact === nextProps.isCompact &&
     prevProps.isLoading === nextProps.isLoading &&
     prevProps.clarityData?.availableToReinvest === nextProps.clarityData?.availableToReinvest &&
     prevProps.clarityData?.netMonthly === nextProps.clarityData?.netMonthly &&

@@ -31,6 +31,8 @@ import type { TimeRange } from '@/lib/api/super-cards-api';
 import { logger } from '@/lib/logger'
 
 interface PerformanceHubProps {
+  data?: any; // For unified view compatibility
+  isCompact?: boolean; // For unified view layout
   portfolioReturn?: number;
   spyReturn?: number;
   outperformance?: number;
@@ -92,6 +94,8 @@ const TABS: TabConfig[] = [
 ];
 
 const PerformanceHubComponent = ({ 
+  data,
+  isCompact = false,
   portfolioReturn = 0.082,
   spyReturn = 0.061,
   outperformance = 0.021,
@@ -99,6 +103,11 @@ const PerformanceHubComponent = ({
   timePeriodData,
   className = ''
 }: PerformanceHubProps) => {
+  // If data prop is provided (from unified view), use it to override defaults
+  const effectivePortfolioReturn = data?.spyComparison?.portfolioReturn ?? portfolioReturn;
+  const effectiveSpyReturn = data?.spyComparison?.spyReturn ?? spyReturn;
+  const effectiveOutperformance = data?.spyComparison?.outperformance ?? outperformance;
+  const effectiveTimePeriodData = data?.timePeriodData ?? timePeriodData;
   const [activeTab, setActiveTab] = useState<TabType>('spy');
   const [selectedTimePeriod, setSelectedTimePeriod] = useState<'1D' | '1W' | '1M' | '3M' | '6M' | '1Y' | 'All'>('1Y');
   const [isVisible, setIsVisible] = useState(false);
@@ -111,19 +120,19 @@ const PerformanceHubComponent = ({
   const { updateData, setLoading, setError } = usePerformanceActions();
   const { spyComparison, holdings, portfolioValue, timePeriodData: storeTimePeriodData } = performanceHub;
 
-  // Extract hero metric from SPY comparison (use store data first, then props as fallback)
-  const heroMetric = spyComparison?.outperformance || outperformance;
+  // Extract hero metric from SPY comparison (use store data first, then effective values as fallback)
+  const heroMetric = spyComparison?.outperformance || effectiveOutperformance;
   const isBeatingMarket = heroMetric > 0;
   
-  // Use store time period data if available, otherwise fall back to props
-  const activeTimePeriodData = storeTimePeriodData || timePeriodData;
+  // Use store time period data if available, otherwise fall back to effective values
+  const activeTimePeriodData = storeTimePeriodData || effectiveTimePeriodData;
 
   // Animated values for hero metric
   const animatedValues = useStaggeredCountingAnimation(
     {
       heroMetric: heroMetric * 100,
-      portfolio: (spyComparison?.portfolioReturn || portfolioReturn) * 100,
-      spy: (spyComparison?.spyReturn || spyReturn) * 100,
+      portfolio: (spyComparison?.portfolioReturn || effectivePortfolioReturn) * 100,
+      spy: (spyComparison?.spyReturn || effectiveSpyReturn) * 100,
     },
     1200,
     150
@@ -627,6 +636,8 @@ const PerformanceHubComponent = ({
 // Memoize component to prevent unnecessary re-renders
 export const PerformanceHub = memo(PerformanceHubComponent, (prevProps, nextProps) => {
   return (
+    prevProps.data === nextProps.data &&
+    prevProps.isCompact === nextProps.isCompact &&
     prevProps.portfolioReturn === nextProps.portfolioReturn &&
     prevProps.spyReturn === nextProps.spyReturn &&
     prevProps.outperformance === nextProps.outperformance &&

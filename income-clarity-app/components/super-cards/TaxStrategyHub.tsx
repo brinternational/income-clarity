@@ -32,6 +32,8 @@ import { useStaggeredCountingAnimation } from '@/hooks/useOptimizedAnimation';
 import { logger } from '@/lib/logger'
 
 interface TaxStrategyHubProps {
+  data?: any; // For unified view compatibility
+  isCompact?: boolean; // For unified view layout
   taxData?: {
     currentTaxBill: number;
     optimizedTaxBill: number;
@@ -113,6 +115,8 @@ const TABS: TabConfig[] = [
 ];
 
 const TaxStrategyHubComponent = ({ 
+  data,
+  isCompact = false,
   taxData,
   isLoading = false,
   className = ''
@@ -159,8 +163,11 @@ const TaxStrategyHubComponent = ({
     fetchTaxData();
   }, [fetchTaxData]);
 
+  // If data prop is provided (from unified view), use it to override defaults
+  const effectiveTaxData = data?.taxData ?? taxData ?? taxProjections;
+  
   // Default tax data - Puerto Rico advantage
-  const activeData = taxData || taxProjections || {
+  const activeData = effectiveTaxData || {
     currentTaxBill: 8750, // 15% federal + CA state on $50k dividend income
     optimizedTaxBill: 3750, // 15% federal only (PR = 0% on qualified dividends)
     potentialSavings: 5000,
@@ -572,6 +579,8 @@ const TaxStrategyHubComponent = ({
 // Memoize component to prevent unnecessary re-renders
 export const TaxStrategyHub = memo(TaxStrategyHubComponent, (prevProps, nextProps) => {
   return (
+    prevProps.data === nextProps.data &&
+    prevProps.isCompact === nextProps.isCompact &&
     prevProps.isLoading === nextProps.isLoading &&
     prevProps.taxData?.potentialSavings === nextProps.taxData?.potentialSavings &&
     prevProps.taxData?.currentTaxBill === nextProps.taxData?.currentTaxBill &&

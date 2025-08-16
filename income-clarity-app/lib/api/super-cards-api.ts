@@ -32,7 +32,12 @@ export const superCardsAPI = {
     availableToReinvest?: number;
   }> {
     try {
-      const response = await fetch('/api/super-cards/income-hub');
+      const response = await fetch('/api/super-cards/income-hub', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch income hub data');
       }
@@ -67,7 +72,12 @@ export const superCardsAPI = {
   // Performance Hub
   async fetchPerformanceHub(): Promise<any> {
     try {
-      const response = await fetch('/api/super-cards/performance-hub');
+      const response = await fetch('/api/super-cards/performance-hub', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch performance hub data');
       }
@@ -103,7 +113,12 @@ export const superCardsAPI = {
   // Portfolio Strategy Hub  
   async fetchPortfolioStrategyHub(): Promise<any> {
     try {
-      const response = await fetch('/api/super-cards/portfolio-strategy-hub');
+      const response = await fetch('/api/super-cards/portfolio-strategy-hub', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch portfolio strategy hub data');
       }
@@ -135,7 +150,12 @@ export const superCardsAPI = {
   // Tax Strategy Hub
   async fetchTaxStrategyHub(): Promise<any> {
     try {
-      const response = await fetch('/api/super-cards/tax-strategy-hub');
+      const response = await fetch('/api/super-cards/tax-strategy-hub', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch tax strategy hub data');
       }
@@ -161,7 +181,12 @@ export const superCardsAPI = {
   // Financial Planning Hub
   async fetchFinancialPlanningHub(): Promise<any> {
     try {
-      const response = await fetch('/api/super-cards/financial-planning-hub');
+      const response = await fetch('/api/super-cards/financial-planning-hub', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch financial planning hub data');
       }
@@ -196,7 +221,12 @@ export const superCardsAPI = {
   // Portfolio Holdings
   async fetchPortfolioHoldings() {
     try {
-      const response = await fetch('/api/super-cards/portfolio-holdings');
+      const response = await fetch('/api/super-cards/portfolio-holdings', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch portfolio holdings');
       }
@@ -212,6 +242,7 @@ export const superCardsAPI = {
     try {
       const response = await fetch('/api/super-cards/income-hub', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -228,6 +259,7 @@ export const superCardsAPI = {
     try {
       const response = await fetch('/api/super-cards/performance-hub', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -251,7 +283,12 @@ export const superCardsAPI = {
     milestones?: any[];
   }> {
     try {
-      const response = await fetch('/api/super-cards/planning-hub');
+      const response = await fetch('/api/super-cards/planning-hub', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch planning hub data');
       }

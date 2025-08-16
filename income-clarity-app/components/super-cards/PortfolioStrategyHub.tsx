@@ -31,6 +31,8 @@ import { superCardsAPI } from '@/lib/api/super-cards-api';
 import { logger } from '@/lib/logger'
 
 interface PortfolioStrategyHubProps {
+  data?: any; // For unified view compatibility
+  isCompact?: boolean; // For unified view layout
   strategyData?: {
     healthScore: number;
     riskLevel: 'conservative' | 'moderate' | 'aggressive';
@@ -105,6 +107,8 @@ const TABS: TabConfig[] = [
 ];
 
 const PortfolioStrategyHubComponent = ({ 
+  data,
+  isCompact = false,
   strategyData,
   isLoading = false,
   className = ''
@@ -120,8 +124,11 @@ const PortfolioStrategyHubComponent = ({
   const { updateData, setLoading, setError } = usePortfolioActions();
   const { portfolioHealth, strategyComparison, loading: hubLoading } = portfolioHub;
 
+  // If data prop is provided (from unified view), use it to override defaults
+  const effectiveStrategyData = data?.strategyData ?? strategyData ?? portfolioHealth;
+  
   // Default strategy data with strong portfolio health
-  const activeData = strategyData || portfolioHealth || {
+  const activeData = effectiveStrategyData || {
     healthScore: 85,
     riskLevel: 'moderate' as const,
     diversificationScore: 78,
@@ -605,6 +612,8 @@ const PortfolioStrategyHubComponent = ({
 // Memoize component to prevent unnecessary re-renders
 export const PortfolioStrategyHub = memo(PortfolioStrategyHubComponent, (prevProps, nextProps) => {
   return (
+    prevProps.data === nextProps.data &&
+    prevProps.isCompact === nextProps.isCompact &&
     prevProps.isLoading === nextProps.isLoading &&
     prevProps.strategyData?.healthScore === nextProps.strategyData?.healthScore &&
     prevProps.strategyData?.rebalanceNeeded === nextProps.strategyData?.rebalanceNeeded &&

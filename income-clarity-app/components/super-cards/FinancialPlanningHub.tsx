@@ -31,6 +31,8 @@ import { superCardsAPI } from '@/lib/api/super-cards-api';
 import { logger } from '@/lib/logger'
 
 interface FinancialPlanningHubProps {
+  data?: any; // For unified view compatibility
+  isCompact?: boolean; // For unified view layout
   planningData?: {
     fireProgress: number;
     yearsToFire: number;
@@ -114,6 +116,8 @@ const TABS: TabConfig[] = [
 ];
 
 const FinancialPlanningHubComponent = ({ 
+  data,
+  isCompact = false,
   planningData,
   isLoading = false,
   className = ''
@@ -135,8 +139,11 @@ const FinancialPlanningHubComponent = ({
   const incomeHub = useIncomeHub();
   const { totalExpenseCoverage } = incomeHub;
 
+  // If data prop is provided (from unified view), use it to override defaults
+  const effectivePlanningData = data?.planningData ?? planningData ?? fireData;
+  
   // Default planning data - optimistic FIRE journey
-  const activeData = planningData || fireData || {
+  const activeData = effectivePlanningData || {
     fireProgress: 23.5, // 23.5% to FIRE
     yearsToFire: 12.3,
     currentSavingsRate: 35,
@@ -679,6 +686,8 @@ const FinancialPlanningHubComponent = ({
 // Memoize component to prevent unnecessary re-renders
 export const FinancialPlanningHub = memo(FinancialPlanningHubComponent, (prevProps, nextProps) => {
   return (
+    prevProps.data === nextProps.data &&
+    prevProps.isCompact === nextProps.isCompact &&
     prevProps.isLoading === nextProps.isLoading &&
     prevProps.planningData?.fireProgress === nextProps.planningData?.fireProgress &&
     prevProps.planningData?.yearsToFire === nextProps.planningData?.yearsToFire &&
