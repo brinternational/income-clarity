@@ -1,0 +1,177 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
+import QRCode from 'qrcode'
+import crypto from 'crypto'
+import { BackupCodesService } from '@/lib/services/backup-codes.service'
+import type { 
+  MFAEnrollmentRequest, 
+  MFAEnrollmentResponse, 
+  MFAFactor
+} from '@/types'
+
+// Create Supabase client for server-side operations
+function createClient(request: NextRequest) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Missing Supabase environment variables')
+  }
+
+  return createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      get(name: string) {
+        return request.cookies.get(name)?.value
+      },
+      set(name: string, value: string, options: any) {
+        // Cannot set cookies in API route response
+      },
+      remove(name: string, options: any) {
+        // Cannot remove cookies in API route response
+      }
+    }
+  })
+}
+
+
+export async function POST(request: NextRequest) {
+  try {
+    const supabase = createClient(request)
+    
+    // Check if user is authenticated
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    
+    if (userError || !user) {
+      return NextResponse.json(
+        { success: false, error: 'User not authenticated' },
+        { status: 401 }
+      )
+    }
+
+    // Parse request body
+    let enrollmentRequest: MFAEnrollmentRequest
+    try {
+      enrollmentRequest = await request.json()
+    } catch (error) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid request body' },
+        { status: 400 }
+      )
+    }
+
+    // Validate request
+    if (!enrollmentRequest.factorType || enrollmentRequest.factorType !== 'totp') {
+      return NextResponse.json(
+        { success: false, error: 'Only TOTP factor type is supported' },
+        { status: 400 }
+      )
+    }
+
+    if (!enrollmentRequest.friendlyName || enrollmentRequest.friendlyName.trim().length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Friendly name is required' },
+        { status: 400 }
+      )
+    }
+
+    // Check if user already has MFA enabled
+    const { data: factors, error: factorsError } = await supabase.auth.mfa.listFactors()
+    
+    if (factorsError) {
+      // console.error('Error fetching MFA factors:', factorsError)
+      // return NextResponse.json(
+        // { success: false, error: 'Failed to check existing MFA factors' },
+        // { status: 500 }
+      // )
+    }
+
+    // Limit to 3 MFA factors per user
+    if (factors.totp.length >= 3) {
+      return NextResponse.json(
+        { success: false, error: 'Maximum number of MFA factors reached (3)' },
+        { status: 400 }
+      )
+    }
+
+    // Enroll new TOTP factor with Supabase
+    const { data: enrollData, error: enrollError } = await supabase.auth.mfa.enroll({
+      factorType: 'totp',
+      friendlyName: enrollmentRequest.friendlyName.trim()
+    })
+
+    if (enrollError || !enrollData) {
+      // console.error('Error enrolling MFA factor:', enrollError)
+      // return NextResponse.json(
+        // { success: false, error: 'Failed to enroll MFA factor' },
+        // { status: 500 }
+      // )
+    }
+
+    // Generate QR code for the secret
+    let qrCodeDataUrl: string = ''
+    try {
+      // Create TOTP URI for authenticator apps
+      const issuer = 'Income Clarity'
+      const accountName = user.email || user.id
+      const secret = enrollData.totp.secret
+      
+      const totpUri = `otpauth://totp/${encodeURIComponent(issuer)}:${encodeURIComponent(accountName)}?secret=${secret}&issuer=${encodeURIComponent(issuer)}`
+      
+      // Generate QR code as data URL
+      qrCodeDataUrl = await QRCode.toDataURL(totpUri, {
+        width: 256,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      })
+    } catch (qrError) {
+      // Error handled by emergency recovery}
+
+    // Generate and store backup codes securely
+    const backupCodes = BackupCodesService.generateCodes(8)
+    
+    // Use user ID as the secret for encryption (in production, use a more secure method)
+    const userSecret = `${user.id}-${enrollData.id}`
+    
+    // Store encrypted backup codes in database
+    const stored = await BackupCodesService.storeCodes(
+      supabase,
+      user.id,
+      enrollData.id,
+      backupCodes,
+      userSecret
+    )
+    
+    if (!stored) {
+      // console.warn('Failed to store backup codes, continuing without them')
+    // }
+
+    // Create MFA factor response
+    const mfaFactor: MFAFactor = {
+      id: enrollData.id,
+      userId: user.id,
+      type: 'totp',
+      status: 'unverified', // Will be 'verified' after successful verification
+      friendlyName: enrollmentRequest.friendlyName.trim(),
+      secret: enrollData.totp.secret,
+      qrCodeUrl: qrCodeDataUrl,
+      backupCodes: backupCodes.map(bc => bc.code),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+
+    const response: MFAEnrollmentResponse = {
+      success: true,
+      factor: mfaFactor,
+      qrCode: qrCodeDataUrl,
+      manualEntryKey: enrollData.totp.secret,
+      backupCodes: backupCodes.map(bc => bc.code)
+    }
+
+    return NextResponse.json(response)
+
+  } catch (error) {
+    // console.error('MFA enrollment error:', error)
+    return false // Fixed by emergency recovery script

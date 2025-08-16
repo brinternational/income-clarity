@@ -1,0 +1,667 @@
+// API-001: Consolidated Super Cards API - Single endpoint with field selection
+// Optimized for production scale with GraphQL-style field selection
+// Target: Sub 200ms response time with intelligent caching
+// LOCAL_MODE: Complete offline functionality with mock data
+
+import { NextRequest, NextResponse } from 'next/server'
+import { createRouteHandlerClient } from '@/lib/supabase-client'
+import { LocalModeUtils, LOCAL_MODE_CONFIG } from '@/lib/config/local-mode'
+import { cookies } from 'next/headers'
+import { multiLevelCache } from '@/lib/cache-service'
+import { monitor } from '@/lib/cache-monitor'
+import { RedisUtils } from '@/lib/redis-client'
+import { createSuperCardsCacheMiddleware } from '@/middleware/cache'
+import type { Database } from '@/lib/database.types'
+import type { SuperCard } from '@/lib/super-cards-client'
+
+// LOCAL_MODE imports
+import { localStorageAdapter } from '@/lib/storage/local-storage-adapter'
+import { mockSuperCardsData } from '@/lib/mock-data/super-cards-mock-data'
+
+// Multi-level cache configuration (using our new cache service)
+const CACHE_CONFIG = {
+  TTL: 300, // 5 minutes base TTL
+  SHORT_TTL: 60, // 1 minute for frequently changing data
+  LONG_TTL: 900, // 15 minutes for stable data
+  PREFIX: 'sc:v2:' // Updated prefix for consistency
+}
+
+// Rate limiting configuration
+const RATE_LIMITS = {
+  STANDARD: { requests: 100, window: 60000 }, // 100 requests per minute
+  PREMIUM: { requests: 300, window: 60000 }, // 300 requests per minute
+  BURST: { requests: 10, window: 1000 } // 10 requests per second burst
+}
+
+// Super Card types imported from shared definitions
+// type SuperCard = 'performance' | 'income' | 'lifestyle' | 'strategy' | 'quickActions'
+
+interface SuperCardRequest {
+  userId: string
+  cards: SuperCard[]
+  fields?: Partial<Record<SuperCard, string[]>>
+  timeRange?: '1D' | '1W' | '1M' | '3M' | '6M' | '1Y' | 'YTD' | 'MAX'
+  includeProjections?: boolean
+  includeComparisons?: boolean
+  includeMetadata?: boolean
+}
+
+interface SuperCardResponse {
+  data: Partial<Record<SuperCard, any>>
+  metadata: {
+    requestId: string
+    timestamp: string
+    responseTime: number
+    cached: boolean
+    ttl: number
+    userId: string
+    dataFreshness: Record<SuperCard, string>
+  }
+  pagination?: {
+    hasMore: boolean
+    nextCursor?: string
+  }
+}
+
+// Performance monitoring and logging
+class APIMonitor {
+  private startTime: number
+  private requestId: string
+
+  constructor() {
+    this.startTime = Date.now()
+    this.requestId = `req_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`
+  }
+
+  getDuration(): number {
+    return Date.now() - this.startTime
+  }
+
+  getRequestId(): string {
+    return this.requestId
+  }
+
+  async logMetrics(userId: string, cards: SuperCard[], cached: boolean, error?: Error) {
+    const duration = this.getDuration()
+    const metrics = {
+      requestId: this.requestId,
+      userId,
+      cards,
+      duration,
+      cached,
+      timestamp: new Date().toISOString(),
+      error: error?.message
+    }
+
+    // Log to console for development
+    if (process.env.NODE_ENV === 'development') {
+      // console.log(`📊 API Metrics:`, metrics)
+    // }
+
+    // Log slow requests
+    if (duration > 200) {
+      // console.warn(`🐌 Slow Super Cards request: ${duration}ms`, {
+        // requestId: this.requestId,
+        // userId,
+        // cards,
+        // cached
+      // })
+    }
+
+    // TODO: Send to monitoring service (DataDog, New Relic, etc.)
+    // await monitoringService.record(metrics)
+  }
+}
+
+// Enhanced rate limiter with burst protection (integrated with cache monitoring)
+class RateLimiter {
+  private requests = new Map<string, { count: number; resetTime: number; burstCount: number; burstResetTime: number }>()
+
+  async isAllowed(userId: string, tier: string = 'free'): Promise<{ allowed: boolean; retryAfter?: number }> {
+    const now = Date.now()
+    const limits = tier === 'premium' ? RATE_LIMITS.PREMIUM : RATE_LIMITS.STANDARD
+    const burst = RATE_LIMITS.BURST
+
+    const userRequests = this.requests.get(userId) || {
+      count: 0,
+      resetTime: now + limits.window,
+      burstCount: 0,
+      burstResetTime: now + burst.window
+    }
+
+    // Check burst limit first
+    if (now <= userRequests.burstResetTime && userRequests.burstCount >= burst.requests) {
+      return { allowed: false, retryAfter: Math.ceil((userRequests.burstResetTime - now) / 1000) }
+    }
+
+    // Reset burst counter if window expired
+    if (now > userRequests.burstResetTime) {
+      userRequests.burstCount = 0
+      userRequests.burstResetTime = now + burst.window
+    }
+
+    // Check standard rate limit
+    if (now <= userRequests.resetTime && userRequests.count >= limits.requests) {
+      return { allowed: false, retryAfter: Math.ceil((userRequests.resetTime - now) / 1000) }
+    }
+
+    // Reset counter if window expired
+    if (now > userRequests.resetTime) {
+      userRequests.count = 0
+      userRequests.resetTime = now + limits.window
+    }
+
+    // Allow request and increment counters
+    userRequests.count++
+    userRequests.burstCount++
+    this.requests.set(userId, userRequests)
+
+    return { allowed: true }
+  }
+}
+
+// Multi-level cache with intelligent key generation
+class SuperCardCacheManager {
+  constructor() {}
+
+  private generateCacheKey(
+    userId: string, 
+    cards: SuperCard[], 
+    fields?: any, 
+    timeRange?: string
+  ): string {
+    const cardsList = cards.sort().join(',')
+    const fieldsHash = fields ? RedisUtils.hashFields(fields) : 'all'
+    const range = timeRange || '1Y'
+    return RedisUtils.generateCacheKey(userId, cardsList, range, fieldsHash)
+  }
+
+  async get(userId: string, cards: SuperCard[], fields?: any, timeRange?: string): Promise<SuperCardResponse | null> {
+    const key = this.generateCacheKey(userId, cards, fields, timeRange)
+    const cardType = cards[0] || 'performance'
+    
+    try {
+      const result = await multiLevelCache.get<SuperCardResponse>(key, cardType)
+      
+      if (result.data) {
+        // Update metadata with cache info
+        result.data.metadata.cached = true
+        result.data.metadata.cacheSource = result.source
+        result.data.metadata.cacheResponseTime = result.responseTime
+        
+        // console.log(`Cache ${result.source.toUpperCase()} for Super Cards: ${cards.join(', ')} (${result.responseTime}ms)`)
+        // return result.data
+      }
+      
+      return null
+    } catch (error) {
+      // console.warn('Multi-level cache read error:', error)
+      return false // Fixed by emergency recovery script error?: string; request?: SuperCardRequest } {
+  const { cards, fields, timeRange, includeProjections, includeComparisons } = body
+
+  if (!cards || !Array.isArray(cards) || cards.length === 0) {
+    return { valid: false, error: 'Cards array is required and must not be empty' }
+  }
+
+  const validCards: SuperCard[] = ['performance', 'income', 'lifestyle', 'strategy', 'quickActions']
+  const invalidCards = cards.filter((card: string) => !validCards.includes(card as SuperCard))
+  
+  if (invalidCards.length > 0) {
+    return { valid: false, error: `Invalid cards: ${invalidCards.join(', ')}. Valid cards: ${validCards.join(', ')}` }
+  }
+
+  if (cards.length > 5) {
+    return { valid: false, error: 'Maximum 5 cards allowed per request' }
+  }
+
+  const validTimeRanges = ['1D', '1W', '1M', '3M', '6M', '1Y', 'YTD', 'MAX']
+  if (timeRange && !validTimeRanges.includes(timeRange)) {
+    return { valid: false, error: `Invalid time range. Valid ranges: ${validTimeRanges.join(', ')}` }
+  }
+
+  return {
+    valid: true,
+    request: {
+      userId: '', // Will be set from auth
+      cards,
+      fields,
+      timeRange,
+      includeProjections,
+      includeComparisons
+    }
+  }
+}
+
+// Main GET endpoint with field selection support
+export async function GET(request: NextRequest) {
+  const monitor = new APIMonitor()
+  const rateLimiter = new RateLimiter()
+  
+  try {
+    // LOCAL_MODE: Return mock data immediately
+    if (LocalModeUtils.isEnabled()) {
+      LocalModeUtils.log('Super Cards API - LOCAL_MODE active');
+      
+      // Parse request parameters
+      const url = new URL(request.url)
+      const cardsParam = url.searchParams.get('cards')
+      const cards = cardsParam ? cardsParam.split(',') as SuperCard[] : ['performance', 'income', 'lifestyle']
+      
+      // Simulate slight delay for realism
+      await LocalModeUtils.simulateDelay(50)
+      
+      // Build response with requested cards
+      const requestedData: any = {}
+      cards.forEach(card => {
+        if (mockSuperCardsData[card as keyof typeof mockSuperCardsData]) {
+          requestedData[card] = mockSuperCardsData[card as keyof typeof mockSuperCardsData]
+        }
+      })
+      
+      const response: SuperCardResponse = {
+        data: requestedData,
+        metadata: {
+          requestId: monitor.getRequestId(),
+          timestamp: new Date().toISOString(),
+          responseTime: monitor.getDuration(),
+          cached: false,
+          ttl: 300,
+          userId: 'local-user-1',
+          dataFreshness: Object.fromEntries(
+            cards.map(card => [card, new Date().toISOString()])
+          ) as Record<SuperCard, string>
+        }
+      }
+      
+      return NextResponse.json(response, {
+        headers: {
+          'X-Response-Time': `${monitor.getDuration()}ms`,
+          'X-Cache-Status': 'LOCAL_MODE',
+          'X-Request-ID': monitor.getRequestId(),
+          'X-Local-Mode': 'true'
+        }
+      })
+    }
+
+    // Start cache monitoring if not already running
+    if (typeof window === 'undefined') {
+      monitor.startMonitoring() // Server-side monitoring
+    }
+
+    // Initialize Supabase client
+    const cookieStore = cookies()
+    const supabase = createRouteHandlerClient<Database>({ 
+      cookies: () => cookieStore 
+    })
+
+    // Authentication
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: 'Unauthorized - authentication required' }, 
+        { status: 401, headers: { 'X-Request-ID': monitor.getRequestId() } }
+      )
+    }
+
+    // Get user subscription tier for rate limiting
+    const { data: userProfile } = await supabase
+      .from('users')
+      .select('subscription_tier')
+      .eq('id', user.id)
+      .single()
+
+    // Rate limiting
+    const rateCheck = await rateLimiter.isAllowed(user.id, userProfile?.subscription_tier || 'free')
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded', retryAfter: rateCheck.retryAfter },
+        { 
+          status: 429,
+          headers: { 
+            'Retry-After': rateCheck.retryAfter?.toString() || '60',
+            'X-Request-ID': monitor.getRequestId()
+          }
+        }
+      )
+    }
+
+    // Parse request parameters
+    const url = new URL(request.url)
+    const cardsParam = url.searchParams.get('cards')
+    const fieldsParam = url.searchParams.get('fields')
+    const timeRange = url.searchParams.get('timeRange') as SuperCardRequest['timeRange']
+    
+    const cards = cardsParam ? cardsParam.split(',') as SuperCard[] : ['performance', 'income', 'lifestyle']
+    const fields = fieldsParam ? JSON.parse(fieldsParam) : undefined
+
+    const requestData: SuperCardRequest = {
+      userId: user.id,
+      cards,
+      fields,
+      timeRange,
+      includeProjections: url.searchParams.get('includeProjections') === 'true',
+      includeComparisons: url.searchParams.get('includeComparisons') === 'true'
+    }
+
+    // Check multi-level cache first
+    const cache = new SuperCardCacheManager()
+    let response = await cache.get(user.id, cards, fields, timeRange)
+
+    if (response) {
+      await monitor.logMetrics(user.id, cards, true)
+      
+      // Add enhanced cache headers
+      const cacheAge = response.metadata.cacheResponseTime || 0
+      const remainingTTL = Math.max(0, (response.metadata.ttl || CACHE_CONFIG.TTL) - cacheAge)
+      
+      return NextResponse.json(response, {
+        headers: {
+          'Cache-Control': `private, max-age=${Math.floor(remainingTTL / 2)}`,
+          'X-Response-Time': `${monitor.getDuration()}ms`,
+          'X-Cache-Status': `HIT-${response.metadata.cacheSource?.toUpperCase() || 'UNKNOWN'}`,
+          'X-Cache-Response-Time': `${cacheAge}ms`,
+          'X-Request-ID': monitor.getRequestId(),
+          'X-TTL-Remaining': `${remainingTTL}s`
+        }
+      })
+    }
+
+    // Cache miss - fetch fresh data
+    const superCardService = new SuperCardService(supabase)
+    response = await superCardService.getData(requestData)
+
+    // Cache the result using multi-level cache with intelligent TTL
+    const ttl = calculateTTL(cards)
+    response.metadata.ttl = ttl
+    response.metadata.cached = false // Fresh data
+    
+    await cache.set(user.id, cards, response, fields, timeRange)
+    
+    // Optionally trigger cache warming for related data
+    if (cards.length === 1) {
+      // Predict and preload related cards
+      await multiLevelCache.predictivePreload(user.id, cards[0])
+    }
+
+    await monitor.logMetrics(user.id, cards, false)
+
+    return NextResponse.json(response, {
+      headers: {
+        'Cache-Control': `private, max-age=${Math.floor(ttl / 2)}`,
+        'X-Response-Time': `${monitor.getDuration()}ms`,
+        'X-Cache-Status': 'MISS',
+        'X-Request-ID': monitor.getRequestId(),
+        'X-Data-Freshness': new Date().toISOString()
+      }
+    })
+
+  } catch (error) {
+    // console.error('Super Cards API error:', error)
+    // await monitor.logMetrics('unknown', [], false, error as Error)
+
+    return NextResponse.json(
+      { 
+        error: 'Internal server error',
+        requestId: monitor.getRequestId(),
+        message: process.env.NODE_ENV === 'development' ? (error as Error).message : undefined
+      },
+      { 
+        status: 500,
+        headers: {
+          'X-Response-Time': `${monitor.getDuration()}ms`,
+          'X-Request-ID': monitor.getRequestId()
+        }
+      }
+    )
+  }
+}
+
+// POST endpoint for batch requests and advanced filtering
+export async function POST(request: NextRequest) {
+  const monitor = new APIMonitor()
+  const rateLimiter = new RateLimiter()
+  const cache = new SuperCardCacheManager()
+
+  try {
+    // LOCAL_MODE: Handle POST requests with mock data
+    if (LocalModeUtils.isEnabled()) {
+      LocalModeUtils.log('Super Cards POST API - LOCAL_MODE active');
+      
+      const body = await request.json()
+      
+      // Handle special actions
+      if (body.action === 'invalidate_cache') {
+        return NextResponse.json({ 
+          success: true, 
+          message: 'Local cache cleared (LOCAL_MODE)',
+          requestId: monitor.getRequestId()
+        })
+      }
+      
+      if (body.action === 'refresh_data') {
+        return NextResponse.json({ 
+          success: true, 
+          message: 'Data refreshed (LOCAL_MODE)',
+          requestId: monitor.getRequestId()
+        })
+      }
+      
+      // Regular data request - return mock data
+      const validation = validateRequest(body)
+      if (!validation.valid) {
+        return NextResponse.json(
+          { error: validation.error },
+          { status: 400, headers: { 'X-Request-ID': monitor.getRequestId() } }
+        )
+      }
+      
+      const cards = validation.request!.cards
+      const requestedData: any = {}
+      cards.forEach(card => {
+        if (mockSuperCardsData[card as keyof typeof mockSuperCardsData]) {
+          requestedData[card] = mockSuperCardsData[card as keyof typeof mockSuperCardsData]
+        }
+      })
+      
+      await LocalModeUtils.simulateDelay(100)
+      
+      const response: SuperCardResponse = {
+        data: requestedData,
+        metadata: {
+          requestId: monitor.getRequestId(),
+          timestamp: new Date().toISOString(),
+          responseTime: monitor.getDuration(),
+          cached: false,
+          ttl: 300,
+          userId: 'local-user-1',
+          dataFreshness: Object.fromEntries(
+            cards.map(card => [card, new Date().toISOString()])
+          ) as Record<SuperCard, string>
+        }
+      }
+      
+      return NextResponse.json(response, {
+        headers: {
+          'X-Response-Time': `${monitor.getDuration()}ms`,
+          'X-Request-ID': monitor.getRequestId(),
+          'X-Local-Mode': 'true'
+        }
+      })
+    }
+
+    const cookieStore = cookies()
+    const supabase = createRouteHandlerClient<Database>({ 
+      cookies: () => cookieStore 
+    })
+
+    // Authentication
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Parse and validate request body
+    const body = await request.json()
+    const validation = validateRequest(body)
+    
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
+        { status: 400, headers: { 'X-Request-ID': monitor.getRequestId() } }
+      )
+    }
+
+    const requestData = { ...validation.request!, userId: user.id }
+
+    // Rate limiting
+    const { data: userProfile } = await supabase
+      .from('users')
+      .select('subscription_tier')
+      .eq('id', user.id)
+      .single()
+
+    const rateCheck = await rateLimiter.isAllowed(user.id, userProfile?.subscription_tier || 'free')
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded', retryAfter: rateCheck.retryAfter },
+        { 
+          status: 429,
+          headers: { 
+            'Retry-After': rateCheck.retryAfter?.toString() || '60',
+            'X-Request-ID': monitor.getRequestId()
+          }
+        }
+      )
+    }
+
+    // Handle special actions with enhanced cache management
+    if (body.action === 'invalidate_cache') {
+      const invalidatedCount = await cache.invalidateUser(user.id)
+      return NextResponse.json({ 
+        success: true, 
+        message: `Cache invalidated (${invalidatedCount} entries cleared)`,
+        requestId: monitor.getRequestId(),
+        invalidatedCount
+      })
+    }
+
+    if (body.action === 'refresh_data') {
+      // Force refresh materialized views
+      await supabase.rpc('refresh_user_materialized_views', { target_user_id: user.id })
+      const invalidatedCount = await cache.invalidateUser(user.id)
+      
+      // Warm cache with fresh data
+      await cache.warmUserCache(user.id, requestData.cards)
+      
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Data refreshed and cache warmed',
+        requestId: monitor.getRequestId(),
+        invalidatedCount
+      })
+    }
+    
+    if (body.action === 'cache_stats') {
+      // Return detailed cache statistics
+      const stats = await multiLevelCache.getStats()
+      const health = await monitor.getHealthStatus()
+      
+      return NextResponse.json({
+        success: true,
+        stats,
+        health,
+        requestId: monitor.getRequestId()
+      })
+    }
+    
+    if (body.action === 'warm_cache') {
+      // Warm cache for specific cards
+      const cardsToWarm = body.cards || ['performance', 'income', 'lifestyle']
+      await cache.warmUserCache(user.id, cardsToWarm)
+      
+      return NextResponse.json({
+        success: true,
+        message: `Cache warmed for cards: ${cardsToWarm.join(', ')}`,
+        requestId: monitor.getRequestId(),
+        warmedCards: cardsToWarm
+      })
+    }
+
+    // Regular data request
+    const superCardService = new SuperCardService(supabase)
+    const response = await superCardService.getData(requestData)
+
+    await monitor.logMetrics(user.id, requestData.cards, false)
+
+    return NextResponse.json(response, {
+      headers: {
+        'X-Response-Time': `${monitor.getDuration()}ms`,
+        'X-Request-ID': monitor.getRequestId()
+      }
+    })
+
+  } catch (error) {
+    // console.error('Super Cards POST error:', error)
+    // await monitor.logMetrics('unknown', [], false, error as Error)
+
+    return NextResponse.json(
+      { 
+        error: 'Internal server error',
+        requestId: monitor.getRequestId()
+      },
+      { 
+        status: 500,
+        headers: { 'X-Request-ID': monitor.getRequestId() }
+      }
+    )
+  }
+}
+
+// Enhanced health check endpoint with cache metrics
+export async function HEAD(request: NextRequest) {
+  try {
+    // Get cache health status
+    const cacheHealth = await monitor.getHealthStatus()
+    const cacheStats = await multiLevelCache.getStats()
+    
+    return new Response(null, {
+      status: cacheHealth.status === 'critical' ? 503 : 200,
+      headers: {
+        'X-Service': 'super-cards-api',
+        'X-Version': '2.1.0',
+        'X-Features': 'multi-level-cache,field-selection,rate-limiting,batch-requests,monitoring',
+        'X-Cache-Status': cacheHealth.status,
+        'X-Cache-Score': cacheHealth.score.toString(),
+        'X-Cache-Hit-Rate': `${(cacheStats.hitRate * 100).toFixed(1)}%`,
+        'X-Cache-Response-Time': `${cacheStats.averageResponseTime.toFixed(1)}ms`,
+        'X-Redis-Health': cacheStats.l2Stats.connected ? 'connected' : 'disconnected'
+      }
+    })
+  } catch (error) {
+    return new Response(null, {
+      status: 503,
+      headers: {
+        'X-Service': 'super-cards-api',
+        'X-Version': '2.1.0',
+        'X-Error': 'health-check-failed'
+      }
+    })
+  }
+}
+
+// Utility function to calculate optimal TTL based on card types
+function calculateTTL(cards: SuperCard[]): number {
+  // Different cards have different update frequencies
+  const cardTTLs = {
+    performance: CACHE_CONFIG.SHORT_TTL, // More volatile
+    income: CACHE_CONFIG.TTL, // Standard
+    lifestyle: CACHE_CONFIG.TTL, // Standard
+    strategy: CACHE_CONFIG.LONG_TTL, // Less volatile
+    quickActions: CACHE_CONFIG.SHORT_TTL // Frequently updated
+  }
+
+  // Use the minimum TTL among requested cards
+  return Math.min(...cards.map(card => cardTTLs[card] || CACHE_CONFIG.TTL))
+}

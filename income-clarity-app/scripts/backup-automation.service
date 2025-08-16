@@ -1,0 +1,29 @@
+[Unit]
+Description=Income Clarity Database Backup Service
+Documentation=man:systemd.service(5)
+After=network.target
+Wants=backup-automation.timer
+
+[Service]
+Type=oneshot
+User=devuser
+Group=devuser
+WorkingDirectory=/public/MasterV2/income-clarity/income-clarity-app
+Environment=NODE_ENV=production
+Environment=PATH=/usr/local/bin:/usr/bin:/bin:/home/devuser/.nvm/versions/node/v20.18.0/bin
+ExecStart=/usr/bin/node scripts/backup-database.js
+StandardOutput=journal
+StandardError=journal
+TimeoutStopSec=300
+KillMode=mixed
+
+# Resource limits
+MemoryLimit=512M
+CPUQuota=50%
+
+# Restart policy
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

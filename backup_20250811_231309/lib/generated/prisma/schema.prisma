@@ -1,0 +1,257 @@
+// Income Clarity SQLite Database Schema
+// Optimized for personal finance management with dividend income focus
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./income_clarity.db"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  settings     String? // JSON string for user preferences
+  taxProfile   String? // JSON string for tax information
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relationships
+  portfolios   Portfolio[]
+  incomes      Income[]
+  expenses     Expense[]
+  transactions Transaction[]
+
+  @@map("users")
+}
+
+model Portfolio {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  type        String // 401k, IRA, Taxable, Crypto
+  institution String?
+  isPrimary   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  holdings Holding[]
+
+  @@map("portfolios")
+}
+
+model Holding {
+  id            String   @id @default(uuid())
+  portfolioId   String
+  ticker        String
+  shares        Float
+  costBasis     Float
+  purchaseDate  DateTime
+  currentPrice  Float?
+  dividendYield Float?
+  sector        String?
+  metadata      String? // JSON string for additional data
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relationships
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  @@unique([portfolioId, ticker])
+  @@map("holdings")
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  userId      String
+  portfolioId String?
+  ticker      String
+  type        String // BUY, SELL, DIVIDEND, INTEREST, SPLIT, MERGER
+  shares      Float?
+  amount      Float
+  date        DateTime
+  notes       String?
+  metadata    String? // JSON string for additional transaction data
+  createdAt   DateTime @default(now())
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
+  @@index([ticker, type])
+  @@map("transactions")
+}
+
+model Income {
+  id        String   @id @default(uuid())
+  userId    String
+  source    String // Company name or income source
+  category  String // SALARY, DIVIDEND, INTEREST, CAPITAL_GAINS, OTHER
+  amount    Float
+  date      DateTime
+  recurring Boolean  @default(false)
+  frequency String? // MONTHLY, QUARTERLY, ANNUALLY
+  taxable   Boolean  @default(true)
+  notes     String?
+  metadata  String? // JSON string for additional income data
+  createdAt DateTime @default(now())
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
+  @@index([category, date])
+  @@map("incomes")
+}
+
+model Expense {
+  id        String   @id @default(uuid())
+  userId    String
+  category  String // UTILITIES, INSURANCE, FOOD, RENT, ENTERTAINMENT, TRANSPORTATION, HEALTHCARE
+  merchant  String?
+  amount    Float
+  date      DateTime
+  recurring Boolean  @default(false)
+  frequency String? // MONTHLY, QUARTERLY, ANNUALLY
+  priority  Int      @default(5) // 1-10 scale for milestone tracking
+  essential Boolean  @default(true) // Essential vs discretionary spending
+  notes     String?
+  metadata  String? // JSON string for additional expense data
+  createdAt DateTime @default(now())
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
+  @@index([category, date])
+  @@map("expenses")
+}
+
+model StockPrice {
+  id            String   @id @default(uuid())
+  ticker        String
+  date          DateTime
+  open          Float
+  high          Float
+  low           Float
+  close         Float
+  volume        Int
+  adjustedClose Float?
+  createdAt     DateTime @default(now())
+
+  @@unique([ticker, date])
+  @@index([ticker, date])
+  @@map("stock_prices")
+}
+
+model DividendSchedule {
+  id          String    @id @default(uuid())
+  ticker      String
+  exDate      DateTime
+  payDate     DateTime
+  recordDate  DateTime?
+  amount      Float
+  frequency   String // MONTHLY, QUARTERLY, SEMI_ANNUALLY, ANNUALLY
+  paymentType String // REGULAR, SPECIAL, LIQUIDATING
+  currency    String    @default("USD")
+  createdAt   DateTime  @default(now())
+
+  @@unique([ticker, exDate])
+  @@index([ticker, exDate])
+  @@index([payDate])
+  @@map("dividend_schedules")
+}
+
+// Cache table for expensive calculations
+model CalculationCache {
+  id        String   @id @default(uuid())
+  cacheKey  String   @unique
+  data      String // JSON string of cached calculation
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([expiresAt])
+  @@map("calculation_cache")
+}
+
+// User preferences and settings
+model UserSettings {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  theme         String   @default("light")
+  currency      String   @default("USD")
+  locale        String   @default("en-US")
+  timezone      String   @default("America/New_York")
+  notifications String? // JSON string for notification preferences
+  privacy       String? // JSON string for privacy settings
+  features      String? // JSON string for feature flags
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("user_settings")
+}
+
+// Tax optimization data
+model TaxProfile {
+  id                    String   @id @default(uuid())
+  userId                String   @unique
+  state                 String? // State for tax calculations
+  filingStatus          String   @default("single") // single, married_jointly, married_separately, head_of_household
+  federalBracket        Float    @default(0.22)
+  stateBracket          Float    @default(0.0)
+  qualifiedDividendRate Float    @default(0.15)
+  capitalGainsRate      Float    @default(0.15)
+  effectiveRate         Float    @default(0.22)
+  marginalRate          Float    @default(0.22)
+  taxYear               Int      @default(2024)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("tax_profiles")
+}
+
+// Financial goals and milestones
+model FinancialGoal {
+  id            String    @id @default(uuid())
+  userId        String
+  name          String
+  description   String?
+  targetAmount  Float
+  currentAmount Float     @default(0.0)
+  targetDate    DateTime?
+  category      String // EMERGENCY_FUND, FIRE, HOUSE_DOWN_PAYMENT, VACATION, OTHER
+  priority      Int       @default(5) // 1-10 priority scale
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([userId, isActive])
+  @@map("financial_goals")
+}
+
+// Performance tracking
+model PerformanceSnapshot {
+  id              String   @id @default(uuid())
+  userId          String
+  date            DateTime
+  totalValue      Float
+  totalCostBasis  Float
+  totalGainLoss   Float
+  totalReturn     Float // Percentage return
+  dividendIncome  Float
+  spyPrice        Float? // SPY comparison price
+  spyReturn       Float? // SPY return for comparison
+  monthlyIncome   Float // Total monthly dividend income
+  monthlyExpenses Float // Total monthly expenses
+  netIncome       Float // Monthly income - expenses
+  createdAt       DateTime @default(now())
+
+  @@index([userId, date])
+  @@map("performance_snapshots")
+}

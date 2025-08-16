@@ -1,0 +1,571 @@
+'use client';
+
+import { useState, useEffect, useMemo, memo, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Activity,
+  BarChart3,
+  TrendingUp,
+  Zap,
+  ChevronLeft,
+  ChevronRight,
+  Shield,
+  Target,
+  AlertCircle,
+  CheckCircle,
+  Users,
+  TrendingDown
+} from 'lucide-react';
+import { usePortfolioHub, usePortfolioActions } from '@/store/superCardStore';
+import { StrategyHealthCard } from '@/components/strategy/StrategyHealthCard';
+import { RebalancingSuggestions } from '@/components/dashboard/RebalancingSuggestions';
+import { StrategyComparisonEngine } from '@/components/strategy/StrategyComparisonEngine';
+import { MarginIntelligence } from '@/components/dashboard/MarginIntelligence';
+import { PeerBenchmarkingView } from '@/components/strategy/PeerBenchmarkingView';
+import { BacktestingEngine } from '@/components/strategy/BacktestingEngine';
+import { useStaggeredCountingAnimation } from '@/hooks/useOptimizedAnimation';
+import { superCardsAPI } from '@/lib/api/super-cards-api';
+
+interface PortfolioStrategyHubProps {
+  strategyData?: {
+    healthScore: number;
+    riskLevel: 'conservative' | 'moderate' | 'aggressive';
+    diversificationScore: number;
+    rebalanceNeeded: boolean;
+    totalValue: number;
+  };
+  isLoading?: boolean;
+  className?: string;
+}
+
+type TabType = 'health' | 'rebalancing' | 'comparison' | 'margin' | 'benchmarking' | 'backtesting';
+
+interface TabConfig {
+  id: TabType;
+  label: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  bgColor: string;
+}
+
+const TABS: TabConfig[] = [
+  {
+    id: 'health',
+    label: 'Health',
+    description: 'Portfolio health score',
+    icon: Activity,
+    color: 'text-green-600',
+    bgColor: 'bg-green-50'
+  },
+  {
+    id: 'rebalancing',
+    label: 'Rebalancing',
+    description: 'Optimization suggestions',
+    icon: BarChart3,
+    color: 'text-blue-600',
+    bgColor: 'bg-blue-50'
+  },
+  {
+    id: 'comparison',
+    label: 'Comparison',
+    description: 'Strategy comparison',
+    icon: TrendingUp,
+    color: 'text-primary-600',
+    bgColor: 'bg-primary-50'
+  },
+  {
+    id: 'benchmarking',
+    label: 'Peer Ranking',
+    description: 'Compare with peers',
+    icon: Users,
+    color: 'text-purple-600',
+    bgColor: 'bg-purple-50'
+  },
+  {
+    id: 'backtesting',
+    label: 'Backtesting',
+    description: 'Historical analysis',
+    icon: TrendingDown,
+    color: 'text-indigo-600',
+    bgColor: 'bg-indigo-50'
+  },
+  {
+    id: 'margin',
+    label: 'Margin',
+    description: 'Leverage intelligence',
+    icon: Zap,
+    color: 'text-wealth-600',
+    bgColor: 'bg-wealth-50'
+  }
+];
+
+const PortfolioStrategyHubComponent = ({ 
+  strategyData,
+  isLoading = false,
+  className = ''
+}: PortfolioStrategyHubProps) => {
+  const [activeTab, setActiveTab] = useState<TabType>('health');
+  const [isVisible, setIsVisible] = useState(false);
+  const [touchStart, setTouchStart] = useState<number>(0);
+  const [touchEnd, setTouchEnd] = useState<number>(0);
+  const [loadStartTime] = useState(() => performance.now());
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  const portfolioHub = usePortfolioHub();
+  const { updateData, setLoading, setError } = usePortfolioActions();
+  const { portfolioHealth, strategyComparison, loading: hubLoading } = portfolioHub;
+
+  // Default strategy data with strong portfolio health
+  const activeData = strategyData || portfolioHealth || {
+    healthScore: 85,
+    riskLevel: 'moderate' as const,
+    diversificationScore: 78,
+    rebalanceNeeded: false,
+    totalValue: 125000
+  };
+
+  // Hero metric animation - portfolio health score
+  const animatedValues = useStaggeredCountingAnimation(
+    {
+      heroMetric: activeData.healthScore,
+      diversification: activeData.diversificationScore,
+      portfolioValue: activeData.totalValue,
+      riskScore: activeData.riskLevel === 'conservative' ? 30 : activeData.riskLevel === 'moderate' ? 60 : 90,
+    },
+    1200,
+    150
+  );
+
+  // Fetch Portfolio Hub data from API
+  const fetchPortfolioData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const data = await superCardsAPI.fetchPortfolioHub();
+      
+      // Update store with fetched data
+      updateData({
+        strategyHealth: data.strategyHealth,
+        rebalancingSuggestions: data.rebalancingSuggestions,
+        marginIntelligence: data.marginIntelligence,
+        portfolioMetrics: data.portfolioMetrics,
+        riskAnalysis: data.riskAnalysis
+      });
+      
+      // console.log('Portfolio Hub data fetched successfully:', data);
+    // } catch (error) {
+      // Error handled by emergency recovery script finally {
+      setLoading(false);
+    }
+  }, [setLoading, setError, updateData]);
+
+  // Fetch data on mount
+  useEffect(() => {
+    fetchPortfolioData();
+  }, [fetchPortfolioData]);
+
+  useEffect(() => {
+    setIsVisible(true);
+    if (!isLoaded) {
+      const loadTime = performance.now() - loadStartTime;
+      // console.log(`Portfolio Strategy Hub loaded in ${loadTime.toFixed(2)}ms`);
+      // setIsLoaded(true);
+      
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('portfolioStrategyHubLoaded', {
+          detail: { loadTime, componentsLoaded: 4 }
+        }));
+      }
+    }
+  }, [loadStartTime, isLoaded]);
+
+  // Health score insights
+  const healthInsights = useMemo(() => {
+    const score = activeData.healthScore;
+    
+    if (score >= 85) {
+      return {
+        grade: 'A',
+        status: 'Excellent',
+        message: 'Portfolio is well-optimized',
+        color: 'text-green-600',
+        bgColor: 'bg-green-50',
+        icon: CheckCircle,
+        action: 'Maintain current strategy'
+      };
+    }
+    
+    if (score >= 75) {
+      return {
+        grade: 'B',
+        status: 'Good',
+        message: 'Minor optimization opportunities',
+        color: 'text-blue-600',
+        bgColor: 'bg-blue-50',
+        icon: Target,
+        action: 'Consider small adjustments'
+      };
+    }
+    
+    if (score >= 65) {
+      return {
+        grade: 'C',
+        status: 'Fair',
+        message: 'Rebalancing recommended',
+        color: 'text-yellow-600',
+        bgColor: 'bg-yellow-50',
+        icon: AlertCircle,
+        action: 'Review asset allocation'
+      };
+    }
+    
+    return {
+      grade: 'D',
+      status: 'Needs Improvement',
+      message: 'Significant optimization needed',
+      color: 'text-red-600',
+      bgColor: 'bg-red-50',
+      icon: AlertCircle,
+      action: 'Major rebalancing required'
+    };
+  }, [activeData.healthScore]);
+
+  // Risk level display
+  const riskLevelInfo = useMemo(() => {
+    const risk = activeData.riskLevel;
+    
+    switch (risk) {
+      case 'conservative':
+        return { label: 'Conservative', color: 'text-green-600', bgColor: 'bg-green-50', icon: '🛡️' };
+      case 'moderate':
+        return { label: 'Moderate', color: 'text-blue-600', bgColor: 'bg-blue-50', icon: '⚖️' };
+      case 'aggressive':
+        return { label: 'Aggressive', color: 'text-red-600', bgColor: 'bg-red-50', icon: '🚀' };
+      default:
+        return { label: 'Unknown', color: 'text-slate-600', bgColor: 'bg-slate-50', icon: '❓' };
+    }
+  }, [activeData.riskLevel]);
+
+  // Touch gesture handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(0);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    const currentIndex = TABS.findIndex(tab => tab.id === activeTab);
+    
+    if (isLeftSwipe && currentIndex < TABS.length - 1) {
+      setActiveTab(TABS[currentIndex + 1].id);
+    }
+    
+    if (isRightSwipe && currentIndex > 0) {
+      setActiveTab(TABS[currentIndex - 1].id);
+    }
+  };
+
+  const currentTabIndex = TABS.findIndex(tab => tab.id === activeTab);
+
+  if (isLoading || hubLoading) {
+    return (
+      <motion.div 
+        className="premium-card p-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <div className="animate-pulse space-y-6">
+          <div className="h-24 bg-white/10 backdrop-blur rounded-xl"></div>
+          <div className="h-8 bg-white/10 backdrop-blur rounded-lg w-1/3"></div>
+          <div className="space-y-4">
+            <div className="flex space-x-1">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="flex-1 h-12 bg-white/10 backdrop-blur rounded-md"></div>
+              ))}
+            </div>
+            <div className="h-96 bg-white/10 backdrop-blur rounded-xl"></div>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div 
+      className={`premium-card hover-lift animate-on-mount ${className} ${
+        isVisible ? 'animate-slide-up' : 'opacity-0'
+      }`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Hero Metric Section - Portfolio Health Score */}
+      <div className={`text-center mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-br rounded-xl sm:rounded-2xl border-2 ${healthInsights.bgColor} ${healthInsights.color.replace('text-', 'border-').replace('-600', '-200')}`}>
+        <div className="flex items-center justify-center mb-3">
+          <motion.div 
+            className={`p-3 sm:p-4 rounded-xl ${healthInsights.bgColor}`}
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400 }}
+          >
+            <healthInsights.icon className={`w-6 h-6 sm:w-8 sm:h-8 ${healthInsights.color}`} />
+          </motion.div>
+        </div>
+        
+        <motion.div 
+          className={`font-bold text-4xl sm:text-5xl lg:text-6xl mb-2 ${healthInsights.color}`}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+        >
+          {Math.round(animatedValues.heroMetric)}
+          <span className="text-2xl sm:text-3xl lg:text-4xl ml-1">/100</span>
+        </motion.div>
+        
+        <motion.div 
+          className="text-slate-600 font-medium text-sm sm:text-base mb-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          Portfolio Health Score
+        </motion.div>
+
+        <motion.div 
+          className={`font-semibold text-lg ${healthInsights.color}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+        >
+          Grade {healthInsights.grade} - {healthInsights.status}
+        </motion.div>
+
+        {/* Risk Level & Diversification */}
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <motion.div 
+            className={`p-3 rounded-lg ${riskLevelInfo.bgColor}`}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.7, type: "spring" }}
+          >
+            <div className="flex items-center justify-center space-x-2">
+              <span className="text-lg">{riskLevelInfo.icon}</span>
+              <div>
+                <div className={`font-semibold text-sm ${riskLevelInfo.color}`}>{riskLevelInfo.label}</div>
+                <div className="text-xs text-slate-500">Risk Profile</div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            className="p-3 rounded-lg bg-primary-50"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.8, type: "spring" }}
+          >
+            <div className="text-center">
+              <div className="text-xl font-bold text-primary-600">{Math.round(animatedValues.diversification)}%</div>
+              <div className="text-xs text-slate-500">Diversification</div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Rebalance Alert */}
+        {activeData.rebalanceNeeded && (
+          <motion.div 
+            className="mt-4 p-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9 }}
+          >
+            <div className="flex items-center space-x-2">
+              <AlertCircle className="w-5 h-5 text-yellow-600" />
+              <div className="text-left">
+                <div className="font-semibold text-yellow-800">Rebalancing Suggested</div>
+                <div className="text-xs text-yellow-600">{healthInsights.action}</div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Quick Portfolio Metrics */}
+      <div className="mb-6 grid grid-cols-3 gap-4">
+        <div className="text-center p-4 bg-gradient-to-br from-prosperity-50 to-prosperity-25 rounded-lg border border-prosperity-100">
+          <div className="text-lg font-bold text-prosperity-600 mb-1">
+            ${Math.round(animatedValues.portfolioValue / 1000)}K
+          </div>
+          <div className="text-xs text-slate-600">Total Value</div>
+        </div>
+        
+        <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-25 rounded-lg border border-blue-100">
+          <div className="text-lg font-bold text-blue-600 mb-1">
+            {Math.round(animatedValues.riskScore)}
+          </div>
+          <div className="text-xs text-slate-600">Risk Score</div>
+        </div>
+        
+        <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-25 rounded-lg border border-green-100">
+          <div className="text-lg font-bold text-green-600 mb-1">
+            {activeData.rebalanceNeeded ? 'Action' : 'Good'}
+          </div>
+          <div className="text-xs text-slate-600">Status</div>
+        </div>
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="mb-6 sm:mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
+            Portfolio Strategy Hub
+          </h3>
+          
+          {/* Mobile swipe indicators */}
+          <div className="flex items-center space-x-2 sm:hidden">
+            {currentTabIndex > 0 && (
+              <ChevronLeft className="w-5 h-5 text-slate-400" />
+            )}
+            <span className="text-xs text-slate-500 font-medium">
+              {currentTabIndex + 1} / {TABS.length}
+            </span>
+            {currentTabIndex < TABS.length - 1 && (
+              <ChevronRight className="w-5 h-5 text-slate-400" />
+            )}
+          </div>
+        </div>
+        
+        {/* Tab Bar */}
+        <div 
+          className="flex bg-slate-50 rounded-lg sm:rounded-xl p-1 gap-1 relative overflow-hidden"
+          role="tablist" 
+          aria-label="Portfolio strategy navigation"
+        >
+          {TABS.map((tab, index) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            
+            return (
+              <motion.button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                className={`flex-1 relative px-3 py-3 sm:py-4 text-center transition-all duration-300 rounded-md sm:rounded-lg touch-friendly focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                  isActive
+                    ? 'text-white shadow-lg'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                }`}
+                onClick={() => setActiveTab(tab.id)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {isActive && (
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-br from-primary-600 to-primary-700 rounded-md sm:rounded-lg"
+                    layoutId="activeStrategyTab"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  />
+                )}
+                
+                <div className="relative flex flex-col items-center space-y-1 sm:space-y-2">
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <div className="text-xs sm:text-sm font-semibold">
+                    {tab.label}
+                  </div>
+                  <div className={`text-xs ${
+                    isActive ? 'text-primary-100' : 'text-slate-500'
+                  } hidden sm:block`}>
+                    {tab.description}
+                  </div>
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          id={`${activeTab}-panel`}
+          role="tabpanel"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="min-h-[400px]"
+        >
+          {activeTab === 'health' && (
+            <div className="-mx-4 -my-2">
+              <StrategyHealthCard />
+            </div>
+          )}
+
+          {activeTab === 'rebalancing' && (
+            <div className="-mx-4 -my-2">
+              <RebalancingSuggestions />
+            </div>
+          )}
+
+          {activeTab === 'comparison' && (
+            <div className="-mx-4 -my-2">
+              <StrategyComparisonEngine />
+            </div>
+          )}
+
+          {activeTab === 'benchmarking' && (
+            <div className="-mx-4 -my-2">
+              <PeerBenchmarkingView 
+                portfolioValue={activeData.totalValue}
+                location="Puerto Rico"
+                strategy="dividend_focused"
+              />
+            </div>
+          )}
+
+          {activeTab === 'backtesting' && (
+            <div className="-mx-4 -my-2">
+              <BacktestingEngine />
+            </div>
+          )}
+
+          {activeTab === 'margin' && (
+            <div className="-mx-4 -my-2">
+              <MarginIntelligence />
+            </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Mobile swipe hint */}
+      <div className="mt-6 text-center text-xs text-slate-500 sm:hidden">
+        👈 Swipe left or right to switch tabs
+      </div>
+    </motion.div>
+  );
+};
+
+// Memoize component to prevent unnecessary re-renders
+export const PortfolioStrategyHub = memo(PortfolioStrategyHubComponent, (prevProps, nextProps) => {
+  return (
+    prevProps.isLoading === nextProps.isLoading &&
+    prevProps.strategyData?.healthScore === nextProps.strategyData?.healthScore &&
+    prevProps.strategyData?.rebalanceNeeded === nextProps.strategyData?.rebalanceNeeded &&
+    prevProps.strategyData?.totalValue === nextProps.strategyData?.totalValue
+  );
+});

@@ -1,0 +1,1153 @@
+{
+  "project": "Income Clarity Launch",
+  "total_tasks": 200,
+  "timeline": "6 weeks",
+  "phases": [
+    {
+      "phase": "0",
+      "name": "IMMEDIATE INTEGRATION",
+      "week": 1,
+      "priority": "CRITICAL",
+      "tasks": [
+        {
+          "id": "INT-001",
+          "content": "Integrate TaxSavingsCalculatorCard into Strategy tab",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 2,
+          "dependencies": [],
+          "verification": "Card visible in Strategy tab with working calculations"
+        },
+        {
+          "id": "INT-002",
+          "content": "Integrate FIREProgressCard into Income tab",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 2,
+          "dependencies": [],
+          "verification": "FIRE progress percentage displays correctly"
+        },
+        {
+          "id": "INT-003",
+          "content": "Integrate IncomeStabilityCard into main dashboard",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 2,
+          "dependencies": [],
+          "verification": "Stability score shows on dashboard"
+        },
+        {
+          "id": "INT-004",
+          "content": "Integrate StrategyHealthCard into Strategy tab",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 2,
+          "dependencies": [],
+          "verification": "Efficiency score 0-100 displays"
+        },
+        {
+          "id": "INT-005",
+          "content": "Add RebalancingSuggestions to Portfolio tab",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 2,
+          "dependencies": [],
+          "verification": "Rebalancing recommendations show"
+        },
+        {
+          "id": "INT-006",
+          "content": "Integrate StrategyComparisonEngine into Strategy tab",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 3,
+          "dependencies": [],
+          "verification": "3 strategy comparisons functional"
+        },
+        {
+          "id": "INT-007",
+          "content": "Add IncomeProgressionCard to Income tab",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 2,
+          "dependencies": [],
+          "verification": "Income growth chart displays"
+        },
+        {
+          "id": "INT-008",
+          "content": "Add CashFlowProjectionCard to Income tab",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 2,
+          "dependencies": [],
+          "verification": "Cash flow projections show 3/6/12 months"
+        },
+        {
+          "id": "NAV-001",
+          "content": "Implement tab badges showing new features count",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 3,
+          "dependencies": ["INT-001", "INT-002", "INT-003"],
+          "verification": "Badges show on tabs with new content"
+        },
+        {
+          "id": "NAV-002",
+          "content": "Add 'What's New' tooltip system with highlights",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": ["NAV-001"],
+          "verification": "Tooltips appear on hover/tap"
+        },
+        {
+          "id": "NAV-003",
+          "content": "Create interactive feature discovery tour",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": ["NAV-002"],
+          "verification": "Tour walks through all new features"
+        },
+        {
+          "id": "NAV-004",
+          "content": "Add contextual help buttons to each card",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 3,
+          "dependencies": [],
+          "verification": "Help icons show relevant info"
+        },
+        {
+          "id": "NAV-005",
+          "content": "Implement smart navigation highlighting for active sections",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 2,
+          "dependencies": [],
+          "verification": "Active tab/section highlighted"
+        },
+        {
+          "id": "DATA-001",
+          "content": "Connect all strategic cards to Portfolio/UserProfile contexts",
+          "assigned_to": "backend-node-specialist",
+          "priority": "critical",
+          "estimated_hours": 4,
+          "dependencies": ["INT-001", "INT-002", "INT-003"],
+          "verification": "Cards receive real user data"
+        },
+        {
+          "id": "DATA-002",
+          "content": "Ensure real-time data flow to all new card integrations",
+          "assigned_to": "backend-node-specialist",
+          "priority": "critical",
+          "estimated_hours": 3,
+          "dependencies": ["DATA-001"],
+          "verification": "Data updates without refresh"
+        },
+        {
+          "id": "DATA-003",
+          "content": "Add skeleton loading states for all new cards",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Skeletons show during load"
+        },
+        {
+          "id": "DATA-004",
+          "content": "Implement error boundaries for each strategic card",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 3,
+          "dependencies": [],
+          "verification": "Errors don't crash app"
+        },
+        {
+          "id": "DATA-005",
+          "content": "Test data persistence across all card interactions",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": ["DATA-001", "DATA-002"],
+          "verification": "Data persists on navigation"
+        }
+      ]
+    },
+    {
+      "phase": "1",
+      "name": "SUPER CARD ARCHITECTURE",
+      "week": 2,
+      "priority": "HIGH",
+      "tasks": [
+        {
+          "id": "PERF-001",
+          "content": "Create PerformanceHub container component structure",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Container renders with tabs"
+        },
+        {
+          "id": "PERF-002",
+          "content": "Extract hero metric display from SPYComparison",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 3,
+          "dependencies": ["PERF-001"],
+          "verification": "Large outperformance % shows"
+        },
+        {
+          "id": "PERF-003",
+          "content": "Implement 3-tab interface (Overview/Holdings/Analysis)",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 5,
+          "dependencies": ["PERF-001"],
+          "verification": "All 3 tabs functional"
+        },
+        {
+          "id": "PERF-004",
+          "content": "Add performance insights engine with AI recommendations",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 6,
+          "dependencies": ["PERF-003"],
+          "verification": "Smart insights display"
+        },
+        {
+          "id": "PERF-005",
+          "content": "Integrate existing SPY/Holdings/Portfolio components",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": ["PERF-003"],
+          "verification": "All components work in tabs"
+        },
+        {
+          "id": "PERF-006",
+          "content": "Add 'Top 3 performers' and 'Underperformers' analysis",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 3,
+          "dependencies": ["PERF-004"],
+          "verification": "Top/bottom performers show"
+        },
+        {
+          "id": "PERF-007",
+          "content": "Mobile optimization with swipe navigation between tabs",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": ["PERF-003"],
+          "verification": "Swipe works on mobile"
+        },
+        {
+          "id": "PERF-008",
+          "content": "Performance testing to ensure <100ms render time",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 3,
+          "dependencies": ["PERF-005"],
+          "verification": "Render time <100ms"
+        },
+        {
+          "id": "INC-001",
+          "content": "Create IncomeIntelligenceHub container component",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Container with 4 tabs"
+        },
+        {
+          "id": "INC-002",
+          "content": "Preserve 'above zero line' emotional intelligence feature",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 2,
+          "dependencies": ["INC-001"],
+          "verification": "Above/below zero prominent"
+        },
+        {
+          "id": "INC-003",
+          "content": "Implement 4-tab interface (CashFlow/Calendar/Tax/Projections)",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 5,
+          "dependencies": ["INC-001"],
+          "verification": "All 4 tabs work"
+        },
+        {
+          "id": "INC-004",
+          "content": "Add tax optimization alerts and recommendations",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": ["INC-003"],
+          "verification": "Tax alerts show"
+        },
+        {
+          "id": "INC-005",
+          "content": "Create compact calendar view for dividend payments",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 4,
+          "dependencies": ["INC-003"],
+          "verification": "Compact calendar displays"
+        },
+        {
+          "id": "INC-006",
+          "content": "Integrate all income-related cards into hub",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 5,
+          "dependencies": ["INC-003"],
+          "verification": "All income cards integrated"
+        },
+        {
+          "id": "INC-007",
+          "content": "Add income insights engine with projections",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 5,
+          "dependencies": ["INC-006"],
+          "verification": "Income insights work"
+        },
+        {
+          "id": "INC-008",
+          "content": "Test cash flow calculations for accuracy",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 3,
+          "dependencies": ["INC-006"],
+          "verification": "Calculations accurate"
+        }
+      ]
+    },
+    {
+      "phase": "2",
+      "name": "CONSOLIDATION & OPTIMIZATION",
+      "week": 3,
+      "priority": "HIGH",
+      "tasks": [
+        {
+          "id": "LIFE-001",
+          "content": "Create LifestyleCoverageHub container component",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Hub container renders"
+        },
+        {
+          "id": "LIFE-002",
+          "content": "Enhance milestone visualization with progress rings",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 4,
+          "dependencies": ["LIFE-001"],
+          "verification": "Progress rings display"
+        },
+        {
+          "id": "LIFE-003",
+          "content": "Add burn rate analytics and monthly tracking",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 5,
+          "dependencies": ["LIFE-001"],
+          "verification": "Burn rate shows"
+        },
+        {
+          "id": "LIFE-004",
+          "content": "Integrate FIRE progress into lifestyle hub",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 3,
+          "dependencies": ["LIFE-001"],
+          "verification": "FIRE % displays"
+        },
+        {
+          "id": "LIFE-005",
+          "content": "Implement achievement system with unlocks",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 6,
+          "dependencies": ["LIFE-002"],
+          "verification": "Achievements unlock"
+        },
+        {
+          "id": "LIFE-006",
+          "content": "Add motivational messaging and celebrations",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "low",
+          "estimated_hours": 3,
+          "dependencies": ["LIFE-005"],
+          "verification": "Messages appear"
+        },
+        {
+          "id": "LIFE-007",
+          "content": "Create goal recommendation engine",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 5,
+          "dependencies": ["LIFE-003"],
+          "verification": "Goals recommended"
+        },
+        {
+          "id": "LIFE-008",
+          "content": "Add mobile gesture support for milestones",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 3,
+          "dependencies": ["LIFE-001"],
+          "verification": "Gestures work"
+        },
+        {
+          "id": "STRAT-001",
+          "content": "Create StrategyOptimizationHub container",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Hub renders"
+        },
+        {
+          "id": "STRAT-002",
+          "content": "Integrate all strategy components into hub",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 5,
+          "dependencies": ["STRAT-001"],
+          "verification": "All strategy cards show"
+        },
+        {
+          "id": "STRAT-003",
+          "content": "Build AI recommendation aggregator system",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 8,
+          "dependencies": ["STRAT-002"],
+          "verification": "AI recommendations work"
+        },
+        {
+          "id": "STRAT-004",
+          "content": "Add location optimization prominently (PR savings)",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 3,
+          "dependencies": ["STRAT-002"],
+          "verification": "Location savings show"
+        },
+        {
+          "id": "STRAT-005",
+          "content": "Create efficiency scoring algorithm (0-100)",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 5,
+          "dependencies": ["STRAT-003"],
+          "verification": "Score calculates"
+        },
+        {
+          "id": "STRAT-006",
+          "content": "Implement 'what to buy next' recommendation logic",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": ["STRAT-003"],
+          "verification": "Buy recommendations show"
+        },
+        {
+          "id": "STRAT-007",
+          "content": "Add comprehensive risk assessment dashboard",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 5,
+          "dependencies": ["STRAT-002"],
+          "verification": "Risk metrics display"
+        },
+        {
+          "id": "STRAT-008",
+          "content": "Test tax calculations for accuracy",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 4,
+          "dependencies": ["STRAT-004"],
+          "verification": "Tax math correct"
+        },
+        {
+          "id": "ACTION-001",
+          "content": "Create QuickActionsCenter component",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Quick actions render"
+        },
+        {
+          "id": "ACTION-002",
+          "content": "Build smart form system with validation",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 6,
+          "dependencies": ["ACTION-001"],
+          "verification": "Forms validate"
+        },
+        {
+          "id": "ACTION-003",
+          "content": "Add auto-complete for ticker symbols",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 4,
+          "dependencies": ["ACTION-002"],
+          "verification": "Auto-complete works"
+        },
+        {
+          "id": "ACTION-004",
+          "content": "Implement bulk actions and CSV import",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "low",
+          "estimated_hours": 6,
+          "dependencies": ["ACTION-002"],
+          "verification": "Bulk import works"
+        },
+        {
+          "id": "ACTION-005",
+          "content": "Add voice input support (future prep)",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "low",
+          "estimated_hours": 8,
+          "dependencies": ["ACTION-001"],
+          "verification": "Voice API ready"
+        },
+        {
+          "id": "ACTION-006",
+          "content": "Create FAB expansion interface",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 4,
+          "dependencies": ["ACTION-001"],
+          "verification": "FAB expands"
+        },
+        {
+          "id": "ACTION-007",
+          "content": "Add profile health monitoring score",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "low",
+          "estimated_hours": 3,
+          "dependencies": ["ACTION-001"],
+          "verification": "Profile score shows"
+        },
+        {
+          "id": "ACTION-008",
+          "content": "Implement context-aware action suggestions",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 5,
+          "dependencies": ["ACTION-001"],
+          "verification": "Suggestions appear"
+        }
+      ]
+    },
+    {
+      "phase": "3",
+      "name": "BACKEND OPTIMIZATION",
+      "week": 4,
+      "priority": "HIGH",
+      "tasks": [
+        {
+          "id": "STATE-001",
+          "content": "Implement Zustand store for Super Cards state",
+          "assigned_to": "backend-node-specialist",
+          "priority": "critical",
+          "estimated_hours": 8,
+          "dependencies": [],
+          "verification": "Zustand store working"
+        },
+        {
+          "id": "STATE-002",
+          "content": "Migrate from deep Context nesting to flat store",
+          "assigned_to": "backend-node-specialist",
+          "priority": "critical",
+          "estimated_hours": 10,
+          "dependencies": ["STATE-001"],
+          "verification": "Contexts migrated"
+        },
+        {
+          "id": "STATE-003",
+          "content": "Add selective subscriptions for performance",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": ["STATE-002"],
+          "verification": "Selective updates work"
+        },
+        {
+          "id": "STATE-004",
+          "content": "Implement optimistic updates with rollback",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": ["STATE-001"],
+          "verification": "Optimistic updates work"
+        },
+        {
+          "id": "STATE-005",
+          "content": "Add state persistence to localStorage",
+          "assigned_to": "backend-node-specialist",
+          "priority": "medium",
+          "estimated_hours": 4,
+          "dependencies": ["STATE-001"],
+          "verification": "State persists"
+        },
+        {
+          "id": "STATE-006",
+          "content": "Create Redux/Zustand devtools integration",
+          "assigned_to": "backend-node-specialist",
+          "priority": "low",
+          "estimated_hours": 3,
+          "dependencies": ["STATE-001"],
+          "verification": "Devtools work"
+        },
+        {
+          "id": "STATE-007",
+          "content": "Test state synchronization across cards",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": ["STATE-002"],
+          "verification": "State syncs"
+        },
+        {
+          "id": "STATE-008",
+          "content": "Performance benchmarking of new state system",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": ["STATE-007"],
+          "verification": "Performance improved"
+        },
+        {
+          "id": "API-001",
+          "content": "Create consolidated /api/super-cards endpoint",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": [],
+          "verification": "Endpoint works"
+        },
+        {
+          "id": "API-002",
+          "content": "Implement GraphQL-style field selection",
+          "assigned_to": "backend-node-specialist",
+          "priority": "medium",
+          "estimated_hours": 8,
+          "dependencies": ["API-001"],
+          "verification": "Field selection works"
+        },
+        {
+          "id": "API-003",
+          "content": "Add batch request support for multiple cards",
+          "assigned_to": "backend-node-specialist",
+          "priority": "medium",
+          "estimated_hours": 5,
+          "dependencies": ["API-001"],
+          "verification": "Batch requests work"
+        },
+        {
+          "id": "API-004",
+          "content": "Implement response caching layer",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": ["API-001"],
+          "verification": "Caching works"
+        },
+        {
+          "id": "API-005",
+          "content": "Add real-time WebSocket subscriptions",
+          "assigned_to": "backend-node-specialist",
+          "priority": "medium",
+          "estimated_hours": 10,
+          "dependencies": ["API-001"],
+          "verification": "WebSockets work"
+        },
+        {
+          "id": "API-006",
+          "content": "Create materialized views for card data",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 8,
+          "dependencies": [],
+          "verification": "Views created"
+        },
+        {
+          "id": "API-007",
+          "content": "Optimize database queries for performance",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": ["API-006"],
+          "verification": "Queries optimized"
+        },
+        {
+          "id": "API-008",
+          "content": "Load testing and capacity planning",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": ["API-001"],
+          "verification": "Load tested"
+        },
+        {
+          "id": "CACHE-001",
+          "content": "Implement React Query/SWR caching",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": [],
+          "verification": "React Query works"
+        },
+        {
+          "id": "CACHE-002",
+          "content": "Add Service Worker caching strategy",
+          "assigned_to": "backend-node-specialist",
+          "priority": "medium",
+          "estimated_hours": 5,
+          "dependencies": [],
+          "verification": "SW caching works"
+        },
+        {
+          "id": "CACHE-003",
+          "content": "Set up Redis for API response caching",
+          "assigned_to": "backend-node-specialist",
+          "priority": "low",
+          "estimated_hours": 8,
+          "dependencies": [],
+          "verification": "Redis caching works"
+        },
+        {
+          "id": "CACHE-004",
+          "content": "Implement smart cache invalidation",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": ["CACHE-001"],
+          "verification": "Invalidation works"
+        },
+        {
+          "id": "CACHE-005",
+          "content": "Add progressive loading for large datasets",
+          "assigned_to": "backend-node-specialist",
+          "priority": "medium",
+          "estimated_hours": 5,
+          "dependencies": [],
+          "verification": "Progressive load works"
+        },
+        {
+          "id": "CACHE-006",
+          "content": "Code splitting for Super Card bundles",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 5,
+          "dependencies": [],
+          "verification": "Code split works"
+        },
+        {
+          "id": "CACHE-007",
+          "content": "Bundle size optimization and tree shaking",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": ["CACHE-006"],
+          "verification": "Bundle size reduced"
+        },
+        {
+          "id": "CACHE-008",
+          "content": "Lighthouse score optimization (target 95+)",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 8,
+          "dependencies": ["CACHE-007"],
+          "verification": "Score > 95"
+        }
+      ]
+    },
+    {
+      "phase": "4",
+      "name": "MOBILE EXCELLENCE",
+      "week": 5,
+      "priority": "HIGH",
+      "tasks": [
+        {
+          "id": "MOB-001",
+          "content": "Implement 5-tab bottom navigation update",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "5 tabs work"
+        },
+        {
+          "id": "MOB-002",
+          "content": "Add swipe gestures between Super Cards",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": ["MOB-001"],
+          "verification": "Swipe works"
+        },
+        {
+          "id": "MOB-003",
+          "content": "Implement pull-to-refresh functionality",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Pull refresh works"
+        },
+        {
+          "id": "MOB-004",
+          "content": "Add haptic feedback for interactions",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "low",
+          "estimated_hours": 3,
+          "dependencies": [],
+          "verification": "Haptics work"
+        },
+        {
+          "id": "MOB-005",
+          "content": "Optimize touch targets (44px minimum)",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Touch targets 44px+"
+        },
+        {
+          "id": "MOB-006",
+          "content": "Test on real iOS and Android devices",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "critical",
+          "estimated_hours": 8,
+          "dependencies": ["MOB-001", "MOB-002"],
+          "verification": "Works on devices"
+        },
+        {
+          "id": "MOB-007",
+          "content": "Fix any responsive layout issues found",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": ["MOB-006"],
+          "verification": "Responsive fixed"
+        },
+        {
+          "id": "MOB-008",
+          "content": "Add offline support with service workers",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 6,
+          "dependencies": [],
+          "verification": "Works offline"
+        },
+        {
+          "id": "MPERF-001",
+          "content": "Optimize all images and assets",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Images optimized"
+        },
+        {
+          "id": "MPERF-002",
+          "content": "Implement lazy loading for cards",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 5,
+          "dependencies": [],
+          "verification": "Lazy loading works"
+        },
+        {
+          "id": "MPERF-003",
+          "content": "Reduce JavaScript bundle size",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": [],
+          "verification": "Bundle < 200KB"
+        },
+        {
+          "id": "MPERF-004",
+          "content": "Add skeleton loading states everywhere",
+          "assigned_to": "backend-node-specialist",
+          "priority": "medium",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Skeletons show"
+        },
+        {
+          "id": "MPERF-005",
+          "content": "Optimize animations for 60fps",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 5,
+          "dependencies": [],
+          "verification": "60fps achieved"
+        },
+        {
+          "id": "MPERF-006",
+          "content": "Test on slow 3G network conditions",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Works on 3G"
+        },
+        {
+          "id": "MPERF-007",
+          "content": "Memory usage optimization",
+          "assigned_to": "backend-node-specialist",
+          "priority": "medium",
+          "estimated_hours": 5,
+          "dependencies": [],
+          "verification": "Memory optimized"
+        },
+        {
+          "id": "MPERF-008",
+          "content": "Battery usage testing and optimization",
+          "assigned_to": "backend-node-specialist",
+          "priority": "low",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Battery efficient"
+        }
+      ]
+    },
+    {
+      "phase": "5",
+      "name": "LAUNCH PREPARATION",
+      "week": 6,
+      "priority": "CRITICAL",
+      "tasks": [
+        {
+          "id": "QA-001",
+          "content": "End-to-end testing all user flows",
+          "assigned_to": "both",
+          "priority": "critical",
+          "estimated_hours": 12,
+          "dependencies": [],
+          "verification": "All flows work"
+        },
+        {
+          "id": "QA-002",
+          "content": "Cross-browser testing (Chrome/Safari/Firefox/Edge)",
+          "assigned_to": "both",
+          "priority": "critical",
+          "estimated_hours": 8,
+          "dependencies": [],
+          "verification": "Works all browsers"
+        },
+        {
+          "id": "QA-003",
+          "content": "Accessibility audit (WCAG 2.1 AA compliance)",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": [],
+          "verification": "WCAG compliant"
+        },
+        {
+          "id": "QA-004",
+          "content": "Security audit and penetration testing",
+          "assigned_to": "backend-node-specialist",
+          "priority": "critical",
+          "estimated_hours": 8,
+          "dependencies": [],
+          "verification": "Security passed"
+        },
+        {
+          "id": "QA-005",
+          "content": "Performance testing under load",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": [],
+          "verification": "Handles load"
+        },
+        {
+          "id": "QA-006",
+          "content": "Data accuracy verification for all calculations",
+          "assigned_to": "both",
+          "priority": "critical",
+          "estimated_hours": 8,
+          "dependencies": [],
+          "verification": "Math accurate"
+        },
+        {
+          "id": "QA-007",
+          "content": "Error handling and recovery testing",
+          "assigned_to": "both",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": [],
+          "verification": "Errors handled"
+        },
+        {
+          "id": "QA-008",
+          "content": "Offline/network failure recovery testing",
+          "assigned_to": "both",
+          "priority": "medium",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Recovers gracefully"
+        },
+        {
+          "id": "ONBOARD-001",
+          "content": "Create interactive onboarding tour",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "high",
+          "estimated_hours": 8,
+          "dependencies": [],
+          "verification": "Tour works"
+        },
+        {
+          "id": "ONBOARD-002",
+          "content": "Add tooltips for all new features",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Tooltips show"
+        },
+        {
+          "id": "ONBOARD-003",
+          "content": "Build demo data generator for new users",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": [],
+          "verification": "Demo data works"
+        },
+        {
+          "id": "ONBOARD-004",
+          "content": "Create comprehensive help documentation",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 8,
+          "dependencies": [],
+          "verification": "Docs complete"
+        },
+        {
+          "id": "ONBOARD-005",
+          "content": "Add contextual help throughout app",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 5,
+          "dependencies": [],
+          "verification": "Help available"
+        },
+        {
+          "id": "ONBOARD-006",
+          "content": "Implement feedback widget for user input",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "medium",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Feedback works"
+        },
+        {
+          "id": "ONBOARD-007",
+          "content": "Create video tutorials for key features",
+          "assigned_to": "frontend-react-specialist",
+          "priority": "low",
+          "estimated_hours": 12,
+          "dependencies": [],
+          "verification": "Videos created"
+        },
+        {
+          "id": "ONBOARD-008",
+          "content": "Set up customer support system",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": [],
+          "verification": "Support ready"
+        },
+        {
+          "id": "DEPLOY-001",
+          "content": "Set up Vercel production environment",
+          "assigned_to": "backend-node-specialist",
+          "priority": "critical",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Vercel ready"
+        },
+        {
+          "id": "DEPLOY-002",
+          "content": "Configure all environment variables",
+          "assigned_to": "backend-node-specialist",
+          "priority": "critical",
+          "estimated_hours": 2,
+          "dependencies": ["DEPLOY-001"],
+          "verification": "Env vars set"
+        },
+        {
+          "id": "DEPLOY-003",
+          "content": "Set up error monitoring with Sentry",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 3,
+          "dependencies": [],
+          "verification": "Sentry working"
+        },
+        {
+          "id": "DEPLOY-004",
+          "content": "Configure analytics with Mixpanel/Amplitude",
+          "assigned_to": "backend-node-specialist",
+          "priority": "medium",
+          "estimated_hours": 4,
+          "dependencies": [],
+          "verification": "Analytics working"
+        },
+        {
+          "id": "DEPLOY-005",
+          "content": "Set up feature flags for gradual rollout",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 5,
+          "dependencies": [],
+          "verification": "Feature flags work"
+        },
+        {
+          "id": "DEPLOY-006",
+          "content": "Create rollback plan and procedures",
+          "assigned_to": "backend-node-specialist",
+          "priority": "critical",
+          "estimated_hours": 3,
+          "dependencies": [],
+          "verification": "Rollback ready"
+        },
+        {
+          "id": "DEPLOY-007",
+          "content": "Load testing production environment",
+          "assigned_to": "backend-node-specialist",
+          "priority": "high",
+          "estimated_hours": 6,
+          "dependencies": ["DEPLOY-001"],
+          "verification": "Prod handles load"
+        },
+        {
+          "id": "DEPLOY-008",
+          "content": "LAUNCH! Deploy to production",
+          "assigned_to": "both",
+          "priority": "critical",
+          "estimated_hours": 4,
+          "dependencies": ["QA-001", "QA-002", "QA-006"],
+          "verification": "LIVE! 🚀"
+        }
+      ]
+    }
+  ]
+}

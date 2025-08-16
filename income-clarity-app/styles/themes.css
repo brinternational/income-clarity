@@ -1,0 +1,228 @@
+/* Theme Transition Styles */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Glass Effect Styles */
+.glass-effect {
+  background: var(--glass-bg, rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.2));
+}
+
+/* Theme-specific body styles */
+.theme-apple-glass-dark,
+.theme-apple-glass-light {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+}
+
+.theme-cyberpunk-neon {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+.theme-ocean-deep {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+}
+
+.theme-sunset-gradient {
+  background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fde68a 100%);
+}
+
+/* Glass theme specific component styling */
+.theme-apple-glass-dark .glass-card,
+.theme-apple-glass-light .glass-card {
+  background: var(--glass-bg, rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.2));
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Cyberpunk theme specific effects */
+.theme-cyberpunk-neon .cyberpunk-glow {
+  box-shadow: 0 0 20px var(--color-accent), 0 0 40px var(--color-info);
+  border: 1px solid var(--color-accent);
+}
+
+.theme-cyberpunk-neon .cyberpunk-text-glow {
+  text-shadow: 0 0 10px var(--color-accent);
+}
+
+/* Nature theme leaf effect */
+.theme-nature-fresh .nature-shadow {
+  box-shadow: 0 4px 20px rgba(22, 163, 74, 0.2);
+}
+
+/* Material Design elevation shadows */
+.theme-material-design .material-shadow-1 {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.theme-material-design .material-shadow-2 {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.theme-material-design .material-shadow-3 {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+/* Gradient background utilities */
+.gradient-bg {
+  background: var(--color-primary);
+}
+
+.gradient-bg-secondary {
+  background: var(--color-secondary);
+}
+
+.gradient-bg-tertiary {
+  background: var(--color-tertiary);
+}
+
+/* Text color utilities */
+.theme-text-primary {
+  color: var(--color-text-primary);
+}
+
+.theme-text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.theme-text-muted {
+  color: var(--color-text-muted);
+}
+
+/* Background color utilities */
+.theme-bg-primary {
+  background-color: var(--color-primary);
+}
+
+.theme-bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.theme-bg-tertiary {
+  background-color: var(--color-tertiary);
+}
+
+/* Border utilities */
+.theme-border {
+  border-color: var(--color-border);
+}
+
+.theme-border-hover:hover {
+  border-color: var(--color-border-hover);
+}
+
+/* Button utilities */
+.theme-btn-primary {
+  background-color: var(--color-accent);
+  color: white;
+  border: 1px solid var(--color-accent);
+}
+
+.theme-btn-primary:hover {
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+.theme-btn-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.theme-btn-secondary:hover {
+  background-color: var(--color-tertiary);
+  border-color: var(--color-border-hover);
+}
+
+/* Status color utilities */
+.theme-success {
+  color: var(--color-success);
+}
+
+.theme-warning {
+  color: var(--color-warning);
+}
+
+.theme-error {
+  color: var(--color-error);
+}
+
+.theme-info {
+  color: var(--color-info);
+}
+
+.theme-success-bg {
+  background-color: var(--color-success);
+}
+
+.theme-warning-bg {
+  background-color: var(--color-warning);
+}
+
+.theme-error-bg {
+  background-color: var(--color-error);
+}
+
+.theme-info-bg {
+  background-color: var(--color-info);
+}
+
+/* Card styling for different themes */
+.theme-card {
+  background-color: var(--color-primary);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.theme-card-secondary {
+  background-color: var(--color-secondary);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+/* Special hover effects per theme */
+.theme-hover-effect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-cyberpunk-neon .theme-hover-effect:hover {
+  box-shadow: 0 4px 20px var(--color-accent);
+}
+
+.theme-apple-glass-dark .theme-hover-effect:hover,
+.theme-apple-glass-light .theme-hover-effect:hover {
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+/* Responsive theme adjustments */
+@media (max-width: 640px) {
+  .glass-effect {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+}
+
+/* Dark mode optimizations */
+.theme-type-dark {
+  color-scheme: dark;
+}
+
+.theme-type-light {
+  color-scheme: light;
+}
+
+/* Print styles */
+@media print {
+  .theme-card,
+  .theme-card-secondary {
+    background: white !important;
+    color: black !important;
+    border: 1px solid #ccc !important;
+  }
+}

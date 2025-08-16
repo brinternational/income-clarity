@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income Clarity Demo Login Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .debug-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #6c757d; cursor: not-allowed; }
+        .log { 
+            background: #f8f9fa; 
+            border: 1px solid #dee2e6; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Income Clarity Demo Login Debug Tool</h1>
+    
+    <div class="debug-panel">
+        <h2>🎯 App Status Check</h2>
+        <button onclick="checkAppStatus()">Check App Accessibility</button>
+        <button onclick="runDemoLoginTest()">Test Demo Login</button>
+        <button onclick="inspectLoginPage()">Inspect Login Page Elements</button>
+        <button onclick="clearLogs()">Clear Logs</button>
+        <div id="appStatus"></div>
+    </div>
+
+    <div class="debug-panel">
+        <h2>📱 Login Page Preview</h2>
+        <iframe id="loginFrame" src="http://localhost:3003/auth/login"></iframe>
+    </div>
+
+    <div class="debug-panel">
+        <h2>📋 Debug Logs</h2>
+        <div id="debugLogs" class="log">
+            Debug logs will appear here...
+        </div>
+    </div>
+
+    <script>
+        let logs = [];
+
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${type.toUpperCase()}: ${message}`;
+            logs.push(logEntry);
+            updateLogDisplay();
+            console.log(logEntry);
+        }
+
+        function updateLogDisplay() {
+            const logDiv = document.getElementById('debugLogs');
+            logDiv.innerHTML = logs.join('\n');
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLogs() {
+            logs = [];
+            updateLogDisplay();
+        }
+
+        async function checkAppStatus() {
+            addLog('🔍 Checking app accessibility...');
+            
+            try {
+                const response = await fetch('http://localhost:3003/auth/login', {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                
+                addLog('✅ App is accessible', 'success');
+                document.getElementById('appStatus').innerHTML = '<div class="status success">✅ App is running and accessible</div>';
+                
+                // Try to reload iframe
+                document.getElementById('loginFrame').src = 'http://localhost:3003/auth/login?' + Date.now();
+                
+            } catch (error) {
+                addLog(`❌ App accessibility check failed: ${error.message}`, 'error');
+                document.getElementById('appStatus').innerHTML = '<div class="status error">❌ App is not accessible</div>';
+            }
+        }
+
+        async function runDemoLoginTest() {
+            addLog('🧪 Starting demo login test...');
+            
+            const iframe = document.getElementById('loginFrame');
+            
+            try {
+                // Wait for iframe to load
+                await new Promise(resolve => {
+                    iframe.onload = resolve;
+                    if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+                        resolve();
+                    }
+                });
+
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                
+                if (!iframeDoc) {
+                    addLog('❌ Cannot access iframe content (CORS restriction)', 'error');
+                    addLog('💡 To test demo login, manually click the "Try Demo Account" button in the iframe above', 'warning');
+                    return;
+                }
+
+                addLog('🔍 Looking for demo login button...');
+                
+                // Look for demo button
+                const demoButton = iframeDoc.querySelector('button:contains("Try Demo Account")') || 
+                                 Array.from(iframeDoc.querySelectorAll('button')).find(btn => 
+                                     btn.textContent.includes('Try Demo Account')
+                                 );
+
+                if (demoButton) {
+                    addLog('✅ Demo button found', 'success');
+                    addLog('🖱️ Attempting to click demo button...');
+                    
+                    // Click the button
+                    demoButton.click();
+                    
+                    addLog('⏱️ Waiting for demo login to process...', 'info');
+                    
+                    // Wait and check results
+                    setTimeout(() => {
+                        checkDemoLoginResults(iframeDoc);
+                    }, 3000);
+                    
+                } else {
+                    addLog('❌ Demo button not found', 'error');
+                    addLog('Available buttons:', 'info');
+                    const buttons = iframeDoc.querySelectorAll('button');
+                    buttons.forEach((btn, i) => {
+                        addLog(`  Button ${i + 1}: "${btn.textContent.trim()}"`, 'info');
+                    });
+                }
+
+            } catch (error) {
+                addLog(`❌ Demo login test failed: ${error.message}`, 'error');
+                addLog('This is likely due to CORS restrictions when testing in iframe', 'warning');
+                addLog('💡 Please manually test by clicking the demo button in the iframe above', 'info');
+            }
+        }
+
+        function checkDemoLoginResults(doc) {
+            try {
+                const currentUrl = doc.location.href;
+                addLog(`📍 Current URL: ${currentUrl}`);
+
+                // Check localStorage for demo mode
+                const demoMode = doc.defaultView.localStorage.getItem('demo-mode');
+                const demoUser = doc.defaultView.localStorage.getItem('demo-user');
+                
+                addLog(`🔍 Demo mode in localStorage: ${demoMode || 'NOT SET'}`, demoMode ? 'success' : 'warning');
+                addLog(`👤 Demo user in localStorage: ${demoUser ? 'PRESENT' : 'NOT SET'}`, demoUser ? 'success' : 'warning');
+
+                // Check for error messages
+                const errorElements = doc.querySelectorAll('[class*="red"], [class*="error"], .text-red-600');
+                if (errorElements.length > 0) {
+                    addLog(`⚠️ Found ${errorElements.length} potential error elements`, 'warning');
+                    errorElements.forEach((el, i) => {
+                        if (el.textContent.trim()) {
+                            addLog(`  Error ${i + 1}: ${el.textContent.trim()}`, 'error');
+                        }
+                    });
+                } else {
+                    addLog('✅ No error messages visible', 'success');
+                }
+
+                // Check if redirected to dashboard
+                if (currentUrl.includes('/dashboard')) {
+                    addLog('🎉 Successfully redirected to dashboard!', 'success');
+                } else if (currentUrl.includes('/auth/login')) {
+                    addLog('⚠️ Still on login page - demo login may have failed', 'warning');
+                } else {
+                    addLog(`❓ Unexpected URL: ${currentUrl}`, 'info');
+                }
+
+            } catch (error) {
+                addLog(`❌ Error checking demo login results: ${error.message}`, 'error');
+            }
+        }
+
+        async function inspectLoginPage() {
+            addLog('🔍 Inspecting login page elements...');
+            
+            const iframe = document.getElementById('loginFrame');
+            
+            try {
+                await new Promise(resolve => {
+                    iframe.onload = resolve;
+                    if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+                        resolve();
+                    }
+                });
+
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                
+                if (!iframeDoc) {
+                    addLog('❌ Cannot access iframe content (CORS restriction)', 'error');
+                    addLog('💡 Open browser dev tools and inspect the iframe manually', 'info');
+                    return;
+                }
+
+                // Inspect key elements
+                addLog('📋 Page element inspection:', 'info');
+                
+                const title = iframeDoc.querySelector('h2');
+                addLog(`  Title: ${title ? title.textContent.trim() : 'NOT FOUND'}`, title ? 'success' : 'warning');
+
+                const emailInput = iframeDoc.querySelector('input[type="email"]');
+                addLog(`  Email input: ${emailInput ? 'FOUND' : 'NOT FOUND'}`, emailInput ? 'success' : 'warning');
+
+                const passwordInput = iframeDoc.querySelector('input[type="password"]');
+                addLog(`  Password input: ${passwordInput ? 'FOUND' : 'NOT FOUND'}`, passwordInput ? 'success' : 'warning');
+
+                const demoButton = Array.from(iframeDoc.querySelectorAll('button')).find(btn => 
+                    btn.textContent.includes('Try Demo Account')
+                );
+                addLog(`  Demo button: ${demoButton ? 'FOUND' : 'NOT FOUND'}`, demoButton ? 'success' : 'error');
+                
+                if (demoButton) {
+                    addLog(`    - Button text: "${demoButton.textContent.trim()}"`, 'info');
+                    addLog(`    - Button enabled: ${!demoButton.disabled}`, demoButton.disabled ? 'warning' : 'success');
+                    addLog(`    - Button classes: ${demoButton.className}`, 'info');
+                }
+
+                const allButtons = iframeDoc.querySelectorAll('button');
+                addLog(`  Total buttons found: ${allButtons.length}`, 'info');
+                allButtons.forEach((btn, i) => {
+                    addLog(`    Button ${i + 1}: "${btn.textContent.trim()}" (${btn.disabled ? 'disabled' : 'enabled'})`, 'info');
+                });
+
+                // Check for any JavaScript errors in console
+                addLog('💡 Check browser console for any JavaScript errors', 'info');
+                addLog('💡 Check Network tab for any failed requests during demo login', 'info');
+
+            } catch (error) {
+                addLog(`❌ Inspection failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Initialize
+        window.onload = function() {
+            addLog('🚀 Demo Login Debug Tool initialized');
+            addLog('💡 This tool helps debug the Income Clarity demo login functionality');
+            addLog('📱 The iframe below shows the actual login page');
+            addLog('🧪 Use the buttons above to run automated tests');
+            checkAppStatus();
+        };
+
+        // Monitor iframe for manual testing
+        document.getElementById('loginFrame').onload = function() {
+            addLog('🔄 Login page loaded in iframe');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+{
+  "allRequests": [
+    {
+      "url": "http://localhost:3000/",
+      "method": "GET",
+      "resourceType": "document",
+      "headers": {
+        "upgrade-insecure-requests": "1",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"HeadlessChrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Linux\""
+      },
+      "timestamp": "2025-08-11T16:02:01.193Z"
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "method": "GET",
+      "resourceType": "document",
+      "headers": {
+        "upgrade-insecure-requests": "1",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"HeadlessChrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Linux\""
+      },
+      "timestamp": "2025-08-11T16:02:01.213Z"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/media/569ce4b8f30dc480-s.p.woff2",
+      "method": "GET",
+      "resourceType": "font",
+      "headers": {
+        "origin": "http://localhost:3000",
+        "sec-ch-ua-platform": "\"Linux\"",
+        "referer": "http://localhost:3000/auth/login",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"HeadlessChrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "sec-ch-ua-mobile": "?0"
+      },
+      "timestamp": "2025-08-11T16:02:01.419Z"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/media/93f479601ee12b01-s.p.woff2",
+      "method": "GET",
+      "resourceType": "font",
+      "headers": {
+        "origin": "http://localhost:3000",
+        "sec-ch-ua-platform": "\"Linux\"",
+        "referer": "http://localhost:3000/auth/login",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"HeadlessChrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "sec-ch-ua-mobile": "?0"
+      },
+      "timestamp": "2025-08-11T16:02:01.419Z"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/css/app/layout.css?v=1754928121256",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "headers": {
+        "sec-ch-ua-platform": "\"Linux\"",
+        "referer": "http://localhost:3000/auth/login",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"HeadlessChrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "sec-ch-ua-mobile": "?0"
+      },
+      "timestamp": "2025-08-11T16:02:01.419Z"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/webpack.js?v=1754928121256",
+      "method": "GET",
+      "resourceType": "script",
+      "headers": {
+        "sec-ch-ua-platform": "\"Linux\"",
+        "referer": "http://localhost:3000/auth/login",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"HeadlessChrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "sec-ch-ua-mobile": "?0"
+      },
+      "timestamp": "2025-08-11T16:02:01.419Z"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/main-app.js?v=1754928121256",
+      "method": "GET",
+      "resourceType": "script",
+      "headers": {
+        "sec-ch-ua-platform": "\"Linux\"",
+        "referer": "http://localhost:3000/auth/login",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"HeadlessChrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "sec-ch-ua-mobile": "?0"
+      },
+      "timestamp": "2025-08-11T16:02:01.419Z"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/layout.js",
+      "method": "GET",
+      "resourceType": "script",
+      "headers": {
+        "sec-ch-ua-platform": "\"Linux\"",
+        "referer": "http://localhost:3000/auth/login",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"HeadlessChrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "sec-ch-ua-mobile": "?0"
+      },
+      "timestamp": "2025-08-11T16:02:01.419Z"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app-pages-internals.js",
+      "method": "GET",
+      "resourceType": "script",
+      "headers": {
+        "sec-ch-ua-platform": "\"Linux\"",
+        "referer": "http://localhost:3000/auth/login",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"HeadlessChrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "sec-ch-ua-mobile": "?0"
+      },
+      "timestamp": "2025-08-11T16:02:01.420Z"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/auth/login/page.js",
+      "method": "GET",
+      "resourceType": "script",
+      "headers": {
+        "sec-ch-ua-platform": "\"Linux\"",
+        "referer": "http://localhost:3000/auth/login",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"HeadlessChrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "sec-ch-ua-mobile": "?0"
+      },
+      "timestamp": "2025-08-11T16:02:01.420Z"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/global-error.js",
+      "method": "GET",
+      "resourceType": "script",
+      "headers": {
+        "sec-ch-ua-platform": "\"Linux\"",
+        "referer": "http://localhost:3000/auth/login",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"HeadlessChrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "sec-ch-ua-mobile": "?0"
+      },
+      "timestamp": "2025-08-11T16:02:01.420Z"
+    },
+    {
+      "url": "http://localhost:3000/button-fix.css",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "headers": {
+        "sec-ch-ua-platform": "\"Linux\"",
+        "referer": "http://localhost:3000/auth/login",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"HeadlessChrome\";v=\"139\", \"Chromium\";v=\"139\"",
+        "sec-ch-ua-mobile": "?0"
+      },
+      "timestamp": "2025-08-11T16:02:01.420Z"
+    },
+    {
+      "url": "http://localhost:3000/auth/login",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "headers": {
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/139.0.7258.5 Safari/537.36",
+        "referer": "http://localhost:3000/auth/login"
+      },
+      "timestamp": "2025-08-11T16:02:01.495Z"
+    }
+  ],
+  "failedRequests": [
+    {
+      "url": "http://localhost:3000/auth/login",
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "failure": "net::ERR_ABORTED",
+      "timestamp": "2025-08-11T16:02:01.768Z"
+    }
+  ]
+}

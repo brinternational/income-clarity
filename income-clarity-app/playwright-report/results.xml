@@ -1,0 +1,45 @@
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="33.90169">
+<testsuite name="auth-flow.spec.ts" timestamp="2025-08-15T19:12:15.795Z" hostname="chromium" tests="1" failures="1" skipped="0" time="30.605" errors="0">
+<testcase name="Authentication Flow › should complete signup flow successfully" classname="auth-flow.spec.ts" time="30.605">
+<failure message="auth-flow.spec.ts:14:7 should complete signup flow successfully" type="FAILURE">
+<![CDATA[  [chromium] › auth-flow.spec.ts:14:7 › Authentication Flow › should complete signup flow successfully 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="name"]')
+
+
+      22 |     await page.fill('input[type="email"]', 'newuser@example.com')
+      23 |     await page.fill('input[type="password"]', 'password123')
+    > 24 |     await page.fill('input[name="name"]', 'New User')
+         |                ^
+      25 |     
+      26 |     // Submit form
+      27 |     await page.click('button[type="submit"]')
+        at /public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e/auth-flow.spec.ts:24:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/auth-flow-Authentication-F-b0393-te-signup-flow-successfully-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/auth-flow-Authentication-F-b0393-te-signup-flow-successfully-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/auth-flow-Authentication-F-b0393-te-signup-flow-successfully-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|../test-results/auth-flow-Authentication-F-b0393-te-signup-flow-successfully-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../test-results/auth-flow-Authentication-F-b0393-te-signup-flow-successfully-chromium/video.webm]]
+
+[[ATTACHMENT|../test-results/auth-flow-Authentication-F-b0393-te-signup-flow-successfully-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

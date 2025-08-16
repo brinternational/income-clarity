@@ -1,0 +1,17 @@
+[Unit]
+Description=Income Clarity Daily Backup Timer
+Documentation=man:systemd.timer(5)
+Requires=backup-automation.service
+
+[Timer]
+# Run daily at 3:00 AM (low traffic time)
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=1800
+AccuracySec=1h
+
+# Wake up system if needed
+WakeSystem=false
+
+[Install]
+WantedBy=timers.target

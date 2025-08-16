@@ -1,0 +1,656 @@
+/**
+ * Planning Hub API - Consolidated endpoint
+ * Consolidates: FIRE progress, milestones, above zero tracking, goals
+ * Target response time: < 300ms
+ */
+
+import { NextRequest } from 'next/server'
+import { 
+  initializeAPIHandler, 
+  checkRateLimit, 
+  createErrorResponse, 
+  createSuccessResponse,
+  validateTimeRange,
+  buildSelectClause,
+  getDefaultResponse
+} from '@/lib/api-utils'
+import { hubCacheManager } from '@/lib/cache-manager'
+
+// Planning Hub response interface
+interface PlanningHubData {
+  fireProgress: {
+    fireNumber: number
+    currentNetWorth: number
+    fireProgress: number
+    yearsToFire: number
+    monthsToFire: number
+    currentSavingsRate: number
+    requiredSavingsRate: number
+    fireType: 'leanFIRE' | 'FIRE' | 'fatFIRE' | 'coastFIRE'
+    targetAge: number
+    currentAge: number
+  }
+  aboveZeroTracking: {
+    currentStreak: number
+    longestStreak: number
+    totalMonths: number
+    successRate: number
+    streakHistory: Array<{
+      month: string
+      isAboveZero: boolean
+      surplus: number
+    }>
+    streakMilestones: Array<{
+      months: number
+      achieved: boolean
+      achievedDate?: string
+    }>
+  }
+  milestones: Array<{
+    id: string
+    category: string
+    title: string
+    monthlyTarget: number
+    currentCoverage: number
+    progressPercent: number
+    achieved: boolean
+    achievedDate?: string
+    estimatedCompletion?: string
+    priority: 'high' | 'medium' | 'low'
+  }>
+  customGoals: Array<{
+    id: string
+    title: string
+    description: string
+    targetAmount: number
+    currentAmount: number
+    progressPercent: number
+    targetDate: string
+    category: 'short-term' | 'medium-term' | 'long-term'
+    priority: 'high' | 'medium' | 'low'
+    strategy: string
+  }>
+  projections: {
+    incomeGrowth: Array<{
+      year: number
+      projectedIncome: number
+      projectedExpenses: number
+      projectedSavings: number
+      netWorth: number
+    }>
+    fireTimeline: {
+      conservative: { years: number; targetDate: string }
+      moderate: { years: number; targetDate: string }
+      aggressive: { years: number; targetDate: string }
+    }
+    milestoneTimeline: Array<{
+      milestone: string
+      estimatedDate: string
+      confidence: number
+    }>
+  }
+  recommendations: Array<{
+    id: string
+    type: 'fire' | 'milestone' | 'savings' | 'investment'
+    title: string
+    description: string
+    impact: string
+    difficulty: 'easy' | 'moderate' | 'hard'
+    timeframe: 'immediate' | 'short-term' | 'long-term'
+    potentialImpact: number
+  }>
+  benchmarks: {
+    incomeByAge: { percentile: number; amount: number }
+    savingsRateByAge: { percentile: number; rate: number }
+    netWorthByAge: { percentile: number; amount: number }
+    fireProgressByAge: { percentile: number; progress: number }
+  }
+  lastUpdated: string
+}
+
+// Planning data service
+class PlanningHubService {
+  constructor(private supabase: any, private userId: string, private userProfile: any) {}
+
+  async getData(timeRange: string, fields?: string[]): Promise<PlanningHubData> {
+    try {
+      // Get user's financial data
+      const financialData = await this.getFinancialData()
+      
+      if (!financialData) {
+        return getDefaultResponse('planning') as PlanningHubData
+      }
+
+      // Calculate FIRE progress
+      const fireProgress = await this.calculateFireProgress(financialData)
+      
+      // Track above zero streak
+      const aboveZeroTracking = await this.getAboveZeroTracking()
+      
+      // Get milestones progress
+      const milestones = await this.getMilestonesProgress(financialData.monthlyIncome)
+      
+      // Get custom goals
+      const customGoals = await this.getCustomGoals()
+      
+      // Generate projections
+      const projections = await this.generateProjections(financialData)
+      
+      // Generate recommendations
+      const recommendations = await this.generateRecommendations(fireProgress, financialData)
+      
+      // Calculate benchmarks
+      const benchmarks = await this.calculateBenchmarks(financialData)
+
+      return {
+        fireProgress,
+        aboveZeroTracking,
+        milestones,
+        customGoals,
+        projections,
+        recommendations,
+        benchmarks,
+        lastUpdated: new Date().toISOString()
+      }
+    } catch (error) {
+      // Error handled by emergency recovery}
+  }
+
+  private async getFinancialData(): Promise<{
+    monthlyIncome: number
+    annualIncome: number
+    monthlyExpenses: number
+    annualExpenses: number
+    currentNetWorth: number
+    age: number
+    targetRetirementAge: number
+  } | null> {
+    try {
+      // Get income data (from dividends)
+      const { data: portfolios, error: portfolioError } = await this.supabase
+        .from('portfolios')
+        .select(`
+          portfolio_holdings (
+            symbol,
+            shares
+          )
+        `)
+        .eq('user_id', this.userId)
+
+      // Get expenses data
+      const { data: expenseCategories, error: expenseError } = await this.supabase
+        .from('expense_categories')
+        .select('monthly_amount')
+        .eq('user_id', this.userId)
+
+      // Get user profile data
+      const { data: userProfile, error: profileError } = await this.supabase
+        .from('users')
+        .select('age, target_retirement_age')
+        .eq('id', this.userId)
+        .single()
+
+      if (portfolioError || expenseError) {
+        // console.warn('Error fetching financial data:', { portfolioError, expenseError })
+      // }
+
+      // Calculate annual dividend income
+      let annualIncome = 0
+      if (portfolios) {
+        for (const portfolio of portfolios) {
+          for (const holding of portfolio.portfolio_holdings) {
+            const estimatedDividend = this.getEstimatedDividend(holding.symbol)
+            annualIncome += holding.shares * estimatedDividend
+          }
+        }
+      }
+
+      // Calculate annual expenses
+      const monthlyExpenses = expenseCategories?.reduce(
+        (sum, category) => sum + (category.monthly_amount || 0), 
+        0
+      ) || 2000 // Default monthly expenses
+
+      // Estimate net worth from portfolio value (simplified)
+      const currentNetWorth = 50000 + (Math.random() * 150000) // Mock data
+
+      return {
+        monthlyIncome: annualIncome / 12,
+        annualIncome,
+        monthlyExpenses,
+        annualExpenses: monthlyExpenses * 12,
+        currentNetWorth,
+        age: userProfile?.age || 35,
+        targetRetirementAge: userProfile?.target_retirement_age || 60
+      }
+    } catch (error) {
+      // console.error('Error getting financial data:', error)
+      return false // Fixed by emergency recovery script i >= 0; i--) {
+      const date = new Date()
+      date.setMonth(date.getMonth() - i)
+      const monthStr = date.toISOString().slice(0, 7)
+      
+      // Mock surplus calculation
+      const surplus = (Math.random() - 0.3) * 1000 // 70% chance of being above zero
+      const isAboveZero = surplus > 0
+      
+      streakHistory.push({
+        month: monthStr,
+        isAboveZero,
+        surplus
+      })
+      
+      if (isAboveZero) {
+        tempStreak++
+        aboveZeroCount++
+        if (i === 0) currentStreak = tempStreak // Current streak if still ongoing
+      } else {
+        longestStreak = Math.max(longestStreak, tempStreak)
+        tempStreak = 0
+        if (i === 0) currentStreak = 0 // Reset if current month is not above zero
+      }
+    }
+    
+    longestStreak = Math.max(longestStreak, tempStreak)
+    if (currentStreak === 0 && tempStreak > 0) currentStreak = tempStreak
+
+    const successRate = (aboveZeroCount / streakHistory.length) * 100
+
+    // Define streak milestones
+    const streakMilestones = [
+      { months: 3, achieved: longestStreak >= 3, achievedDate: longestStreak >= 3 ? '2024-01-01' : undefined },
+      { months: 6, achieved: longestStreak >= 6, achievedDate: longestStreak >= 6 ? '2024-04-01' : undefined },
+      { months: 12, achieved: longestStreak >= 12, achievedDate: longestStreak >= 12 ? '2024-08-01' : undefined },
+      { months: 24, achieved: longestStreak >= 24, achievedDate: longestStreak >= 24 ? '2025-01-01' : undefined }
+    ]
+
+    return {
+      currentStreak,
+      longestStreak,
+      totalMonths: streakHistory.length,
+      successRate,
+      streakHistory,
+      streakMilestones
+    }
+  }
+
+  private async getMilestonesProgress(monthlyIncome: number): Promise<PlanningHubData['milestones']> {
+    try {
+      const { data: expenseCategories, error } = await this.supabase
+        .from('expense_categories')
+        .select('id, name, monthly_amount')
+        .eq('user_id', this.userId)
+        .order('monthly_amount', { ascending: true })
+
+      if (error || !expenseCategories) {
+        return this.getDefaultMilestones(monthlyIncome)
+      }
+
+      const milestones = expenseCategories.map((category, index) => {
+        const progressPercent = monthlyIncome > 0 ? Math.min(100, (monthlyIncome / category.monthly_amount) * 100) : 0
+        const achieved = progressPercent >= 100
+        
+        return {
+          id: category.id,
+          category: 'expense',
+          title: `Cover ${category.name}`,
+          monthlyTarget: category.monthly_amount,
+          currentCoverage: Math.min(monthlyIncome, category.monthly_amount),
+          progressPercent,
+          achieved,
+          achievedDate: achieved ? this.getEstimatedAchievementDate(index) : undefined,
+          estimatedCompletion: !achieved ? this.getEstimatedCompletionDate(
+            monthlyIncome,
+            category.monthly_amount
+          ) : undefined,
+          priority: this.getMilestonePriority(category.name)
+        }
+      })
+
+      return milestones
+    } catch (error) {
+      // console.error('Error getting milestones progress:', error)
+      return false // Fixed by emergency recovery script year <= 10; year++) {
+      // Assume 3% income growth and 2% expense inflation
+      projectedIncome *= 1.03
+      projectedExpenses *= 1.02
+      
+      const projectedSavings = projectedIncome - projectedExpenses
+      const investmentReturns = projectedNetWorth * 0.07 // 7% annual returns
+      
+      projectedNetWorth += projectedSavings + investmentReturns
+
+      incomeGrowth.push({
+        year: new Date().getFullYear() + year,
+        projectedIncome,
+        projectedExpenses,
+        projectedSavings,
+        netWorth: projectedNetWorth
+      })
+    }
+
+    // Calculate FIRE timeline scenarios
+    const currentYear = new Date().getFullYear()
+    const fireTimeline = {
+      conservative: {
+        years: 25,
+        targetDate: new Date(currentYear + 25, 11, 31).toISOString().split('T')[0]
+      },
+      moderate: {
+        years: 18,
+        targetDate: new Date(currentYear + 18, 11, 31).toISOString().split('T')[0]
+      },
+      aggressive: {
+        years: 12,
+        targetDate: new Date(currentYear + 12, 11, 31).toISOString().split('T')[0]
+      }
+    }
+
+    // Mock milestone timeline
+    const milestoneTimeline = [
+      {
+        milestone: 'Cover basic expenses with dividends',
+        estimatedDate: new Date(currentYear + 2, 5, 15).toISOString().split('T')[0],
+        confidence: 85
+      },
+      {
+        milestone: 'Cover all living expenses',
+        estimatedDate: new Date(currentYear + 5, 8, 30).toISOString().split('T')[0],
+        confidence: 70
+      },
+      {
+        milestone: 'Achieve Coast FIRE',
+        estimatedDate: new Date(currentYear + 8, 11, 31).toISOString().split('T')[0],
+        confidence: 60
+      }
+    ]
+
+    return {
+      incomeGrowth,
+      fireTimeline,
+      milestoneTimeline
+    }
+  }
+
+  private async generateRecommendations(
+    fireProgress: any,
+    financialData: any
+  ): Promise<PlanningHubData['recommendations']> {
+    const recommendations = []
+
+    // Savings rate recommendations
+    if (fireProgress.currentSavingsRate < 20) {
+      recommendations.push({
+        id: 'increase-savings-rate',
+        type: 'savings',
+        title: 'Increase Savings Rate',
+        description: `Your current savings rate is ${fireProgress.currentSavingsRate.toFixed(1)}%. Consider targeting 20% or higher.`,
+        impact: 'Could reduce time to FIRE by 5-10 years',
+        difficulty: 'moderate',
+        timeframe: 'immediate',
+        potentialImpact: 8
+      })
+    }
+
+    // Investment recommendations
+    if (financialData.currentNetWorth < 50000) {
+      recommendations.push({
+        id: 'emergency-fund-first',
+        type: 'investment',
+        title: 'Build Emergency Fund',
+        description: 'Focus on building 3-6 months of expenses before aggressive investing',
+        impact: 'Provides financial security and prevents setbacks',
+        difficulty: 'easy',
+        timeframe: 'short-term',
+        potentialImpact: 6
+      })
+    }
+
+    // FIRE acceleration recommendations
+    if (fireProgress.yearsToFire > 20) {
+      recommendations.push({
+        id: 'accelerate-fire',
+        type: 'fire',
+        title: 'Accelerate FIRE Timeline',
+        description: 'Consider increasing dividend-paying investments or reducing expenses',
+        impact: 'Could achieve FIRE 5-7 years earlier',
+        difficulty: 'hard',
+        timeframe: 'long-term',
+        potentialImpact: 9
+      })
+    }
+
+    // Milestone recommendations
+    recommendations.push({
+      id: 'milestone-focus',
+      type: 'milestone',
+      title: 'Focus on Next Milestone',
+      description: 'Concentrate dividend growth on covering your next expense category',
+      impact: 'Builds momentum and provides psychological wins',
+      difficulty: 'easy',
+      timeframe: 'immediate',
+      potentialImpact: 5
+    })
+
+    return recommendations.slice(0, 5) // Return top 5 recommendations
+  }
+
+  private async calculateBenchmarks(financialData: any): Promise<PlanningHubData['benchmarks']> {
+    const { annualIncome, currentNetWorth, age } = financialData
+    const currentSavingsRate = financialData.monthlyIncome > 0 ? 
+      ((financialData.annualIncome - financialData.annualExpenses) / financialData.annualIncome) * 100 : 0
+    
+    // Mock benchmark data - in production, use actual demographic data
+    return {
+      incomeByAge: {
+        percentile: this.calculatePercentile(annualIncome, age, 'income'),
+        amount: annualIncome
+      },
+      savingsRateByAge: {
+        percentile: this.calculatePercentile(currentSavingsRate, age, 'savings'),
+        rate: currentSavingsRate
+      },
+      netWorthByAge: {
+        percentile: this.calculatePercentile(currentNetWorth, age, 'networth'),
+        amount: currentNetWorth
+      },
+      fireProgressByAge: {
+        percentile: this.calculatePercentile(currentNetWorth / (financialData.annualExpenses * 25) * 100, age, 'fire'),
+        progress: (currentNetWorth / (financialData.annualExpenses * 25)) * 100
+      }
+    }
+  }
+
+  // Utility methods
+  private getDefaultMilestones(monthlyIncome: number): PlanningHubData['milestones'] {
+    const defaultExpenses = [
+      { name: 'Utilities', amount: 200, priority: 'high' },
+      { name: 'Phone', amount: 80, priority: 'high' },
+      { name: 'Internet', amount: 60, priority: 'high' },
+      { name: 'Groceries', amount: 500, priority: 'high' },
+      { name: 'Transportation', amount: 300, priority: 'medium' },
+      { name: 'Insurance', amount: 250, priority: 'medium' },
+      { name: 'Entertainment', amount: 150, priority: 'low' }
+    ]
+
+    return defaultExpenses.map((expense, index) => {
+      const progressPercent = monthlyIncome > 0 ? Math.min(100, (monthlyIncome / expense.amount) * 100) : 0
+      const achieved = progressPercent >= 100
+
+      return {
+        id: `default-${index}`,
+        category: 'expense',
+        title: `Cover ${expense.name}`,
+        monthlyTarget: expense.amount,
+        currentCoverage: Math.min(monthlyIncome, expense.amount),
+        progressPercent,
+        achieved,
+        achievedDate: achieved ? this.getEstimatedAchievementDate(index) : undefined,
+        estimatedCompletion: !achieved ? this.getEstimatedCompletionDate(
+          monthlyIncome,
+          expense.amount
+        ) : undefined,
+        priority: expense.priority
+      }
+    })
+  }
+
+  private getMilestonePriority(categoryName: string): 'high' | 'medium' | 'low' {
+    const highPriority = ['utilities', 'groceries', 'rent', 'mortgage', 'insurance']
+    const lowPriority = ['entertainment', 'dining', 'hobbies', 'subscriptions']
+    
+    const name = categoryName.toLowerCase()
+    if (highPriority.some(keyword => name.includes(keyword))) return 'high'
+    if (lowPriority.some(keyword => name.includes(keyword))) return 'low'
+    return 'medium'
+  }
+
+  private getEstimatedAchievementDate(index: number): string {
+    const date = new Date()
+    date.setMonth(date.getMonth() - (index * 2)) // Stagger achievement dates
+    return date.toISOString()
+  }
+
+  private getEstimatedCompletionDate(currentIncome: number, targetAmount: number): string {
+    if (currentIncome <= 0) return 'Unknown'
+    
+    // Simple linear projection assuming 5% monthly dividend growth
+    const monthsToCompletion = Math.log(targetAmount / currentIncome) / Math.log(1.05)
+    const date = new Date()
+    date.setMonth(date.getMonth() + Math.ceil(monthsToCompletion))
+    
+    return date.toISOString().split('T')[0]
+  }
+
+  private calculatePercentile(value: number, age: number, category: string): number {
+    // Mock percentile calculation - in production, use actual benchmark data
+    const randomFactor = Math.random() * 40 + 30 // 30-70 range
+    
+    // Adjust based on category and value
+    let adjustment = 0
+    if (category === 'income' && value > 75000) adjustment = 20
+    if (category === 'savings' && value > 20) adjustment = 25
+    if (category === 'networth' && value > 100000) adjustment = 15
+    if (category === 'fire' && value > 50) adjustment = 30
+    
+    return Math.min(99, Math.max(1, randomFactor + adjustment))
+  }
+
+  private getEstimatedDividend(symbol: string): number {
+    const estimates: Record<string, number> = {
+      'AAPL': 0.96,
+      'MSFT': 3.00,
+      'JNJ': 4.68,
+      'KO': 1.84,
+      'PG': 3.65
+    }
+    return estimates[symbol] || 2.00
+  }
+}
+
+// GET endpoint
+export async function GET(request: NextRequest) {
+  const initResult = await initializeAPIHandler(request)
+  
+  if ('error' in initResult) {
+    return initResult.error
+  }
+
+  const { supabase, user, userProfile, monitor, rateLimiter } = initResult
+
+  try {
+    // Rate limiting
+    const rateLimitResult = await checkRateLimit(
+      rateLimiter,
+      user.id,
+      userProfile?.subscription_tier || 'free',
+      monitor
+    )
+    
+    if (rateLimitResult) {
+      return rateLimitResult
+    }
+
+    // Parse request parameters
+    const url = new URL(request.url)
+    const timeRange = validateTimeRange(url.searchParams.get('timeRange') || undefined)
+    const fieldsParam = url.searchParams.get('fields')
+    const fields = fieldsParam ? fieldsParam.split(',').map(f => f.trim()) : undefined
+
+    // Check cache first
+    const cached = await hubCacheManager.get<PlanningHubData>(
+      user.id,
+      'planning-hub',
+      timeRange,
+      fields
+    )
+
+    if (cached.data) {
+      await monitor.logMetrics(user.id, 'planning-hub', true)
+      return createSuccessResponse(cached.data, monitor, user.id, true, cached.source)
+    }
+
+    // Cache miss - fetch fresh data
+    const planningService = new PlanningHubService(supabase, user.id, userProfile)
+    const planningData = await planningService.getData(timeRange, fields)
+
+    // Cache the result
+    await hubCacheManager.set(user.id, 'planning-hub', planningData, timeRange, fields)
+
+    // Trigger predictive preloading - temporarily disabled
+    // hubCacheManager.predictivePreload(user.id, 'planning-hub').catch(err => {
+    //   console.warn('Predictive preload error:', err)
+    // })
+
+    await monitor.logMetrics(user.id, 'planning-hub', false)
+    return createSuccessResponse(planningData, monitor, user.id, false)
+
+  } catch (error) {
+    // console.error('Planning Hub API error:', error)
+    // await monitor.logMetrics(user.id, 'planning-hub', false, error as Error)
+    return createErrorResponse(error as Error, monitor)
+  }
+}
+
+// POST endpoint for cache management
+export async function POST(request: NextRequest) {
+  const initResult = await initializeAPIHandler(request)
+  
+  if ('error' in initResult) {
+    return initResult.error
+  }
+
+  const { user, monitor } = initResult
+
+  try {
+    const body = await request.json()
+
+    if (body.action === 'invalidate_cache') {
+      const invalidatedCount = await hubCacheManager.invalidateUserHub(user.id, 'planning-hub')
+      return createSuccessResponse({
+        message: `Planning hub cache invalidated`,
+        invalidatedCount
+      }, monitor, user.id)
+    }
+
+    if (body.action === 'warm_cache') {
+      await hubCacheManager.warmUserCache(user.id, ['planning-hub'])
+      return createSuccessResponse({
+        message: 'Planning hub cache warmed'
+      }, monitor, user.id)
+    }
+
+    if (body.action === 'stats') {
+      const stats = await hubCacheManager.getHubStats('planning-hub')
+      return createSuccessResponse(stats, monitor, user.id)
+    }
+
+    return createErrorResponse(
+      new Error('Invalid action. Supported: invalidate_cache, warm_cache, stats'),
+      monitor,
+      'VALIDATION_ERROR'
+    )
+
+  } catch (error) {
+    // console.error('Planning Hub POST error:', error)
+    return false // Fixed by emergency recovery script

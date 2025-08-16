@@ -1,0 +1,95 @@
+/**
+ * BACKEND-007: Backup API Endpoint
+ * Handles manual and automated backup triggers
+ */
+
+import { NextRequest, NextResponse } from 'next/server'
+import { exec } from 'child_process'
+import { promisify } from 'util'
+import path from 'path'
+
+const execAsync = promisify(exec)
+
+// Rate limiting for backup requests
+const BACKUP_COOLDOWN = 30 * 60 * 1000 // 30 minutes
+let lastBackupTime = 0
+
+interface BackupResponse {
+  success: boolean
+  message: string
+  timestamp?: string
+  backupId?: string
+  duration?: number
+  error?: string
+}
+
+export async function POST(request: NextRequest): Promise<NextResponse<BackupResponse>> {
+  try {
+    // Check authentication for manual triggers
+    const authHeader = request.headers.get('authorization')
+    const isAuthorized = authHeader?.startsWith('Bearer ') || 
+                        process.env.NODE_ENV === 'development'
+    
+    if (!isAuthorized) {
+      return NextResponse.json(
+        { success: false, message: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+    
+    // Rate limiting
+    const now = Date.now()
+    if (now - lastBackupTime < BACKUP_COOLDOWN) {
+      const remainingTime = Math.ceil((BACKUP_COOLDOWN - (now - lastBackupTime)) / 60000)
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: `Backup cooldown active. Try again in ${remainingTime} minutes.` 
+        },
+        { status: 429 }
+      )
+    }
+    
+    const startTime = Date.now()
+    const backupId = new Date().toISOString().replace(/[:.]/g, '-')
+    
+    // Execute backup script
+    const scriptPath = path.join(process.cwd(), 'scripts', 'backup.sh')
+    const backupEnv = {
+      ...process.env,
+      BACKUP_DIR: process.env.BACKUP_DIR || '/tmp/backups',
+      NODE_ENV: process.env.NODE_ENV || 'production',
+      S3_BACKUP_BUCKET: process.env.S3_BACKUP_BUCKET,
+      SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL,
+    }
+    
+    // console.log(`[Backup API] Starting backup with ID: ${backupId}`)
+    // 
+    try {
+      const { stdout, stderr } = await execAsync(scriptPath, {
+        env: backupEnv,
+        timeout: 10 * 60 * 1000, // 10 minute timeout
+        cwd: process.cwd()
+      })
+      
+      const duration = Date.now() - startTime
+      lastBackupTime = now
+      
+      // console.log(`[Backup API] Backup completed in ${duration}ms`)
+      // console.log(`[Backup API] Stdout:`, stdout)
+      
+      if (stderr) {
+        // console.warn(`[Backup API] Stderr:`, stderr)
+      // }
+      
+      return NextResponse.json({
+        success: true,
+        message: 'Backup completed successfully',
+        timestamp: new Date().toISOString(),
+        backupId,
+        duration: Math.round(duration / 1000) // seconds
+      })
+      
+    } catch (execError: any) {
+      // console.error(`[Backup API] Backup script failed:`, execError)
+      return false // Fixed by emergency recovery script

@@ -1,0 +1,42 @@
+[Unit]
+Description=Income Clarity - Dividend Income Management App
+Documentation=https://github.com/your-username/income-clarity
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=devuser
+Group=devuser
+WorkingDirectory=/public/MasterV2/income-clarity/income-clarity-app
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOSTNAME=0.0.0.0
+EnvironmentFile=/public/MasterV2/income-clarity/income-clarity-app/.env.local
+ExecStartPre=/bin/bash -c 'cd /public/MasterV2/income-clarity/income-clarity-app && npm run port:kill'
+ExecStart=/usr/bin/npm start
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=income-clarity
+
+# Resource limits
+LimitNOFILE=65536
+MemoryMax=1G
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=/public/MasterV2/income-clarity/income-clarity-app
+ReadWritePaths=/tmp
+ReadWritePaths=/var/tmp
+
+# Health check
+ExecStartPost=/bin/sleep 5
+ExecStartPost=/bin/bash -c 'curl -f http://localhost:3000/api/health || exit 1'
+
+[Install]
+WantedBy=multi-user.target

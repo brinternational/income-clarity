@@ -1,0 +1,932 @@
+{
+  "Homepage": {
+    "url": "http://localhost:3000",
+    "errors": [
+      {
+        "type": "error",
+        "text": "Refused to apply style from 'http://localhost:3000/auth/login' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+        "location": "http://localhost:3000/auth/login:0:0",
+        "timestamp": "2025-08-11T16:13:16.459Z"
+      },
+      {
+        "type": "requestfailed",
+        "text": "Failed to load: http://localhost:3000/auth/login - net::ERR_ABORTED",
+        "location": "network",
+        "timestamp": "2025-08-11T16:13:16.464Z"
+      }
+    ],
+    "warnings": [],
+    "logs": [
+      {
+        "type": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+        "location": "webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:25581:16",
+        "timestamp": "2025-08-11T16:13:17.458Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE Detection: {localModeEnv: undefined, publicLocalModeEnv: false, envLocalMode: false, isLocalhost: true, isSupabaseLocalhost: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:24:20",
+        "timestamp": "2025-08-11T16:13:17.594Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:17.595Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:17.599Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:17.600Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.601Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Saved to localStorage: USER_PROFILE {dataSize: 295}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.609Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Saved to localStorage: PORTFOLIOS {dataSize: 2536}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.609Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Saved to localStorage: HOLDINGS {dataSize: 2123}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.609Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Saved to localStorage: EXPENSES {dataSize: 700}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.609Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Saved to localStorage: SUPER_CARDS_DATA {dataSize: 5170}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.609Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Saved to localStorage: AUTH_SESSION {dataSize: 475}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.609Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: LocalStorageAdapter initialized with mock data undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.616Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:17.625Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:17.625Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:17.629Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.629Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:17.630Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:17.631Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:17.632Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.632Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:17.636Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:17.636Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:17.636Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.636Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:17.637Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:17.637Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:17.637Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.637Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Supabase URL: https://placeholder.supabase.co",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:147:12",
+        "timestamp": "2025-08-11T16:13:17.804Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Is local dev? true",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:149:12",
+        "timestamp": "2025-08-11T16:13:17.804Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Bypassing auth for local development",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:151:16",
+        "timestamp": "2025-08-11T16:13:17.804Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Supabase URL: https://placeholder.supabase.co",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:147:12",
+        "timestamp": "2025-08-11T16:13:17.804Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Is local dev? true",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:149:12",
+        "timestamp": "2025-08-11T16:13:17.804Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Bypassing auth for local development",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:151:16",
+        "timestamp": "2025-08-11T16:13:17.804Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline query builder for table: users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.840Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline Query - table: users, 1 records undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.843Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline WHERE id = 550e8400-e29b-41d4-a716-446655440000 undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.843Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline single record from users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.848Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline query builder for table: expenses undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.848Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline Query - table: expenses, 4 records undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.848Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline WHERE user_id = 550e8400-e29b-41d4-a716-446655440000 undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.848Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Auth - LOCAL_MODE active, using mock user undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.851Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Retrieved from localStorage: AUTH_SESSION {timestamp: 2025-08-11T16:13:17.600Z}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.852Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Auth - LOCAL_MODE: Skipping auth listeners undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.852Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline resolving query for expenses with 0 records undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:17.859Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline query builder for table: users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:18.005Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline Query - table: users, 1 records undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:18.005Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline UPSERT users {id: 550e8400-e29b-41d4-a716-446655440000, email: demo@example.com, full_name: Demo User, subscription_tier: free, preferences: Object}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:18.006Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline SELECT * FROM users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:18.006Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline single record from users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:18.006Z"
+      },
+      {
+        "type": "log",
+        "text": "Profile saved to Supabase successfully",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/UserProfileContext.tsx:165:36",
+        "timestamp": "2025-08-11T16:13:18.007Z"
+      }
+    ],
+    "errorCount": 2,
+    "warningCount": 0
+  },
+  "Login Page": {
+    "url": "http://localhost:3000/auth/login",
+    "errors": [
+      {
+        "type": "error",
+        "text": "Refused to apply style from 'http://localhost:3000/auth/login' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+        "location": "http://localhost:3000/auth/login:0:0",
+        "timestamp": "2025-08-11T16:13:21.238Z"
+      },
+      {
+        "type": "requestfailed",
+        "text": "Failed to load: http://localhost:3000/auth/login - net::ERR_ABORTED",
+        "location": "network",
+        "timestamp": "2025-08-11T16:13:21.238Z"
+      }
+    ],
+    "warnings": [],
+    "logs": [
+      {
+        "type": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+        "location": "webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:25581:16",
+        "timestamp": "2025-08-11T16:13:22.126Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE Detection: {localModeEnv: undefined, publicLocalModeEnv: false, envLocalMode: false, isLocalhost: true, isSupabaseLocalhost: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:24:20",
+        "timestamp": "2025-08-11T16:13:22.189Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: LocalStorageAdapter initialized with mock data undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.194Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:22.240Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:22.243Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:22.243Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.243Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:22.246Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:22.246Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:22.247Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.247Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:22.247Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:22.252Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:22.252Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.252Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:22.252Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:22.255Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:22.255Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.255Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:22.256Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:22.256Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:22.256Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.256Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Supabase URL: https://placeholder.supabase.co",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:147:12",
+        "timestamp": "2025-08-11T16:13:22.422Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Is local dev? true",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:149:12",
+        "timestamp": "2025-08-11T16:13:22.422Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Bypassing auth for local development",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:151:16",
+        "timestamp": "2025-08-11T16:13:22.424Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Supabase URL: https://placeholder.supabase.co",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:147:12",
+        "timestamp": "2025-08-11T16:13:22.424Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Is local dev? true",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:149:12",
+        "timestamp": "2025-08-11T16:13:22.424Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Bypassing auth for local development",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:151:16",
+        "timestamp": "2025-08-11T16:13:22.424Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline query builder for table: users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.449Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline Query - table: users, 1 records undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.451Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline WHERE id = 550e8400-e29b-41d4-a716-446655440000 undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.452Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline single record from users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.459Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline query builder for table: expenses undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.460Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline Query - table: expenses, 4 records undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.461Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline WHERE user_id = 550e8400-e29b-41d4-a716-446655440000 undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.461Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Auth - LOCAL_MODE active, using mock user undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.465Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Retrieved from localStorage: AUTH_SESSION {timestamp: 2025-08-11T16:13:17.600Z}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.469Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Auth - LOCAL_MODE: Skipping auth listeners undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.469Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline resolving query for expenses with 0 records undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.472Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline query builder for table: users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.544Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline Query - table: users, 1 records undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.544Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline UPSERT users {id: 550e8400-e29b-41d4-a716-446655440000, email: demo@example.com, full_name: Demo User, subscription_tier: free, preferences: Object}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.549Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline SELECT * FROM users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.550Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline single record from users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:22.554Z"
+      },
+      {
+        "type": "log",
+        "text": "Profile saved to Supabase successfully",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/UserProfileContext.tsx:165:36",
+        "timestamp": "2025-08-11T16:13:22.557Z"
+      }
+    ],
+    "errorCount": 2,
+    "warningCount": 0
+  },
+  "Signup Page": {
+    "url": "http://localhost:3000/auth/signup",
+    "errors": [
+      {
+        "type": "error",
+        "text": "Refused to apply style from 'http://localhost:3000/auth/login' because its MIME type ('text/html') is not a supported stylesheet MIME type, and strict MIME checking is enabled.",
+        "location": "http://localhost:3000/auth/signup:0:0",
+        "timestamp": "2025-08-11T16:13:27.160Z"
+      },
+      {
+        "type": "requestfailed",
+        "text": "Failed to load: http://localhost:3000/auth/login - net::ERR_ABORTED",
+        "location": "network",
+        "timestamp": "2025-08-11T16:13:27.161Z"
+      }
+    ],
+    "warnings": [],
+    "logs": [
+      {
+        "type": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+        "location": "webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:25581:16",
+        "timestamp": "2025-08-11T16:13:27.857Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE Detection: {localModeEnv: undefined, publicLocalModeEnv: false, envLocalMode: false, isLocalhost: true, isSupabaseLocalhost: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:24:20",
+        "timestamp": "2025-08-11T16:13:27.905Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: LocalStorageAdapter initialized with mock data undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:27.907Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:27.944Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:27.945Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:27.945Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:27.945Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:27.946Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:27.948Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:27.949Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:27.950Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:27.952Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:27.952Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:27.952Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:27.957Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:27.957Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:27.957Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:27.959Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:27.959Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 Environment Configuration Check: {NODE_ENV: development, LOCAL_MODE: undefined, NEXT_PUBLIC_LOCAL_MODE: false, localModeEnabled: false}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/environment-check.ts:14:12",
+        "timestamp": "2025-08-11T16:13:27.959Z"
+      },
+      {
+        "type": "log",
+        "text": "🔧 SUPABASE CLIENT CREATION: {LOCAL_MODE_ENABLED: true, NEXT_PUBLIC_LOCAL_MODE: false, LOCAL_MODE: undefined, NODE_ENV: development, hasWindow: true}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:27:12",
+        "timestamp": "2025-08-11T16:13:27.959Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase client bypassed - using offline mock client",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/supabase-client.ts:41:16",
+        "timestamp": "2025-08-11T16:13:27.959Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Supabase Client - LOCAL_MODE: Using pure offline mock client undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:27.959Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Supabase URL: https://placeholder.supabase.co",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:147:12",
+        "timestamp": "2025-08-11T16:13:28.042Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Is local dev? true",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:149:12",
+        "timestamp": "2025-08-11T16:13:28.045Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Bypassing auth for local development",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:151:16",
+        "timestamp": "2025-08-11T16:13:28.045Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Supabase URL: https://placeholder.supabase.co",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:147:12",
+        "timestamp": "2025-08-11T16:13:28.045Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Is local dev? true",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:149:12",
+        "timestamp": "2025-08-11T16:13:28.045Z"
+      },
+      {
+        "type": "log",
+        "text": "RequireGuest: Bypassing auth for local development",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/AuthContext.tsx:151:16",
+        "timestamp": "2025-08-11T16:13:28.045Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline query builder for table: users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.068Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline Query - table: users, 1 records undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.071Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline WHERE id = 550e8400-e29b-41d4-a716-446655440000 undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.072Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline single record from users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.072Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline query builder for table: expenses undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.072Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline Query - table: expenses, 4 records undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.075Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline WHERE user_id = 550e8400-e29b-41d4-a716-446655440000 undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.076Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Auth - LOCAL_MODE active, using mock user undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.077Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Retrieved from localStorage: AUTH_SESSION {timestamp: 2025-08-11T16:13:17.600Z}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.077Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Auth - LOCAL_MODE: Skipping auth listeners undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.077Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline resolving query for expenses with 0 records undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.078Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline query builder for table: users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.158Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline Query - table: users, 1 records undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.166Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline UPSERT users {id: 550e8400-e29b-41d4-a716-446655440000, email: demo@example.com, full_name: Demo User, subscription_tier: free, preferences: Object}",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.166Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline SELECT * FROM users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.166Z"
+      },
+      {
+        "type": "log",
+        "text": "🏠 LOCAL_MODE: Offline single record from users undefined",
+        "location": "webpack-internal:///(app-pages-browser)/./lib/config/local-mode.ts:102:20",
+        "timestamp": "2025-08-11T16:13:28.167Z"
+      },
+      {
+        "type": "log",
+        "text": "Profile saved to Supabase successfully",
+        "location": "webpack-internal:///(app-pages-browser)/./contexts/UserProfileContext.tsx:165:36",
+        "timestamp": "2025-08-11T16:13:28.167Z"
+      }
+    ],
+    "errorCount": 2,
+    "warningCount": 0
+  }
+}

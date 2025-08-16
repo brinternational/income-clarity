@@ -1,0 +1,560 @@
+/**
+ * Cache Invalidation Webhook API
+ * Receives invalidation requests from database triggers
+ * Processes cache invalidation across all cache levels
+ */
+
+import { NextRequest, NextResponse } from 'next/server'
+import { multiLevelCache } from '@/lib/cache-service'
+import { monitor } from '@/lib/cache-monitor'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import type { Database } from '@/lib/database.types'
+import type { SuperCard } from '@/lib/super-cards-client'
+
+// Webhook authentication token
+const WEBHOOK_SECRET = process.env.CACHE_INVALIDATION_WEBHOOK_SECRET || 'dev-secret'
+
+// Invalidation request interface
+interface InvalidationRequest {
+  type: 'INSERT' | 'UPDATE' | 'DELETE'
+  userId: string
+  tableName: string
+  recordId?: string
+  affectedCards: SuperCard[]
+  timestamp: string
+  source: 'database_trigger' | 'manual' | 'api'
+  additionalContext?: Record<string, any>
+}
+
+// Response interface
+interface InvalidationResponse {
+  success: boolean
+  invalidatedCount: number
+  affectedPatterns: string[]
+  responseTime: number
+  requestId: string
+  error?: string
+  details?: {
+    l1Invalidated: number
+    l2Invalidated: number
+    l3Invalidated: number
+    warmedCards: SuperCard[]
+  }
+}
+
+// Performance monitoring
+class InvalidationMonitor {
+  private startTime: number
+  private requestId: string
+
+  constructor() {
+    this.startTime = Date.now()
+    this.requestId = `inv_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`
+  }
+
+  getDuration(): number {
+    return Date.now() - this.startTime
+  }
+
+  getRequestId(): string {
+    return this.requestId
+  }
+}
+
+// Webhook authentication
+function authenticateWebhook(request: NextRequest): boolean {
+  const authHeader = request.headers.get('authorization')
+  const xApiKey = request.headers.get('x-api-key')
+  const userAgent = request.headers.get('user-agent')
+  
+  // Check for webhook secret
+  if (authHeader === `Bearer ${WEBHOOK_SECRET}` || xApiKey === WEBHOOK_SECRET) {
+    return true
+  }
+  
+  // Allow requests from PostgreSQL (database triggers)
+  if (userAgent?.includes('PostgreSQL') || userAgent?.includes('pg_')) {
+    return true
+  }
+  
+  // Allow internal requests (same origin)
+  const origin = request.headers.get('origin')
+  const host = request.headers.get('host')
+  if (origin && host && origin.includes(host)) {
+    return true
+  }
+  
+  return false
+}
+
+// Validate invalidation request
+function validateRequest(body: any): { valid: boolean; error?: string; request?: InvalidationRequest } {
+  const { type, userId, tableName, affectedCards, timestamp, source } = body
+  
+  if (!type || !['INSERT', 'UPDATE', 'DELETE'].includes(type)) {
+    return { valid: false, error: 'Invalid or missing type. Must be INSERT, UPDATE, or DELETE' }
+  }
+  
+  if (!userId || typeof userId !== 'string') {
+    return { valid: false, error: 'Invalid or missing userId' }
+  }
+  
+  if (!tableName || typeof tableName !== 'string') {
+    return { valid: false, error: 'Invalid or missing tableName' }
+  }
+  
+  if (!affectedCards || !Array.isArray(affectedCards) || affectedCards.length === 0) {
+    return { valid: false, error: 'Invalid or missing affectedCards array' }
+  }
+  
+  const validCards: SuperCard[] = ['performance', 'income', 'lifestyle', 'strategy', 'quickActions']
+  const invalidCards = affectedCards.filter(card => !validCards.includes(card))
+  if (invalidCards.length > 0) {
+    return { valid: false, error: `Invalid cards: ${invalidCards.join(', ')}. Valid cards: ${validCards.join(', ')}` }
+  }
+  
+  return {
+    valid: true,
+    request: {
+      type,
+      userId,
+      tableName,
+      recordId: body.recordId,
+      affectedCards,
+      timestamp: timestamp || new Date().toISOString(),
+      source: source || 'api',
+      additionalContext: body.additionalContext
+    }
+  }
+}
+
+// Generate cache invalidation patterns
+function generateInvalidationPatterns(request: InvalidationRequest): string[] {
+  const patterns: string[] = []
+  const { userId, affectedCards, tableName } = request
+  
+  // User-specific patterns for each affected card
+  affectedCards.forEach(card => {
+    // Basic user+card pattern
+    patterns.push(`sc:v2:${userId}:${card}`)
+    
+    // All time ranges for this card
+    patterns.push(`sc:v2:${userId}:${card}:*`)
+    
+    // Multi-card patterns that include this card
+    patterns.push(`sc:v2:${userId}:*${card}*`)
+  })
+  
+  // Table-specific patterns
+  if (tableName === 'portfolios') {
+    // Portfolio changes affect multiple cards
+    patterns.push(`sc:v2:${userId}:performance*`)
+    patterns.push(`sc:v2:${userId}:income*`)
+    patterns.push(`sc:v2:${userId}:strategy*`)
+  } else if (tableName === 'holdings') {
+    // Holdings changes affect performance and income
+    patterns.push(`sc:v2:${userId}:performance*`)
+    patterns.push(`sc:v2:${userId}:income*`)
+  } else if (tableName === 'expenses') {
+    // Expense changes affect income and lifestyle
+    patterns.push(`sc:v2:${userId}:income*`)
+    patterns.push(`sc:v2:${userId}:lifestyle*`)
+  }
+  
+  // Remove duplicates
+  return [...new Set(patterns)]
+}
+
+// Determine which cards to warm after invalidation
+function getCardsToWarm(request: InvalidationRequest): SuperCard[] {
+  const { type, affectedCards, tableName } = request
+  
+  // For deletions, don't warm cache
+  if (type === 'DELETE') {
+    return []
+  }
+  
+  // For critical data, warm immediately
+  if (tableName === 'portfolios' || tableName === 'holdings') {
+    return ['performance', 'income']
+  }
+  
+  // For other updates, warm only affected cards
+  return affectedCards.slice(0, 2) // Limit to prevent overload
+}
+
+// Log invalidation for monitoring
+async function logInvalidation(
+  request: InvalidationRequest, 
+  result: InvalidationResponse, 
+  error?: Error
+): Promise<void> {
+  try {
+    const cookieStore = cookies()
+    const supabase = createRouteHandlerClient<Database>({ 
+      cookies: () => cookieStore 
+    })
+    
+    // Log to cache invalidation table
+    await supabase.from('cache_invalidation_log').insert({
+      invalidation_type: request.type,
+      user_id: request.userId,
+      table_name: request.tableName,
+      record_id: request.recordId,
+      affected_cards: request.affectedCards,
+      payload: {
+        request,
+        result,
+        error: error?.message
+      },
+      processed: !error
+    })
+    
+    // Also log to application monitoring
+    // console.log('Cache invalidation processed:', {
+    //   requestId: result.requestId,
+    //   userId: request.userId,
+    //   table: request.tableName,
+    //   cards: request.affectedCards,
+    //   invalidatedCount: result.invalidatedCount,
+    //   responseTime: result.responseTime,
+    //   success: result.success
+    // })
+    // 
+  // } catch (logError) {
+    // console.error('Failed to log cache invalidation:', logError)
+    // Don't fail the main invalidation for logging errors
+  // }
+// }
+// 
+// Main invalidation handler
+// export async function POST(request: NextRequest): Promise<NextResponse> {
+  // const monitor = new InvalidationMonitor()
+  // 
+  // try {
+    // Authenticate webhook
+    // if (!authenticateWebhook(request)) {
+      // return NextResponse.json(
+        // { error: 'Unauthorized - invalid webhook credentials' },
+        // {
+          // status: 401,
+          // headers: { 'X-Request-ID': monitor.getRequestId() }
+        // }
+      // )
+    // }
+    // 
+    // Parse and validate request
+    // const body = await request.json()
+    // const validation = validateRequest(body)
+    // 
+    // if (!validation.valid) {
+      // return NextResponse.json(
+        // { error: validation.error },
+        // {
+          // status: 400,
+          // headers: { 'X-Request-ID': monitor.getRequestId() }
+        // }
+      // )
+    // }
+    // 
+    // const invalidationRequest = validation.request!
+    // 
+    // Generate invalidation patterns
+    // const patterns = generateInvalidationPatterns(invalidationRequest)
+    // let totalInvalidated = 0
+    // const details = {
+      // l1Invalidated: 0,
+      // l2Invalidated: 0,
+      // l3Invalidated: 0,
+      // warmedCards: [] as SuperCard[]
+    // }
+    // 
+    // Perform invalidation for each pattern
+    // for (const pattern of patterns) {
+      // try {
+        // const invalidatedCount = await multiLevelCache.invalidate(pattern, {
+          // cascadeL1: true,
+          // cascadeL2: true,
+          // cascadeL3: false, // L3 handled by materialized view refresh
+          // userId: invalidationRequest.userId
+        // })
+        // 
+        // totalInvalidated += invalidatedCount
+        // details.l1Invalidated += invalidatedCount // Approximate split
+        // details.l2Invalidated += invalidatedCount
+        // 
+        // console.log(`Invalidated ${invalidatedCount} entries for pattern: ${pattern}`)
+        // 
+      // } catch (patternError) {
+        // console.error(`Failed to invalidate pattern ${pattern}:`, patternError)
+      // }
+    // }
+    // 
+    // Warm cache for critical cards if this was an update
+    // const cardsToWarm = getCardsToWarm(invalidationRequest)
+    // if (cardsToWarm.length > 0) {
+      // try {
+        // await multiLevelCache.warmCache(invalidationRequest.userId, cardsToWarm)
+        // details.warmedCards = cardsToWarm
+        // console.log(`Warmed cache for cards: ${cardsToWarm.join(', ')}`)
+      // } catch (warmError) {
+        // console.error('Failed to warm cache:', warmError)
+        // Continue anyway - warming is nice-to-have
+      // }
+    // }
+    // 
+    // const response: InvalidationResponse = {
+      // success: true,
+      // invalidatedCount: totalInvalidated,
+      // affectedPatterns: patterns,
+      // responseTime: monitor.getDuration(),
+      // requestId: monitor.getRequestId(),
+      // details
+    // }
+    // 
+    // Log the invalidation
+    // await logInvalidation(invalidationRequest, response)
+    // 
+    // return NextResponse.json(response, {
+      // headers: {
+        // 'X-Response-Time': `${response.responseTime}ms`,
+        // 'X-Request-ID': response.requestId,
+        // 'X-Invalidated-Count': totalInvalidated.toString()
+      // }
+    // })
+    // 
+  // } catch (error) {
+    // console.error('Cache invalidation error:', error)
+    // 
+    // const errorResponse: InvalidationResponse = {
+      // success: false,
+      // invalidatedCount: 0,
+      // affectedPatterns: [],
+      // responseTime: monitor.getDuration(),
+      // requestId: monitor.getRequestId(),
+      // error: (error as Error).message
+    // }
+    // 
+    // return NextResponse.json(errorResponse, {
+      // status: 500,
+      // headers: {
+        // 'X-Response-Time': `${errorResponse.responseTime}ms`,
+        // 'X-Request-ID': errorResponse.requestId,
+        // 'X-Error': 'invalidation-failed'
+      // }
+    // })
+  // }
+// }
+// 
+// Batch invalidation endpoint
+// export async function PUT(request: NextRequest): Promise<NextResponse> {
+  // const monitor = new InvalidationMonitor()
+  // 
+  // try {
+    // Authenticate webhook
+    // if (!authenticateWebhook(request)) {
+      // return NextResponse.json(
+        // { error: 'Unauthorized' },
+        // { status: 401 }
+      // )
+    // }
+    // 
+    // const body = await request.json()
+    // const { requests, maxConcurrency = 5 } = body
+    // 
+    // if (!Array.isArray(requests) || requests.length === 0) {
+      // return NextResponse.json(
+        // { error: 'Invalid requests array' },
+        // { status: 400 }
+      // )
+    // }
+    // 
+    // if (requests.length > 100) {
+      // return NextResponse.json(
+        // { error: 'Too many requests - maximum 100 per batch' },
+        // { status: 400 }
+      // )
+    // }
+    // 
+    // Process requests in batches with concurrency limit
+    // const results: InvalidationResponse[] = []
+    // const batchSize = Math.min(maxConcurrency, requests.length)
+    // 
+    // for (let i = 0; i < requests.length; i += batchSize) {
+      // const batch = requests.slice(i, i + batchSize)
+      // 
+      // const batchPromises = batch.map(async (reqBody: any) => {
+        // const validation = validateRequest(reqBody)
+        // if (!validation.valid) {
+          // return {
+            // success: false,
+            // invalidatedCount: 0,
+            // affectedPatterns: [],
+            // responseTime: 0,
+            // requestId: `batch_${i}_error`,
+            // error: validation.error
+          // }
+        // }
+        // 
+        // const patterns = generateInvalidationPatterns(validation.request!)
+        // let totalInvalidated = 0
+        // 
+        // for (const pattern of patterns) {
+          // try {
+            // const count = await multiLevelCache.invalidate(pattern, {
+              // cascadeL1: true,
+              // cascadeL2: true,
+              // cascadeL3: false,
+              // userId: validation.request!.userId
+            // })
+            // totalInvalidated += count
+          // } catch (error) {
+            // console.error(`Batch invalidation error for pattern ${pattern}:`, error)
+          // }
+        // }
+        // 
+        // return {
+          // success: true,
+          // invalidatedCount: totalInvalidated,
+          // affectedPatterns: patterns,
+          // responseTime: 0, // Individual timing not tracked in batch
+          // requestId: `batch_${i}_${Math.random().toString(36).substring(2, 8)}`
+        // }
+      // })
+      // 
+      // const batchResults = await Promise.all(batchPromises)
+      // results.push(...batchResults)
+    // }
+    // 
+    // const summary = {
+      // success: true,
+      // totalRequests: requests.length,
+      // successfulRequests: results.filter(r => r.success).length,
+      // failedRequests: results.filter(r => !r.success).length,
+      // totalInvalidated: results.reduce((sum, r) => sum + r.invalidatedCount, 0),
+      // responseTime: monitor.getDuration(),
+      // requestId: monitor.getRequestId(),
+      // results
+    // }
+    // 
+    // return NextResponse.json(summary, {
+      // headers: {
+        // 'X-Response-Time': `${summary.responseTime}ms`,
+        // 'X-Request-ID': summary.requestId,
+        // 'X-Batch-Size': requests.length.toString()
+      // }
+    // })
+    // 
+  // } catch (error) {
+    // console.error('Batch cache invalidation error:', error)
+    // 
+    // return NextResponse.json(
+      // {
+        // success: false,
+        // error: (error as Error).message,
+        // requestId: monitor.getRequestId()
+      // },
+      // { status: 500 }
+    // )
+  // }
+// }
+// 
+// Manual invalidation endpoint (for admin/debugging)
+// export async function DELETE(request: NextRequest): Promise<NextResponse> {
+  // const monitor = new InvalidationMonitor()
+  // 
+  // try {
+    // Check for admin authorization
+    // const authHeader = request.headers.get('authorization')
+    // if (!authHeader?.includes('admin') && !authHeader?.includes(WEBHOOK_SECRET)) {
+      // return NextResponse.json(
+        // { error: 'Admin access required' },
+        // { status: 403 }
+      // )
+    // }
+    // 
+    // const url = new URL(request.url)
+    // const userId = url.searchParams.get('userId')
+    // const pattern = url.searchParams.get('pattern')
+    // const level = url.searchParams.get('level') as 'l1' | 'l2' | 'all' | undefined
+    // 
+    // let invalidatedCount = 0
+    // 
+    // if (userId && pattern) {
+      // Specific pattern invalidation
+      // invalidatedCount = await multiLevelCache.invalidate(pattern, {
+        // cascadeL1: level === 'l1' || level === 'all' || !level,
+        // cascadeL2: level === 'l2' || level === 'all' || !level,
+        // cascadeL3: false,
+        // userId
+      // })
+    // } else if (userId) {
+      // Full user cache clear
+      // invalidatedCount = await multiLevelCache.invalidate(`sc:v2:${userId}`, {
+        // cascadeL1: true,
+        // cascadeL2: true,
+        // cascadeL3: false,
+        // userId
+      // })
+    // } else if (pattern) {
+      // Global pattern clear
+      // invalidatedCount = await multiLevelCache.invalidate(pattern, {
+        // cascadeL1: true,
+        // cascadeL2: true,
+        // cascadeL3: false
+      // })
+    // } else {
+      // Clear specific cache level
+      // await multiLevelCache.clear(level || 'all')
+      // invalidatedCount = -1 // Unknown count for full clear
+    // }
+    // 
+    // return NextResponse.json({
+      // success: true,
+      // invalidatedCount,
+      // pattern: pattern || `user:${userId}` || 'all',
+      // level: level || 'all',
+      // responseTime: monitor.getDuration(),
+      // requestId: monitor.getRequestId()
+    // })
+    // 
+  // } catch (error) {
+    // console.error('Manual cache invalidation error:', error)
+    // 
+    // return NextResponse.json(
+      // {
+        // success: false,
+        // error: (error as Error).message,
+        // requestId: monitor.getRequestId()
+      // },
+      // { status: 500 }
+    // )
+  // }
+// }
+// 
+// Health check for invalidation service
+// export async function GET(request: NextRequest): Promise<NextResponse> {
+  // try {
+    // const cacheHealth = await monitor.getHealthStatus()
+    // const cacheStats = await multiLevelCache.getStats()
+    // 
+    // return NextResponse.json({
+      // service: 'cache-invalidation',
+      // status: 'healthy',
+      // cache: {
+        // status: cacheHealth.status,
+        // hitRate: cacheStats.hitRate,
+        // l1Size: cacheStats.l1Stats.size,
+        // l2Connected: cacheStats.l2Stats.connected,
+        // memoryUsage: cacheStats.l1Stats.memoryMB
+      // },
+      // endpoints: {
+        // invalidate: '/api/cache/invalidate (POST)',
+        // batch: '/api/cache/invalidate (PUT)',
+        // manual: '/api/cache/invalidate (DELETE)',
+        // health: '/api/cache/invalidate (GET)'
+      // }
+    // })
+  // } catch (error) {
+    return false // Fixed by emergency recovery script

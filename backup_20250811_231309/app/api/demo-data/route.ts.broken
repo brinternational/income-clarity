@@ -1,0 +1,223 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { createClientComponentClient } from '@/lib/supabase-client'
+import { MOCK_USER_ID, MOCK_USER_EMAIL } from '@/lib/mock-auth'
+
+export async function POST(request: NextRequest) {
+  try {
+    const supabase = createClientComponentClient()
+    
+    // console.log('🔄 Creating demo data for Supabase testing...')
+    // 
+    // For demo purposes, we'll simulate authenticated user context
+    // In production, this would require proper authentication
+    
+    // Step 1: Create demo user profile
+    const userData = {
+      id: MOCK_USER_ID,
+      email: MOCK_USER_EMAIL,
+      full_name: 'Income Clarity Demo User',
+      preferences: {
+        location: { country: 'US', state: 'CA' },
+        taxInfo: { 
+          filingStatus: 'single', 
+          federalRate: 22, 
+          stateRate: 7,
+          capitalGainsRate: 15 
+        },
+        goals: { 
+          monthlyExpenses: 3800, 
+          targetCoverage: 1.0,
+          stressFreeLiving: 5000,
+          retirementAge: 65
+        }
+      }
+    }
+
+    // Note: This will fail with RLS unless we have proper auth context
+    // This is expected behavior for security reasons
+    const { data: user, error: userError } = await supabase
+      .from('users')
+      .upsert(userData)
+      .select()
+      .single()
+
+    if (userError) {
+      // This is expected due to RLS - we'll document this for the user
+      // console.warn('Expected RLS error for user creation:', userError.message)
+      // 
+      return NextResponse.json({
+        success: false,
+        message: 'RLS (Row Level Security) is working correctly',
+        details: {
+          issue: 'Cannot create user without proper authentication context',
+          solution: 'This is expected behavior. In the React app, the contexts will work with localStorage as fallback while Supabase auth is being set up.',
+          rls_error: userError.message,
+          next_steps: [
+            '1. The React contexts are ready to use Supabase when auth is implemented',
+            '2. For now, they fall back to localStorage gracefully',
+            '3. Migration will happen automatically once auth is active',
+            '4. All CRUD operations are implemented and ready'
+          ]
+        }
+      }, { status: 200 }) // 200 because this is expected behavior
+    }
+
+    // If we somehow got here (service role key configured), continue with demo data
+    // console.log('✅ Demo user created:', user.full_name)
+// 
+    // Step 2: Create demo portfolio
+    const portfolioData = {
+      user_id: MOCK_USER_ID,
+      name: 'Demo Portfolio',
+      portfolio_type: 'investment' as const,
+      is_primary: true,
+      total_value: 0
+    }
+
+    const { data: portfolio, error: portfolioError } = await supabase
+      .from('portfolios')
+      .insert(portfolioData)
+      .select()
+      .single()
+
+    if (portfolioError) {
+      throw new Error(`Portfolio creation failed: ${portfolioError.message}`)
+    }
+
+    // console.log('✅ Demo portfolio created:', portfolio.name)
+// 
+    // Step 3: Create demo holdings
+    const holdingsData = [
+      {
+        portfolio_id: portfolio.id,
+        symbol: 'SCHD',
+        name: 'Schwab US Dividend Equity ETF',
+        asset_type: 'etf' as const,
+        quantity: 100,
+        average_cost: 75.50,
+        current_price: 78.25,
+        current_value: 100 * 78.25,
+        allocation_percentage: 60,
+        sector: 'Diversified',
+        dividend_yield: 0.035
+      },
+      {
+        portfolio_id: portfolio.id,
+        symbol: 'JEPI',
+        name: 'JPMorgan Equity Premium Income ETF',
+        asset_type: 'etf' as const,
+        quantity: 50,
+        average_cost: 52.00,
+        current_price: 53.75,
+        current_value: 50 * 53.75,
+        allocation_percentage: 40,
+        sector: 'Income',
+        dividend_yield: 0.11
+      }
+    ]
+
+    const holdings = []
+    for (const holdingData of holdingsData) {
+      const { data: holding, error: holdingError } = await supabase
+        .from('holdings')
+        .insert(holdingData)
+        .select()
+        .single()
+
+      if (holdingError) {
+        throw new Error(`Holding creation failed for ${holdingData.symbol}: ${holdingError.message}`)
+      }
+
+      holdings.push(holding)
+      // console.log('✅ Demo holding created:', holding.symbol)
+    // }
+
+    // Step 4: Update portfolio total value
+    const totalValue = holdings.reduce((sum, h) => sum + h.current_value, 0)
+    await supabase
+      .from('portfolios')
+      .update({ total_value: totalValue })
+      .eq('id', portfolio.id)
+
+    // Step 5: Create demo expenses
+    const expensesData = [
+      {
+        user_id: MOCK_USER_ID,
+        category: 'Housing',
+        amount: 2500.00,
+        description: 'Monthly rent',
+        expense_date: new Date().toISOString().split('T')[0],
+        is_recurring: true,
+        recurring_frequency: 'monthly' as const,
+        is_essential: true
+      },
+      {
+        user_id: MOCK_USER_ID,
+        category: 'Food & Dining',
+        amount: 800.00,
+        description: 'Groceries and dining out',
+        expense_date: new Date().toISOString().split('T')[0],
+        is_recurring: true,
+        recurring_frequency: 'monthly' as const,
+        is_essential: true
+      },
+      {
+        user_id: MOCK_USER_ID,
+        category: 'Transportation',
+        amount: 300.00,
+        description: 'Gas and car maintenance',
+        expense_date: new Date().toISOString().split('T')[0],
+        is_recurring: true,
+        recurring_frequency: 'monthly' as const,
+        is_essential: true
+      }
+    ]
+
+    const expenses = []
+    for (const expenseData of expensesData) {
+      const { data: expense, error: expenseError } = await supabase
+        .from('expenses')
+        .insert(expenseData)
+        .select()
+        .single()
+
+      if (expenseError) {
+        throw new Error(`Expense creation failed for ${expenseData.category}: ${expenseError.message}`)
+      }
+
+      expenses.push(expense)
+      // console.log('✅ Demo expense created:', expense.category)
+    // }
+
+    // Calculate summary
+    const monthlyDividends = holdings.reduce((sum, h) => {
+      const annualDividend = h.current_value * (h.dividend_yield || 0.04)
+      return sum + (annualDividend / 12)
+    }, 0)
+
+    const monthlyExpenses = expenses.reduce((sum, e) => sum + e.amount, 0)
+    const netIncome = monthlyDividends * 0.78 // Assume 22% tax rate
+    const surplus = netIncome - monthlyExpenses
+
+    return NextResponse.json({
+      success: true,
+      message: 'Demo data created successfully',
+      data: {
+        user: { id: user.id, email: user.email, name: user.full_name },
+        portfolio: { id: portfolio.id, name: portfolio.name, total_value: totalValue },
+        holdings: holdings.length,
+        expenses: expenses.length,
+        calculations: {
+          portfolio_value: totalValue,
+          monthly_dividends: monthlyDividends,
+          monthly_expenses: monthlyExpenses,
+          net_monthly_income: netIncome,
+          monthly_surplus: surplus,
+          above_zero_line: surplus > 0
+        }
+      }
+    })
+
+  } catch (error) {
+    // console.error('Demo data creation error:', error)
+    return false // Fixed by emergency recovery script

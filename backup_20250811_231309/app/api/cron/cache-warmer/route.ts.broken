@@ -1,0 +1,150 @@
+/**
+ * Cron Job: Cache Warmer
+ * Preloads frequently accessed data into cache
+ * Runs every 5 minutes to maintain cache performance
+ */
+
+import { NextRequest, NextResponse } from 'next/server'
+import { multiLevelCache } from '@/lib/cache-service'
+import { LocalModeUtils } from '@/lib/config/local-mode'
+import { createClient } from '@supabase/supabase-js'
+
+export const runtime = 'nodejs'
+export const maxDuration = 60
+
+interface CacheWarmingStats {
+  usersWarmed: number
+  cardsWarmed: number
+  errors: number
+  totalTime: number
+  cacheStats?: {
+    hitRate: number
+    avgResponseTime: number
+    l1Items: number
+    l2Connected: boolean
+  }
+}
+
+export async function GET(request: NextRequest) {
+  const startTime = Date.now()
+  const stats: CacheWarmingStats = {
+    usersWarmed: 0,
+    cardsWarmed: 0,
+    errors: 0,
+    totalTime: 0
+  }
+  
+  try {
+    // LOCAL_MODE: Skip cache warming
+    if (LocalModeUtils.isEnabled()) {
+      LocalModeUtils.log('Cron Cache Warmer - LOCAL_MODE: Skipping cache warming')
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Skipped in LOCAL_MODE',
+        stats,
+        processingTime: Date.now() - startTime 
+      })
+    }
+    
+    // Verify this is a legitimate cron request
+    const authHeader = request.headers.get('authorization')
+    const expectedAuth = `Bearer ${process.env.CRON_SECRET}`
+    
+    if (process.env.NODE_ENV === 'production' && (!authHeader || authHeader !== expectedAuth)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Initialize Supabase client to get active users
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return NextResponse.json({ 
+        error: 'Missing Supabase configuration' 
+      }, { status: 500 })
+    }
+
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    )
+
+    // Get list of active users (logged in within last 7 days)
+    const { data: activeUsers, error: usersError } = await supabase
+      .from('users')
+      .select('id, email, last_login')
+      .gte('last_login', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+      .limit(50) // Limit to top 50 active users to avoid timeout
+
+    if (usersError) {
+      throw new Error(`Failed to fetch active users: ${usersError.message}`)
+    }
+
+    // console.log(`[CRON] Cache warming for ${activeUsers?.length || 0} active users`)
+// 
+    // Cache warming configuration
+    const CARD_TYPES = ['performance', 'income', 'lifestyle', 'strategy', 'quickActions']
+    const warmingPromises = []
+
+    // Warm cache for each active user
+    for (const user of activeUsers || []) {
+      const userPromise = (async () => {
+        try {
+          await multiLevelCache.warmCache(user.id, CARD_TYPES)
+          stats.usersWarmed++
+          stats.cardsWarmed += CARD_TYPES.length
+          // console.log(`[CRON] Cache warmed for user: ${user.email}`)
+        // } catch (error) {
+          stats.errors++
+          // console.error(`[CRON] Cache warming failed for user ${user.email}:`, error)
+        // }
+      })()
+      
+      warmingPromises.push(userPromise)
+    }
+
+    // Execute all warming operations
+    await Promise.allSettled(warmingPromises)
+
+    // Get updated cache statistics
+    const cacheStats = await multiLevelCache.getStats()
+    stats.cacheStats = {
+      hitRate: cacheStats.hitRate,
+      avgResponseTime: cacheStats.averageResponseTime,
+      l1Items: cacheStats.l1Stats.validItems,
+      l2Connected: cacheStats.l2Stats.connected
+    }
+
+    stats.totalTime = Date.now() - startTime
+
+    // Clean up old cache entries while we're at it
+    const cleanedCount = multiLevelCache.cleanupL1Cache()
+    // console.log(`[CRON] Cache cleanup removed ${cleanedCount} expired items`)
+// 
+    // console.log(`[CRON] Cache warming completed in ${stats.totalTime}ms:
+  // - Users warmed: ${stats.usersWarmed}
+  // - Cards warmed: ${stats.cardsWarmed}
+  // - Errors: ${stats.errors}
+  // - Hit rate: ${(stats.cacheStats.hitRate * 100).toFixed(1)}%
+  // - L1 items: ${stats.cacheStats.l1Items}
+  // - L2 connected: ${stats.cacheStats.l2Connected}`)
+
+    return NextResponse.json({
+      success: true,
+      timestamp: new Date().toISOString(),
+      stats,
+      cacheStats: stats.cacheStats,
+      cleanupCount: cleanedCount,
+      message: `Cache warmed for ${stats.usersWarmed} users, ${stats.cardsWarmed} cards total`
+    })
+
+  } catch (error) {
+    stats.errors++
+    stats.totalTime = Date.now() - startTime
+    // console.error('[CRON] Cache warming failed:', error)
+    // 
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stats,
+      timestamp: new Date().toISOString()
+    }, { status: 500 })
+  }
+}

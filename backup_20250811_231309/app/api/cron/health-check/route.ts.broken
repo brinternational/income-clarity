@@ -1,0 +1,350 @@
+/**
+ * Cron Job: Health Check
+ * Monitors system health and sends alerts if issues are detected
+ * Runs every minute to ensure quick issue detection
+ */
+
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
+import { LocalModeUtils } from '@/lib/config/local-mode'
+import { multiLevelCache } from '@/lib/cache-service'
+import { redis } from '@/lib/redis-client'
+
+export const runtime = 'nodejs'
+export const maxDuration = 30 // 30 seconds max for health check
+
+interface HealthCheckResults {
+  database: {
+    healthy: boolean
+    responseTime?: number
+    error?: string
+  }
+  cache: {
+    healthy: boolean
+    hitRate?: number
+    avgResponseTime?: number
+    l1Items?: number
+    l2Connected?: boolean
+    error?: string
+  }
+  redis: {
+    healthy: boolean
+    latency?: number
+    error?: string
+  }
+  api: {
+    healthy: boolean
+    responseTime?: number
+    error?: string
+  }
+  overall: {
+    healthy: boolean
+    score: number // 0-100 health score
+  }
+}
+
+interface HealthAlert {
+  type: 'warning' | 'critical'
+  component: string
+  message: string
+  timestamp: string
+}
+
+export async function GET(request: NextRequest) {
+  const startTime = Date.now()
+  const results: HealthCheckResults = {
+    database: { healthy: false },
+    cache: { healthy: false },
+    redis: { healthy: false },
+    api: { healthy: false },
+    overall: { healthy: false, score: 0 }
+  }
+  const alerts: HealthAlert[] = []
+  
+  try {
+    // LOCAL_MODE: Return healthy status
+    if (LocalModeUtils.isEnabled()) {
+      LocalModeUtils.log('Cron Health Check - LOCAL_MODE: Returning healthy status')
+      return NextResponse.json({ 
+        success: true, 
+        message: 'LOCAL_MODE - All systems healthy',
+        results: {
+          ...results,
+          database: { healthy: true, responseTime: 5 },
+          cache: { healthy: true, hitRate: 0.85, avgResponseTime: 10 },
+          redis: { healthy: true, latency: 5 },
+          api: { healthy: true, responseTime: 50 },
+          overall: { healthy: true, score: 100 }
+        },
+        alerts: [],
+        processingTime: Date.now() - startTime 
+      })
+    }
+    
+    // Verify this is a legitimate cron request (allow health check without auth)
+    const authHeader = request.headers.get('authorization')
+    const expectedAuth = `Bearer ${process.env.CRON_SECRET}`
+    
+    // For health checks, allow both authenticated and unauthenticated requests
+    const isAuthenticated = authHeader === expectedAuth
+    
+    // console.log('[HEALTH] Running system health check...')
+// 
+    // 1. Database Health Check
+    try {
+      const dbStartTime = Date.now()
+      
+      if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        throw new Error('Missing Supabase configuration')
+      }
+
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.SUPABASE_SERVICE_ROLE_KEY
+      )
+
+      // Simple query to test database connectivity
+      const { data, error } = await supabase
+        .from('users')
+        .select('count()')
+        .limit(1)
+        .single()
+      
+      if (error) {
+        throw new Error(error.message)
+      }
+      
+      results.database = {
+        healthy: true,
+        responseTime: Date.now() - dbStartTime
+      }
+      
+      // Alert if database response time is high
+      if (results.database.responseTime > 1000) {
+        alerts.push({
+          type: 'warning',
+          component: 'database',
+          message: `Database response time high: ${results.database.responseTime}ms`,
+          timestamp: new Date().toISOString()
+        })
+      }
+      
+    } catch (error) {
+      results.database = {
+        healthy: false,
+        error: error instanceof Error ? error.message : 'Unknown database error'
+      }
+      
+      alerts.push({
+        type: 'critical',
+        component: 'database',
+        message: `Database health check failed: ${results.database.error}`,
+        timestamp: new Date().toISOString()
+      })
+    }
+
+    // 2. Redis Health Check
+    try {
+      const redisHealth = await redis.healthCheck()
+      
+      results.redis = {
+        healthy: redisHealth.healthy,
+        latency: redisHealth.latency,
+        error: redisHealth.error
+      }
+      
+      // Alert if Redis is down or latency is high
+      if (!redisHealth.healthy) {
+        alerts.push({
+          type: 'warning',
+          component: 'redis',
+          message: `Redis connection failed: ${redisHealth.error}`,
+          timestamp: new Date().toISOString()
+        })
+      } else if (redisHealth.latency && redisHealth.latency > 50) {
+        alerts.push({
+          type: 'warning',
+          component: 'redis',
+          message: `Redis latency high: ${redisHealth.latency}ms`,
+          timestamp: new Date().toISOString()
+        })
+      }
+      
+    } catch (error) {
+      results.redis = {
+        healthy: false,
+        error: error instanceof Error ? error.message : 'Redis health check failed'
+      }
+      
+      alerts.push({
+        type: 'warning',
+        component: 'redis',
+        message: `Redis health check failed: ${results.redis.error}`,
+        timestamp: new Date().toISOString()
+      })
+    }
+
+    // 3. Cache Health Check
+    try {
+      const cacheStats = await multiLevelCache.getStats()
+      
+      results.cache = {
+        healthy: true,
+        hitRate: cacheStats.hitRate,
+        avgResponseTime: cacheStats.averageResponseTime,
+        l1Items: cacheStats.l1Stats.validItems,
+        l2Connected: cacheStats.l2Stats.connected
+      }
+      
+      // Alert if cache hit rate is low
+      if (cacheStats.hitRate < 0.7) {
+        alerts.push({
+          type: 'warning',
+          component: 'cache',
+          message: `Cache hit rate low: ${(cacheStats.hitRate * 100).toFixed(1)}%`,
+          timestamp: new Date().toISOString()
+        })
+      }
+      
+      // Alert if cache response time is high
+      if (cacheStats.averageResponseTime > 100) {
+        alerts.push({
+          type: 'warning',
+          component: 'cache',
+          message: `Cache response time high: ${cacheStats.averageResponseTime.toFixed(1)}ms`,
+          timestamp: new Date().toISOString()
+        })
+      }
+      
+    } catch (error) {
+      results.cache = {
+        healthy: false,
+        error: error instanceof Error ? error.message : 'Cache health check failed'
+      }
+      
+      alerts.push({
+        type: 'warning',
+        component: 'cache',
+        message: `Cache health check failed: ${results.cache.error}`,
+        timestamp: new Date().toISOString()
+      })
+    }
+
+    // 4. API Health Check (test super-cards endpoint)
+    try {
+      const apiStartTime = Date.now()
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+      
+      // Test a lightweight endpoint
+      const response = await fetch(`${baseUrl}/api/health`, {
+        method: 'GET',
+        timeout: 5000 // 5 second timeout
+      })
+      
+      if (response.ok) {
+        results.api = {
+          healthy: true,
+          responseTime: Date.now() - apiStartTime
+        }
+        
+        // Alert if API response time is high
+        if (results.api.responseTime > 2000) {
+          alerts.push({
+            type: 'warning',
+            component: 'api',
+            message: `API response time high: ${results.api.responseTime}ms`,
+            timestamp: new Date().toISOString()
+          })
+        }
+      } else {
+        throw new Error(`API returned status: ${response.status}`)
+      }
+      
+    } catch (error) {
+      results.api = {
+        healthy: false,
+        error: error instanceof Error ? error.message : 'API health check failed'
+      }
+      
+      alerts.push({
+        type: 'critical',
+        component: 'api',
+        message: `API health check failed: ${results.api.error}`,
+        timestamp: new Date().toISOString()
+      })
+    }
+
+    // 5. Calculate Overall Health Score
+    let healthScore = 0
+    let maxScore = 0
+    
+    // Database (40% weight)
+    if (results.database.healthy) {
+      healthScore += 40
+      if (results.database.responseTime && results.database.responseTime < 500) {
+        healthScore += 10 // Bonus for fast DB
+      }
+    }
+    maxScore += 40
+    
+    // API (30% weight)  
+    if (results.api.healthy) {
+      healthScore += 30
+      if (results.api.responseTime && results.api.responseTime < 1000) {
+        healthScore += 10 // Bonus for fast API
+      }
+    }
+    maxScore += 30
+    
+    // Cache (20% weight)
+    if (results.cache.healthy) {
+      healthScore += 20
+      if (results.cache.hitRate && results.cache.hitRate > 0.8) {
+        healthScore += 5 // Bonus for good cache performance
+      }
+    }
+    maxScore += 20
+    
+    // Redis (10% weight)
+    if (results.redis.healthy) {
+      healthScore += 10
+    }
+    maxScore += 10
+    
+    results.overall = {
+      healthy: healthScore >= maxScore * 0.8, // 80% threshold for healthy
+      score: Math.round((healthScore / maxScore) * 100)
+    }
+
+    // 6. Send alerts if authenticated and in production
+    if (isAuthenticated && alerts.length > 0 && process.env.NODE_ENV === 'production') {
+      // console.log(`[HEALTH] ${alerts.length} health alerts generated`)
+      // 
+      // In production, you would send alerts via email, Slack, etc.
+      for (const alert of alerts) {
+        // console.warn(`[HEALTH ALERT] ${alert.type.toUpperCase()}: ${alert.component} - ${alert.message}`)
+      // }
+    }
+
+    const totalTime = Date.now() - startTime
+
+    // console.log(`[HEALTH] Health check completed in ${totalTime}ms:
+  // - Overall score: ${results.overall.score}%
+  // - Database: ${results.database.healthy ? 'healthy' : 'unhealthy'}
+  // - API: ${results.api.healthy ? 'healthy' : 'unhealthy'}
+  // - Cache: ${results.cache.healthy ? 'healthy' : 'unhealthy'}
+  // - Redis: ${results.redis.healthy ? 'healthy' : 'unhealthy'}
+  // - Alerts: ${alerts.length}`)
+
+    return NextResponse.json({
+      success: true,
+      timestamp: new Date().toISOString(),
+      results,
+      alerts,
+      processingTime: totalTime,
+      message: `System health: ${results.overall.score}% (${alerts.length} alerts)`
+    })
+
+  } catch (error) {
+    // console.error('[HEALTH] Health check failed:', error)
+    return false // Fixed by emergency recovery script

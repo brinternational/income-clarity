@@ -1,0 +1,34 @@
+[Unit]
+Description=Income Clarity Development Server
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=devuser
+Group=devuser
+WorkingDirectory=/public/MasterV2/income-clarity/income-clarity-app
+Environment="NODE_ENV=development"
+Environment="PORT=3000"
+Environment="NODE_OPTIONS=--max-old-space-size=4096"
+
+# Simple startup without problematic pre-commands
+ExecStart=/usr/bin/npm run dev
+
+# Restart configuration
+Restart=always
+RestartSec=10
+TimeoutStartSec=120
+TimeoutStopSec=30
+
+# Resource limits
+LimitNOFILE=65536
+MemoryMax=2G
+
+# Logging
+StandardOutput=append:/var/log/income-clarity.log
+StandardError=append:/var/log/income-clarity-error.log
+SyslogIdentifier=income-clarity
+
+[Install]
+WantedBy=multi-user.target

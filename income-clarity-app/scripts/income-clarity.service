@@ -1,0 +1,44 @@
+[Unit]
+Description=Income Clarity Production Server
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/public/MasterV2/income-clarity/income-clarity-app
+Environment="NODE_ENV=production"
+Environment="PORT=3000"
+ExecStartPre=/bin/bash -c 'npm run build'
+ExecStart=/usr/bin/npm run start
+Restart=always
+RestartSec=10
+StandardOutput=append:/var/log/income-clarity.log
+StandardError=append:/var/log/income-clarity-error.log
+
+[Install]
+WantedBy=multi-user.target
+
+# Installation Instructions:
+# 1. Copy this file to systemd directory:
+#    sudo cp income-clarity.service /etc/systemd/system/
+#
+# 2. Reload systemd daemon:
+#    sudo systemctl daemon-reload
+#
+# 3. Enable the service to start on boot:
+#    sudo systemctl enable income-clarity
+#
+# 4. Start the service:
+#    sudo systemctl start income-clarity
+#
+# 5. Check service status:
+#    sudo systemctl status income-clarity
+#
+# 6. View logs:
+#    sudo journalctl -u income-clarity -f
+#
+# 7. Stop the service:
+#    sudo systemctl stop income-clarity
+#
+# 8. Restart the service:
+#    sudo systemctl restart income-clarity
