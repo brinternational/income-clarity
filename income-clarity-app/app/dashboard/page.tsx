@@ -9,7 +9,8 @@ import {
   Calculator,
   Target,
   ArrowRight,
-  LayoutGrid
+  LayoutGrid,
+  Layers
 } from 'lucide-react'
 
 export default function Dashboard() {
@@ -28,7 +29,29 @@ export default function Dashboard() {
           </div>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {/* NEW: Unified Super Cards View */}
+            <Link href="/dashboard/super-cards-unified" className="block">
+              <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg shadow-lg hover:shadow-xl transition-all p-6 text-white relative overflow-hidden">
+                <div className="absolute top-0 right-0 -mt-4 -mr-4 bg-yellow-400 text-indigo-900 rounded-full px-3 py-1 text-xs font-bold transform rotate-12">
+                  NEW!
+                </div>
+                <div className="flex items-center mb-4">
+                  <Layers className="h-8 w-8 mr-3" />
+                  <h2 className="text-xl font-semibold">
+                    Unified View
+                  </h2>
+                </div>
+                <p className="text-white/90 mb-4">
+                  All 5 Super Cards on one screen - see everything at once!
+                </p>
+                <div className="flex items-center">
+                  <span className="text-sm font-medium">Try New Experience</span>
+                  <ArrowRight className="h-4 w-4 ml-1" />
+                </div>
+              </div>
+            </Link>
+
             <Link href="/dashboard/super-cards" className="block">
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-shadow p-6 border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center mb-4">
