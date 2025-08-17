@@ -200,25 +200,115 @@ const useSuperCardStore = create<SuperCardStore>((set, get) => ({
     console.log(`🎉 Celebrating: ${type || 'achievement'}!`);
   },
   
-  // Global fetch methods - mock implementations
+  // Global fetch methods - FIXED to use real API
   fetchIncomeHub: async () => {
-    const mockData = {
-      monthlyIncome: 4500,
-      monthlyDividendIncome: 380,
-      incomeClarityData: { grossMonthly: 4500, netMonthly: 3200 },
-      expenseMilestones: [],
-      availableToReinvest: 800
-    };
-    return mockData;
+    try {
+      const response = await fetch('/api/super-cards/income-hub', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Income Hub API error: ${response.status}`);
+      }
+      const data = await response.json();
+      
+      // Update store with real data
+      set({
+        monthlyIncome: data.monthlyIncome || 0,
+        monthlyDividendIncome: data.monthlyDividendIncome || 0,
+        incomeClarityData: data.incomeClarityData || null,
+        expenseMilestones: data.expenseMilestones || [],
+        availableToReinvest: data.availableToReinvest || 0,
+        lastUpdated: new Date()
+      });
+      
+      return data;
+    } catch (error) {
+      console.error('Error fetching Income Hub data:', error);
+      set({ error: error.message });
+      
+      // Return fallback data on error
+      const fallbackData = {
+        monthlyIncome: 0,
+        monthlyDividendIncome: 0,
+        incomeClarityData: {
+          grossMonthly: 0,
+          taxOwed: 0,
+          netMonthly: 0,
+          monthlyExpenses: 0,
+          availableToReinvest: 0,
+          aboveZeroLine: false
+        },
+        expenseMilestones: [],
+        availableToReinvest: 0,
+        isEmpty: true,
+        error: true
+      };
+      
+      set({
+        monthlyIncome: fallbackData.monthlyIncome,
+        monthlyDividendIncome: fallbackData.monthlyDividendIncome,
+        incomeClarityData: fallbackData.incomeClarityData,
+        expenseMilestones: fallbackData.expenseMilestones,
+        availableToReinvest: fallbackData.availableToReinvest
+      });
+      
+      return fallbackData;
+    }
   },
   
   fetchPerformanceHub: async () => {
-    const mockData = {
-      performanceData: { totalReturn: 0.12 },
-      spyComparison: { outperformance: 0.03 },
-      holdings: []
-    };
-    return mockData;
+    try {
+      const response = await fetch('/api/super-cards/performance-hub', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Performance Hub API error: ${response.status}`);
+      }
+      const data = await response.json();
+      
+      // Update store with real data
+      set({
+        performanceData: data,
+        spyComparison: data.spyComparison || null,
+        holdings: data.holdings || [],
+        portfolioValue: data.portfolioValue || 0,
+        timePeriodData: data.timePeriodData || null,
+        spyOutperformance: data.spyOutperformance || 0,
+        lastUpdated: new Date()
+      });
+      
+      return data;
+    } catch (error) {
+      console.error('Error fetching Performance Hub data:', error);
+      set({ error: error.message });
+      
+      // Return fallback data on error
+      const fallbackData = {
+        portfolioValue: 0,
+        spyComparison: { portfolioReturn: 0, spyReturn: 0, outperformance: 0 },
+        holdings: [],
+        timePeriodData: null,
+        spyOutperformance: 0,
+        error: true
+      };
+      
+      set({
+        performanceData: fallbackData,
+        spyComparison: fallbackData.spyComparison,
+        holdings: fallbackData.holdings,
+        portfolioValue: fallbackData.portfolioValue,
+        timePeriodData: fallbackData.timePeriodData,
+        spyOutperformance: fallbackData.spyOutperformance
+      });
+      
+      return fallbackData;
+    }
   },
   
   fetchPortfolioHub: async () => {
@@ -239,12 +329,61 @@ const useSuperCardStore = create<SuperCardStore>((set, get) => ({
   },
   
   fetchPlanningHub: async () => {
-    const mockData = {
-      fireProgress: 23.5,
-      milestones: [],
-      aboveZeroStreak: 8
-    };
-    return mockData;
+    try {
+      const response = await fetch('/api/super-cards/financial-planning-hub', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Financial Planning Hub API error: ${response.status}`);
+      }
+      const data = await response.json();
+      
+      // Update store with real data
+      set({
+        planningData: data,
+        fireProgress: data.fireProgress || 0,
+        milestones: data.milestones || [],
+        aboveZeroStreak: data.aboveZeroStreak || 0,
+        currentSavingsRate: data.currentSavingsRate || 0,
+        monthlyInvestment: data.monthlyInvestment || 0,
+        netWorth: data.netWorthBreakdown?.total || 0,
+        isAboveZero: data.aboveZeroStreak > 0,
+        lastUpdated: new Date()
+      });
+      
+      return data;
+    } catch (error) {
+      console.error('Error fetching Planning Hub data:', error);
+      set({ error: error.message });
+      
+      // Return fallback data on error
+      const fallbackData = {
+        fireProgress: 0,
+        milestones: [],
+        aboveZeroStreak: 0,
+        currentSavingsRate: 0,
+        monthlyInvestment: 0,
+        netWorth: 0,
+        isAboveZero: false,
+        error: true
+      };
+      
+      set({
+        planningData: fallbackData,
+        fireProgress: fallbackData.fireProgress,
+        milestones: fallbackData.milestones,
+        aboveZeroStreak: fallbackData.aboveZeroStreak,
+        currentSavingsRate: fallbackData.currentSavingsRate,
+        monthlyInvestment: fallbackData.monthlyInvestment,
+        netWorth: fallbackData.netWorth,
+        isAboveZero: fallbackData.isAboveZero
+      });
+      
+      return fallbackData;
+    }
   },
   
   // Optimistic update methods
