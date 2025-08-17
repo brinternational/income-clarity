@@ -138,6 +138,9 @@ const TaxStrategyHubComponent = ({
   const taxHub = useTaxHub();
   const { updateData, setLoading, setError } = useTaxActions();
   const { taxSettings, taxProjections, loading: hubLoading } = taxHub;
+  
+  // When data prop is provided, use it directly; otherwise use store data
+  const displayData = data || taxHub;
 
   // Fetch Tax Hub data from API
   const fetchTaxData = useCallback(async () => {
@@ -166,12 +169,15 @@ const TaxStrategyHubComponent = ({
   }, [setLoading, setError, updateData]);
 
   // Fetch data on mount
+  // Only fetch if no external data provided
   useEffect(() => {
-    fetchTaxData();
-  }, [fetchTaxData]);
+    if (!data) {
+      fetchTaxData();
+    }
+  }, [data]); // Remove fetchTaxData from deps and include data
 
   // If data prop is provided (from unified view), use it to override defaults
-  const effectiveTaxData = data?.taxData ?? taxData ?? taxProjections;
+  const effectiveTaxData = data?.taxData ?? taxData ?? displayData.taxProjections;
   
   // Default tax data - Puerto Rico advantage
   const activeData = effectiveTaxData || {
@@ -289,7 +295,7 @@ const TaxStrategyHubComponent = ({
 
   const currentTabIndex = TABS.findIndex(tab => tab.id === activeTab);
 
-  if (isLoading || hubLoading) {
+  if (isLoading || (displayData.loading && !data)) {
     return (
       <motion.div 
         className="premium-card p-6"

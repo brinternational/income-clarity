@@ -141,6 +141,9 @@ const IncomeIntelligenceHubComponent = ({
   const { updateData, setLoading, setError } = useIncomeActions();
   const { incomeClarityData, loading: profileLoading, expenseMilestones, monthlyDividendIncome } = incomeHub;
   
+  // When data prop is provided, use it directly; otherwise use store data
+  const displayData = data || incomeHub;
+  
   const [incomeViewMode, setIncomeViewMode] = useState<IncomeViewMode>(() => {
     // Load from localStorage with fallback to initialViewMode
     if (typeof window !== 'undefined') {
@@ -207,7 +210,7 @@ const IncomeIntelligenceHubComponent = ({
   });
 
   // If data prop is provided (from unified view), use it to override defaults
-  const effectiveClarityData = data?.incomeClarityData ?? clarityData ?? incomeClarityData;
+  const effectiveClarityData = data?.incomeClarityData ?? clarityData ?? displayData.incomeClarityData;
   
   // Use provided data or context data
   const activeData = effectiveClarityData || {
@@ -234,9 +237,12 @@ const IncomeIntelligenceHubComponent = ({
   );
 
   // Fetch data on mount
+  // Only fetch if no external data provided
   useEffect(() => {
-    fetchIncomeData();
-  }, [fetchIncomeData]);
+    if (!data) {
+      fetchIncomeData();
+    }
+  }, [data]); // Remove fetchIncomeData from deps and include data
 
   useEffect(() => {
     setIsVisible(true);
@@ -327,7 +333,7 @@ const IncomeIntelligenceHubComponent = ({
 
   const currentTabIndex = TABS.findIndex(tab => tab.id === activeTab);
 
-  if (isLoading || profileLoading) {
+  if (isLoading || (displayData.loading && !data)) {
     return <SkeletonIncomeClarityCard />;
   }
 
@@ -647,7 +653,7 @@ const IncomeIntelligenceHubComponent = ({
           {activeTab === 'calendar' && (
             <div className="space-y-6">
               <DividendCalendar 
-                events={incomeHub.dividendSchedule || []}
+                events={displayData.dividendSchedule || []}
                 className="border-0 bg-transparent shadow-none p-0"
               />
               

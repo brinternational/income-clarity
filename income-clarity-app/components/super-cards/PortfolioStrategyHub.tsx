@@ -130,9 +130,12 @@ const PortfolioStrategyHubComponent = ({
   const portfolioHub = usePortfolioHub();
   const { updateData, setLoading, setError } = usePortfolioActions();
   const { portfolioHealth, strategyComparison, loading: hubLoading } = portfolioHub;
+  
+  // When data prop is provided, use it directly; otherwise use store data
+  const displayData = data || portfolioHub;
 
   // If data prop is provided (from unified view), use it to override defaults
-  const effectiveStrategyData = data?.strategyData ?? strategyData ?? portfolioHealth;
+  const effectiveStrategyData = data?.strategyData ?? strategyData ?? displayData.portfolioHealth;
   
   // Default strategy data with strong portfolio health
   const activeData = effectiveStrategyData || {
@@ -182,9 +185,12 @@ const PortfolioStrategyHubComponent = ({
   }, [setLoading, setError, updateData]);
 
   // Fetch data on mount
+  // Only fetch if no external data provided
   useEffect(() => {
-    fetchPortfolioData();
-  }, [fetchPortfolioData]);
+    if (!data) {
+      fetchPortfolioData();
+    }
+  }, [data]); // Remove fetchPortfolioData from deps and include data
 
   useEffect(() => {
     setIsVisible(true);
@@ -298,7 +304,7 @@ const PortfolioStrategyHubComponent = ({
 
   const currentTabIndex = TABS.findIndex(tab => tab.id === activeTab);
 
-  if (isLoading || hubLoading) {
+  if (isLoading || (displayData.loading && !data)) {
     return (
       <motion.div 
         className="premium-card p-6"

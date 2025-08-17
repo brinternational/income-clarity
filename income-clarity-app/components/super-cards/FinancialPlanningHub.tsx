@@ -140,6 +140,9 @@ const FinancialPlanningHubComponent = ({
   const { updateData, setLoading, setError } = usePlanningActions();
   const { fireData, expenseMilestones, aboveZeroData, loading: hubLoading } = planningHub;
   
+  // When data prop is provided, use it directly; otherwise use store data
+  const displayData = data || planningHub;
+  
   // Get expense milestones from income hub (correct data structure for ExpenseMilestones component)
   const expenseMilestonesData = useExpenseMilestones();
   const incomeExpenseMilestones = expenseMilestonesData.expenseMilestones;
@@ -147,7 +150,7 @@ const FinancialPlanningHubComponent = ({
   const { totalExpenseCoverage } = incomeHub;
 
   // If data prop is provided (from unified view), use it to override defaults
-  const effectivePlanningData = data?.planningData ?? planningData ?? fireData;
+  const effectivePlanningData = data?.planningData ?? planningData ?? displayData.fireData;
   
   // Default planning data - optimistic FIRE journey
   const activeData = effectivePlanningData || {
@@ -201,9 +204,12 @@ const FinancialPlanningHubComponent = ({
   }, [setLoading, setError, updateData]);
 
   // Fetch data on mount
+  // Only fetch if no external data provided
   useEffect(() => {
-    fetchPlanningData();
-  }, [fetchPlanningData]);
+    if (!data) {
+      fetchPlanningData();
+    }
+  }, [data]); // Remove fetchPlanningData from deps and include data
 
   useEffect(() => {
     setIsVisible(true);
@@ -335,7 +341,7 @@ const FinancialPlanningHubComponent = ({
 
   const currentTabIndex = TABS.findIndex(tab => tab.id === activeTab);
 
-  if (isLoading || hubLoading) {
+  if (isLoading || (displayData.loading && !data)) {
     return (
       <motion.div 
         className="premium-card p-6"

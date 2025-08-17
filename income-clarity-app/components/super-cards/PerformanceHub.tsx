@@ -131,8 +131,9 @@ const PerformanceHubComponent = ({
   const heroMetric = spyComparison?.outperformance || effectiveOutperformance;
   const isBeatingMarket = heroMetric > 0;
   
-  // Use store time period data if available, otherwise fall back to effective values
-  const activeTimePeriodData = storeTimePeriodData || effectiveTimePeriodData;
+  // When data prop is provided, use it directly; otherwise use store data
+  const displayData = data || performanceHub;
+  const activeTimePeriodData = data?.timePeriodData || storeTimePeriodData || effectiveTimePeriodData;
 
   // Animated values for hero metric
   const animatedValues = useStaggeredCountingAnimation(
@@ -172,9 +173,12 @@ const PerformanceHubComponent = ({
   }, [setLoading, setError, updateData]);
 
   // Fetch data on mount and when time period changes
+  // Only fetch if no external data provided
   useEffect(() => {
-    fetchPerformanceData(selectedTimePeriod as TimeRange);
-  }, [selectedTimePeriod]); // Remove fetchPerformanceData from deps to prevent infinite loop
+    if (!data) {
+      fetchPerformanceData(selectedTimePeriod as TimeRange);
+    }
+  }, [selectedTimePeriod, data]); // Include data in deps to react to changes
 
   useEffect(() => {
     setIsVisible(true);
@@ -290,7 +294,7 @@ const PerformanceHubComponent = ({
   const currentTabIndex = TABS.findIndex(tab => tab.id === activeTab);
 
   // Enhanced loading and error states
-  if (isLoading || performanceHub.loading) {
+  if (isLoading || (displayData.loading && !data)) {
     return (
       <motion.div 
         className="premium-card p-6"
@@ -313,7 +317,7 @@ const PerformanceHubComponent = ({
     );
   }
 
-  if (performanceHub.error) {
+  if (displayData.error && !data) {
     return (
       <motion.div 
         className="premium-card p-6 border-alert-200 bg-alert-50"
@@ -323,7 +327,7 @@ const PerformanceHubComponent = ({
         <div className="text-center space-y-4">
           <div className="text-alert-600 text-4xl mb-4">⚠️</div>
           <h3 className="text-lg font-semibold text-alert-800">Performance Data Unavailable</h3>
-          <p className="text-alert-600 text-sm">{performanceHub.error}</p>
+          <p className="text-alert-600 text-sm">{displayData.error}</p>
           <button 
             onClick={() => fetchPerformanceData(selectedTimePeriod as TimeRange)} 
             className="px-4 py-2 bg-alert-600 text-white rounded-lg hover:bg-alert-700 transition-colors"
@@ -465,11 +469,11 @@ const PerformanceHubComponent = ({
             
             <button
               onClick={() => fetchPerformanceData(selectedTimePeriod as TimeRange)}
-              disabled={performanceHub.loading}
+              disabled={displayData.loading}
               className="p-2 text-slate-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Refresh data"
             >
-              <svg className={`w-5 h-5 ${performanceHub.loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-5 h-5 ${displayData.loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
             </button>
@@ -568,7 +572,7 @@ const PerformanceHubComponent = ({
           {activeTab === 'overview' && (
             <div className="space-y-6">
               <PerformanceChart 
-                data={performanceHub.chartData}
+                data={displayData.chartData}
                 timeframe={selectedTimePeriod as any}
                 showDividends={true}
                 className="border-0 bg-transparent shadow-none p-0"
@@ -627,7 +631,7 @@ const PerformanceHubComponent = ({
           {activeTab === 'holdings' && (
             <div className="space-y-6">
               <YieldOnCostAnalysis 
-                holdings={performanceHub.holdings || []}
+                holdings={displayData.holdings || []}
                 className="border-0 bg-transparent shadow-none p-0"
               />
               
@@ -641,7 +645,7 @@ const PerformanceHubComponent = ({
           {activeTab === 'analysis' && (
             <div className="space-y-6">
               <PortfolioComposition 
-                data={performanceHub.holdings || []}
+                data={displayData.holdings || []}
                 className="border-0 bg-transparent shadow-none p-0"
               />
               
