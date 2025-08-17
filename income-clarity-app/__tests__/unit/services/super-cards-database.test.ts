@@ -3,7 +3,7 @@
  * Tests database operations for all super card hubs
  */
 
-import { superCardsDatabase } from '@/lib/services/super-cards-database.service'
+import { superCardsDatabase } from '@/lib/services/super-cards-db/super-cards-database.service'
 
 // Mock better-sqlite3
 const mockDb = {

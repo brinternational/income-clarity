@@ -1,45 +1,219 @@
-<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="33.90169">
-<testsuite name="auth-flow.spec.ts" timestamp="2025-08-15T19:12:15.795Z" hostname="chromium" tests="1" failures="1" skipped="0" time="30.605" errors="0">
-<testcase name="Authentication Flow › should complete signup flow successfully" classname="auth-flow.spec.ts" time="30.605">
-<failure message="auth-flow.spec.ts:14:7 should complete signup flow successfully" type="FAILURE">
-<![CDATA[  [chromium] › auth-flow.spec.ts:14:7 › Authentication Flow › should complete signup flow successfully 
+<testsuites id="" name="" tests="7" failures="7" skipped="0" errors="0" time="10.904825">
+<testsuite name="auth-flow.spec.ts" timestamp="2025-08-17T12:26:08.422Z" hostname="chromium" tests="1" failures="1" skipped="0" time="0.008" errors="0">
+<testcase name="Authentication Flow › should login with existing credentials" classname="auth-flow.spec.ts" time="0.008">
+<failure message="auth-flow.spec.ts:36:7 should login with existing credentials" type="FAILURE">
+<![CDATA[  [chromium] › auth-flow.spec.ts:36:7 › Authentication Flow › should login with existing credentials 
 
-    Test timeout of 30000ms exceeded.
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
 
-    Error: page.fill: Test timeout of 30000ms exceeded.
+    ╔════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like you launched a headed browser without having a XServer running.                     ║
+    ║ Set either 'headless: true' or use 'xvfb-run <your-playwright-app>' before running Playwright. ║
+    ║                                                                                                ║
+    ║ <3 Playwright Team                                                                             ║
+    ╚════════════════════════════════════════════════════════════════════════════════════════════════╝
     Call log:
-      - waiting for locator('input[name="name"]')
+      - <launching> /home/devuser/.cache/ms-playwright/chromium-1181/chrome-linux/chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AutoExpandDetailsElement,AvoidUnnecessaryBeforeUnloadCheckSync,CertificateTransparencyComponentUpdater,DestroyProfileOnBrowserClose,DialMediaRouteProvider,ExtensionManifestV2Disabled,GlobalMediaControls,HttpsUpgrades,ImprovedCookieControls,LazyFrameLoading,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --no-sandbox --user-data-dir=/tmp/playwright_chromiumdev_profile-dyBb9a --remote-debugging-pipe --no-startup-window
+      - <launched> pid=101591
+      - [pid=101591][err] [101591:101591:0817/122609.701687:ERROR:ui/ozone/platform/x11/ozone_platform_x11.cc:249] Missing X server or $DISPLAY
+      - [pid=101591][err] [101591:101591:0817/122609.701753:ERROR:ui/aura/env.cc:257] The platform failed to initialize.  Exiting.
 
-
-      22 |     await page.fill('input[type="email"]', 'newuser@example.com')
-      23 |     await page.fill('input[type="password"]', 'password123')
-    > 24 |     await page.fill('input[name="name"]', 'New User')
-         |                ^
-      25 |     
-      26 |     // Submit form
-      27 |     await page.click('button[type="submit"]')
-        at /public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e/auth-flow.spec.ts:24:16
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ../../test-results/auth-flow-Authentication-F-b0393-te-signup-flow-successfully-chromium/test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    ../../test-results/auth-flow-Authentication-F-b0393-te-signup-flow-successfully-chromium/video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ../../test-results/auth-flow-Authentication-F-b0393-te-signup-flow-successfully-chromium/error-context.md
 ]]>
 </failure>
-<system-out>
-<![CDATA[
-[[ATTACHMENT|../test-results/auth-flow-Authentication-F-b0393-te-signup-flow-successfully-chromium/test-failed-1.png]]
+</testcase>
+</testsuite>
+<testsuite name="auth-flow.spec.ts" timestamp="2025-08-17T12:26:08.422Z" hostname="firefox" tests="1" failures="1" skipped="0" time="0.01" errors="0">
+<testcase name="Authentication Flow › should login with existing credentials" classname="auth-flow.spec.ts" time="0.01">
+<failure message="auth-flow.spec.ts:36:7 should login with existing credentials" type="FAILURE">
+<![CDATA[  [firefox] › auth-flow.spec.ts:36:7 › Authentication Flow › should login with existing credentials 
 
-[[ATTACHMENT|../test-results/auth-flow-Authentication-F-b0393-te-signup-flow-successfully-chromium/video.webm]]
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
 
-[[ATTACHMENT|../test-results/auth-flow-Authentication-F-b0393-te-signup-flow-successfully-chromium/error-context.md]]
+    ╔════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like you launched a headed browser without having a XServer running.                     ║
+    ║ Set either 'headless: true' or use 'xvfb-run <your-playwright-app>' before running Playwright. ║
+    ║                                                                                                ║
+    ║ <3 Playwright Team                                                                             ║
+    ╚════════════════════════════════════════════════════════════════════════════════════════════════╝
+    Call log:
+      - <launching> /home/devuser/.cache/ms-playwright/firefox-1489/firefox/firefox -no-remote -wait-for-browser -foreground -profile /tmp/playwright_firefoxdev_profile-rD6AYl -juggler-pipe -silent
+      - <launched> pid=101624
+      - [pid=101624][err] Error: no DISPLAY environment variable specified
+      - [pid=101624] <process did exit: exitCode=1, signal=null>
+      - [pid=101624] starting temporary directories cleanup
+
 ]]>
-</system-out>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="auth-flow.spec.ts" timestamp="2025-08-17T12:26:08.422Z" hostname="webkit" tests="1" failures="1" skipped="0" time="0.006" errors="0">
+<testcase name="Authentication Flow › should login with existing credentials" classname="auth-flow.spec.ts" time="0.006">
+<failure message="auth-flow.spec.ts:36:7 should login with existing credentials" type="FAILURE">
+<![CDATA[  [webkit] › auth-flow.spec.ts:36:7 › Authentication Flow › should login with existing credentials ─
+
+    Error: browserType.launch: 
+    ╔══════════════════════════════════════════════════════╗
+    ║ Host system is missing dependencies to run browsers. ║
+    ║ Missing libraries:                                   ║
+    ║     libgtk-4.so.1                                    ║
+    ║     libgraphene-1.0.so.0                             ║
+    ║     libicudata.so.74                                 ║
+    ║     libicui18n.so.74                                 ║
+    ║     libicuuc.so.74                                   ║
+    ║     libwoff2dec.so.1.0.2                             ║
+    ║     libvpx.so.9                                      ║
+    ║     libevent-2.1.so.7                                ║
+    ║     libopus.so.0                                     ║
+    ║     libgstallocators-1.0.so.0                        ║
+    ║     libgstapp-1.0.so.0                               ║
+    ║     libgstpbutils-1.0.so.0                           ║
+    ║     libgstaudio-1.0.so.0                             ║
+    ║     libgsttag-1.0.so.0                               ║
+    ║     libgstvideo-1.0.so.0                             ║
+    ║     libgstgl-1.0.so.0                                ║
+    ║     libgstcodecparsers-1.0.so.0                      ║
+    ║     libgstfft-1.0.so.0                               ║
+    ║     libflite.so.1                                    ║
+    ║     libflite_usenglish.so.1                          ║
+    ║     libflite_cmu_grapheme_lang.so.1                  ║
+    ║     libflite_cmu_grapheme_lex.so.1                   ║
+    ║     libflite_cmu_indic_lang.so.1                     ║
+    ║     libflite_cmu_indic_lex.so.1                      ║
+    ║     libflite_cmulex.so.1                             ║
+    ║     libflite_cmu_time_awb.so.1                       ║
+    ║     libflite_cmu_us_awb.so.1                         ║
+    ║     libflite_cmu_us_kal16.so.1                       ║
+    ║     libflite_cmu_us_kal.so.1                         ║
+    ║     libflite_cmu_us_rms.so.1                         ║
+    ║     libflite_cmu_us_slt.so.1                         ║
+    ║     libwebpdemux.so.2                                ║
+    ║     libavif.so.16                                    ║
+    ║     libharfbuzz-icu.so.0                             ║
+    ║     libwebpmux.so.3                                  ║
+    ║     libenchant-2.so.2                                ║
+    ║     libsecret-1.so.0                                 ║
+    ║     libhyphen.so.0                                   ║
+    ║     libmanette-0.2.so.0                              ║
+    ║     libx264.so                                       ║
+    ╚══════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="auth-flow.spec.ts" timestamp="2025-08-17T12:26:08.422Z" hostname="Mobile Chrome" tests="1" failures="1" skipped="0" time="0.006" errors="0">
+<testcase name="Authentication Flow › should login with existing credentials" classname="auth-flow.spec.ts" time="0.006">
+<failure message="auth-flow.spec.ts:36:7 should login with existing credentials" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › auth-flow.spec.ts:36:7 › Authentication Flow › should login with existing credentials 
+
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    ╔════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like you launched a headed browser without having a XServer running.                     ║
+    ║ Set either 'headless: true' or use 'xvfb-run <your-playwright-app>' before running Playwright. ║
+    ║                                                                                                ║
+    ║ <3 Playwright Team                                                                             ║
+    ╚════════════════════════════════════════════════════════════════════════════════════════════════╝
+    Call log:
+      - <launching> /home/devuser/.cache/ms-playwright/chromium-1181/chrome-linux/chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AutoExpandDetailsElement,AvoidUnnecessaryBeforeUnloadCheckSync,CertificateTransparencyComponentUpdater,DestroyProfileOnBrowserClose,DialMediaRouteProvider,ExtensionManifestV2Disabled,GlobalMediaControls,HttpsUpgrades,ImprovedCookieControls,LazyFrameLoading,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --no-sandbox --user-data-dir=/tmp/playwright_chromiumdev_profile-KZa0P2 --remote-debugging-pipe --no-startup-window
+      - <launched> pid=101982
+      - [pid=101982][err] [101982:101982:0817/122614.506858:ERROR:ui/ozone/platform/x11/ozone_platform_x11.cc:249] Missing X server or $DISPLAY
+      - [pid=101982][err] [101982:101982:0817/122614.508952:ERROR:ui/aura/env.cc:257] The platform failed to initialize.  Exiting.
+
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="auth-flow.spec.ts" timestamp="2025-08-17T12:26:08.422Z" hostname="Mobile Safari" tests="1" failures="1" skipped="0" time="0.008" errors="0">
+<testcase name="Authentication Flow › should login with existing credentials" classname="auth-flow.spec.ts" time="0.008">
+<failure message="auth-flow.spec.ts:36:7 should login with existing credentials" type="FAILURE">
+<![CDATA[  [Mobile Safari] › auth-flow.spec.ts:36:7 › Authentication Flow › should login with existing credentials 
+
+    Error: browserType.launch: 
+    ╔══════════════════════════════════════════════════════╗
+    ║ Host system is missing dependencies to run browsers. ║
+    ║ Missing libraries:                                   ║
+    ║     libgtk-4.so.1                                    ║
+    ║     libgraphene-1.0.so.0                             ║
+    ║     libicudata.so.74                                 ║
+    ║     libicui18n.so.74                                 ║
+    ║     libicuuc.so.74                                   ║
+    ║     libwoff2dec.so.1.0.2                             ║
+    ║     libvpx.so.9                                      ║
+    ║     libevent-2.1.so.7                                ║
+    ║     libopus.so.0                                     ║
+    ║     libgstallocators-1.0.so.0                        ║
+    ║     libgstapp-1.0.so.0                               ║
+    ║     libgstpbutils-1.0.so.0                           ║
+    ║     libgstaudio-1.0.so.0                             ║
+    ║     libgsttag-1.0.so.0                               ║
+    ║     libgstvideo-1.0.so.0                             ║
+    ║     libgstgl-1.0.so.0                                ║
+    ║     libgstcodecparsers-1.0.so.0                      ║
+    ║     libgstfft-1.0.so.0                               ║
+    ║     libflite.so.1                                    ║
+    ║     libflite_usenglish.so.1                          ║
+    ║     libflite_cmu_grapheme_lang.so.1                  ║
+    ║     libflite_cmu_grapheme_lex.so.1                   ║
+    ║     libflite_cmu_indic_lang.so.1                     ║
+    ║     libflite_cmu_indic_lex.so.1                      ║
+    ║     libflite_cmulex.so.1                             ║
+    ║     libflite_cmu_time_awb.so.1                       ║
+    ║     libflite_cmu_us_awb.so.1                         ║
+    ║     libflite_cmu_us_kal16.so.1                       ║
+    ║     libflite_cmu_us_kal.so.1                         ║
+    ║     libflite_cmu_us_rms.so.1                         ║
+    ║     libflite_cmu_us_slt.so.1                         ║
+    ║     libwebpdemux.so.2                                ║
+    ║     libavif.so.16                                    ║
+    ║     libharfbuzz-icu.so.0                             ║
+    ║     libwebpmux.so.3                                  ║
+    ║     libenchant-2.so.2                                ║
+    ║     libsecret-1.so.0                                 ║
+    ║     libhyphen.so.0                                   ║
+    ║     libmanette-0.2.so.0                              ║
+    ║     libx264.so                                       ║
+    ╚══════════════════════════════════════════════════════╝
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="auth-flow.spec.ts" timestamp="2025-08-17T12:26:08.422Z" hostname="Microsoft Edge" tests="1" failures="1" skipped="0" time="0.006" errors="0">
+<testcase name="Authentication Flow › should login with existing credentials" classname="auth-flow.spec.ts" time="0.006">
+<failure message="auth-flow.spec.ts:36:7 should login with existing credentials" type="FAILURE">
+<![CDATA[  [Microsoft Edge] › auth-flow.spec.ts:36:7 › Authentication Flow › should login with existing credentials 
+
+    Error: browserType.launch: Chromium distribution 'msedge' is not found at /opt/microsoft/msedge/msedge
+    Run "npx playwright install msedge"
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="auth-flow.spec.ts" timestamp="2025-08-17T12:26:08.422Z" hostname="Google Chrome" tests="1" failures="1" skipped="0" time="0.008" errors="0">
+<testcase name="Authentication Flow › should login with existing credentials" classname="auth-flow.spec.ts" time="0.008">
+<failure message="auth-flow.spec.ts:36:7 should login with existing credentials" type="FAILURE">
+<![CDATA[  [Google Chrome] › auth-flow.spec.ts:36:7 › Authentication Flow › should login with existing credentials 
+
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    ╔════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ Looks like you launched a headed browser without having a XServer running.                     ║
+    ║ Set either 'headless: true' or use 'xvfb-run <your-playwright-app>' before running Playwright. ║
+    ║                                                                                                ║
+    ║ <3 Playwright Team                                                                             ║
+    ╚════════════════════════════════════════════════════════════════════════════════════════════════╝
+    Call log:
+      - <launching> /opt/google/chrome/chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AutoExpandDetailsElement,AvoidUnnecessaryBeforeUnloadCheckSync,CertificateTransparencyComponentUpdater,DestroyProfileOnBrowserClose,DialMediaRouteProvider,ExtensionManifestV2Disabled,GlobalMediaControls,HttpsUpgrades,ImprovedCookieControls,LazyFrameLoading,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --no-sandbox --user-data-dir=/tmp/playwright_chromiumdev_profile-jNZLyP --remote-debugging-pipe --no-startup-window
+      - <launched> pid=102371
+      - [pid=102371][err] [0817/122618.809058:WARNING:chrome/app/chrome_main_linux.cc:82] Read channel stable from /opt/google/chrome/CHROME_VERSION_EXTRA
+      - [pid=102371][err] [102371:102371:0817/122618.870832:ERROR:ui/ozone/platform/x11/ozone_platform_x11.cc:249] Missing X server or $DISPLAY
+      - [pid=102371][err] [102371:102371:0817/122618.870853:ERROR:ui/aura/env.cc:257] The platform failed to initialize.  Exiting.
+
+]]>
+</failure>
 </testcase>
 </testsuite>
 </testsuites>

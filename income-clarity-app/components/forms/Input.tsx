@@ -144,6 +144,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {error && errorMessage && (
           <p 
             id={errorId}
+            data-testid={`${inputId}-error`}
             className="mt-1 text-sm text-red-400 form-field-error"
             role="alert"
           >

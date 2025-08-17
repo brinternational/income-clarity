@@ -28,7 +28,10 @@ import { WhatIfScenarios } from '@/components/planning/WhatIfScenarios';
 import { useStaggeredCountingAnimation } from '@/hooks/useOptimizedAnimation';
 import { MilestoneTracker, DividendProjections } from '@/components/charts';
 import { superCardsAPI } from '@/lib/api/super-cards-api';
-import { logger } from '@/lib/logger'
+import { logger } from '@/lib/logger';
+import { DataSourceBadge, FreshnessIndicator, useSyncStatus } from '@/components/sync';
+import { useFeatureAccess, CompactUpgradePrompt } from '@/components/premium';
+import { useUser } from '@/hooks/useUser';
 
 interface FinancialPlanningHubProps {
   data?: any; // For unified view compatibility
@@ -128,6 +131,10 @@ const FinancialPlanningHubComponent = ({
   const [touchEnd, setTouchEnd] = useState<number>(0);
   const [loadStartTime] = useState(() => performance.now());
   const [isLoaded, setIsLoaded] = useState(false);
+  
+  const { user } = useUser();
+  const { isPremium, isFreeTier } = useFeatureAccess();
+  const { lastSyncTime, triggerSync } = useSyncStatus(user?.id || '');
   
   const planningHub = usePlanningHub();
   const { updateData, setLoading, setError } = usePlanningActions();
@@ -488,21 +495,58 @@ const FinancialPlanningHubComponent = ({
       {/* Tab Navigation */}
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
-            Financial Planning Hub
-          </h3>
+          <div className="flex items-center gap-3">
+            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
+              Financial Planning Hub
+            </h3>
+            
+            {/* Data Completeness Indicators */}
+            <div className="hidden sm:flex items-center gap-2">
+              <DataSourceBadge 
+                source={isPremium ? "MERGED" : "MANUAL"} 
+                size="sm" 
+              />
+              <div className="flex items-center gap-1 text-xs">
+                <div className={`w-2 h-2 rounded-full ${isPremium ? 'bg-green-500' : 'bg-orange-500'}`}></div>
+                <span className="text-gray-600">
+                  {isPremium ? 'Complete Data' : 'Partial Data'}
+                </span>
+              </div>
+              <FreshnessIndicator 
+                lastSync={lastSyncTime}
+                size="sm"
+                showLabel={false}
+              />
+            </div>
+          </div>
           
-          {/* Mobile swipe indicators */}
-          <div className="flex items-center space-x-2 sm:hidden">
-            {currentTabIndex > 0 && (
-              <ChevronLeft className="w-5 h-5 text-slate-400" />
+          {/* Sync Controls and Mobile Indicators */}
+          <div className="flex items-center space-x-4">
+            {/* Data Completeness Prompt for Free Users */}
+            {isFreeTier && (
+              <CompactUpgradePrompt feature="BANK_SYNC" />
             )}
-            <span className="text-xs text-slate-500 font-medium">
-              {currentTabIndex + 1} / {TABS.length}
-            </span>
-            {currentTabIndex < TABS.length - 1 && (
-              <ChevronRight className="w-5 h-5 text-slate-400" />
+            
+            {/* Projection Accuracy Notice */}
+            {!isPremium && (
+              <div className="hidden sm:flex items-center gap-2 text-xs bg-orange-50 border border-orange-200 rounded-lg px-2 py-1">
+                <Activity className="w-3 h-3 text-orange-600" />
+                <span className="text-orange-800">Sync for better projections</span>
+              </div>
             )}
+            
+            {/* Mobile swipe indicators */}
+            <div className="flex items-center space-x-2 sm:hidden">
+              {currentTabIndex > 0 && (
+                <ChevronLeft className="w-5 h-5 text-slate-400" />
+              )}
+              <span className="text-xs text-slate-500 font-medium">
+                {currentTabIndex + 1} / {TABS.length}
+              </span>
+              {currentTabIndex < TABS.length - 1 && (
+                <ChevronRight className="w-5 h-5 text-slate-400" />
+              )}
+            </div>
           </div>
         </div>
         

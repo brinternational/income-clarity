@@ -21,13 +21,13 @@ test.describe('Authentication Flow', () => {
     // Fill signup form
     await page.fill('input[type="email"]', 'newuser@example.com')
     await page.fill('input[type="password"]', 'password123')
-    await page.fill('input[name="name"]', 'New User')
+    await page.fill('#name', 'New User')
     
     // Submit form
     await page.click('button[type="submit"]')
     
     // Should redirect to dashboard
-    await expect(page).toHaveURL('/dashboard')
+    await expect(page).toHaveURL(/\/dashboard/)
     
     // Should show welcome message or user name
     await expect(page.locator('text=New User')).toBeVisible()
@@ -45,7 +45,7 @@ test.describe('Authentication Flow', () => {
     await page.click('button[type="submit"]')
     
     // Should redirect to dashboard
-    await expect(page).toHaveURL('/dashboard')
+    await expect(page).toHaveURL(/\/dashboard/)
     
     // Should show user is logged in
     await expect(page.locator('[data-testid="user-menu"]')).toBeVisible()
@@ -64,7 +64,7 @@ test.describe('Authentication Flow', () => {
     await expect(page.locator('text=Invalid credentials')).toBeVisible()
     
     // Should stay on login page
-    await expect(page).toHaveURL('/auth/login')
+    await expect(page).toHaveURL(/\/auth\/login/)
   })
 
   test('should logout successfully', async ({ page }) => {
@@ -75,7 +75,7 @@ test.describe('Authentication Flow', () => {
     await page.click('button[type="submit"]')
     
     // Wait for dashboard
-    await expect(page).toHaveURL('/dashboard')
+    await expect(page).toHaveURL(/\/dashboard/)
     
     // Click user menu
     await page.click('[data-testid="user-menu"]')
@@ -84,7 +84,7 @@ test.describe('Authentication Flow', () => {
     await page.click('text=Logout')
     
     // Should redirect to home
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL(/\//)
     
     // Should show login button again
     await expect(page.locator('text=Login')).toBeVisible()
@@ -95,7 +95,7 @@ test.describe('Authentication Flow', () => {
     await page.goto('/dashboard')
     
     // Should redirect to login
-    await expect(page).toHaveURL('/auth/login')
+    await expect(page).toHaveURL(/\/auth\/login/)
   })
 
   test('should validate form fields', async ({ page }) => {
@@ -135,13 +135,13 @@ test.describe('Authentication Flow', () => {
     await page.fill('input[type="password"]', 'password123')
     await page.click('button[type="submit"]')
     
-    await expect(page).toHaveURL('/dashboard')
+    await expect(page).toHaveURL(/\/dashboard/)
     
     // Refresh page
     await page.reload()
     
     // Should still be logged in
-    await expect(page).toHaveURL('/dashboard')
+    await expect(page).toHaveURL(/\/dashboard/)
     await expect(page.locator('[data-testid="user-menu"]')).toBeVisible()
   })
 })

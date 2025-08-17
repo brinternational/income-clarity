@@ -16,12 +16,20 @@ import { useSuperCardStore } from '@/store/superCardStore'
 import { SinglePageDashboard } from '@/components/super-cards/SinglePageDashboard'
 import { FullContentDashboard } from '@/components/super-cards/FullContentDashboard'
 
+// Import Design System components
+import { Button } from '@/components/design-system/core/Button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/design-system/core/Card'
+import { Badge } from '@/components/design-system/core/Badge'
+
 // Import all 5 Super Cards - Desktop versions (for fallback if needed)
 import { PerformanceHub } from '@/components/super-cards/PerformanceHub'
 import { IncomeIntelligenceHub } from '@/components/super-cards/IncomeIntelligenceHub'
 import { TaxStrategyHub } from '@/components/super-cards/TaxStrategyHub'
 import { PortfolioStrategyHub } from '@/components/super-cards/PortfolioStrategyHub'
 import { FinancialPlanningHub } from '@/components/super-cards/FinancialPlanningHub'
+
+// Import Premium Components
+import { PremiumDashboardWidget } from '@/components/premium/PremiumDashboardWidget'
 
 // Import Mobile variants
 import { MobileTaxStrategyHub } from '@/components/super-cards/MobileTaxStrategyHub'
@@ -180,12 +188,14 @@ function SuperCardsDashboard() {
           <div className="min-h-screen flex items-center justify-center">
             <div className="text-center">
               <p className="text-red-600">Card not found</p>
-              <button 
+              <Button 
                 onClick={handleBack}
-                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                variant="primary"
+                size="md"
+                className="mt-4"
               >
                 Back to Grid
-              </button>
+              </Button>
             </div>
           </div>
         </SuperCardsAppShell>
@@ -267,6 +277,17 @@ function SuperCardsDashboard() {
         </div>
       </div>
 
+      {/* Premium Dashboard Widget */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <PremiumDashboardWidget />
+        </motion.div>
+      </div>
+
       {/* Cards Grid */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Background elements */}
@@ -285,25 +306,29 @@ function SuperCardsDashboard() {
                 stiffness: 100,
                 damping: 15
               }}
-              className="group cursor-pointer"
-              onClick={() => handleCardClick(card.id)}
+              className="group"
             >
-              <div className="relative">
-                {/* Card glow effect */}
-                <div className={`absolute -inset-1 bg-gradient-to-r ${card.color} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-all duration-500`}></div>
-                
-                {/* Main card */}
-                <div className={`
-                  relative overflow-hidden rounded-2xl bg-white/90 backdrop-blur-xl
+              <Card
+                variant="interactive"
+                size="lg"
+                radius="xl"
+                clickable
+                hover
+                onClick={() => handleCardClick(card.id)}
+                className={`
+                  relative overflow-hidden bg-white/90 backdrop-blur-xl
                   border border-white/20 shadow-xl
-                  hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1
+                  hover:shadow-2xl hover:-translate-y-1
                   transition-all duration-500 ease-out
-                  p-8 min-h-[320px] flex flex-col
-                `} style={{
+                  min-h-[320px] flex flex-col
+                  before:absolute before:-inset-1 before:bg-gradient-to-r before:${card.color} before:rounded-3xl before:blur-2xl before:opacity-0 hover:before:opacity-30 before:transition-all before:duration-500
+                `}
+                style={{
                   background: `linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%), linear-gradient(135deg, ${card.color.includes('blue') ? 'rgba(59,130,246,0.05)' : card.color.includes('green') ? 'rgba(16,185,129,0.05)' : card.color.includes('purple') ? 'rgba(139,92,246,0.05)' : card.color.includes('orange') ? 'rgba(249,115,22,0.05)' : 'rgba(99,102,241,0.05)'} 0%, transparent 100%)`
-                }}>
-                  {/* Card header */}
-                  <div className="flex items-start justify-between mb-6">
+                }}
+              >
+                <CardHeader className="pb-6">
+                  <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-4">
                       <div className="relative">
                         <div className={`absolute inset-0 bg-gradient-to-r ${card.color} rounded-2xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity duration-300`}></div>
@@ -312,12 +337,12 @@ function SuperCardsDashboard() {
                         </div>
                       </div>
                       <div>
-                        <h3 className="text-2xl font-bold text-slate-900 mb-1 group-hover:text-slate-700 transition-colors duration-300">
+                        <CardTitle className="text-2xl group-hover:text-slate-700 transition-colors duration-300">
                           {card.title}
-                        </h3>
-                        <p className="text-slate-600 text-base font-medium">
+                        </CardTitle>
+                        <CardDescription className="text-base font-medium">
                           {card.description}
-                        </p>
+                        </CardDescription>
                       </div>
                     </div>
                     
@@ -328,43 +353,42 @@ function SuperCardsDashboard() {
                       </div>
                     </div>
                   </div>
+                </CardHeader>
 
-                  {/* Card content */}
-                  <div className="flex-1 space-y-4">
-                    <div className="p-4 rounded-xl bg-gradient-to-r from-slate-50 to-slate-100 border border-slate-200/50">
-                      <div className="text-sm text-slate-700 font-medium mb-2">
-                        Explore advanced analytics and insights
-                      </div>
-                      <div className="text-xs text-slate-500">
-                        Real-time data • Interactive visualizations • Export capabilities
-                      </div>
+                <CardContent className="flex-1 space-y-4">
+                  <div className="p-4 rounded-xl bg-gradient-to-r from-slate-50 to-slate-100 border border-slate-200/50">
+                    <div className="text-sm text-slate-700 font-medium mb-2">
+                      Explore advanced analytics and insights
                     </div>
-                    
-                    {/* Status and features */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse shadow-lg" style={{ boxShadow: '0 0 10px rgba(34, 197, 94, 0.5)' }}></div>
-                        <span className="text-sm font-semibold text-green-700">Active</span>
-                      </div>
-                      
-                      <div className="flex items-center space-x-1">
-                        <div className="w-2 h-2 rounded-full bg-blue-400"></div>
-                        <div className="w-2 h-2 rounded-full bg-purple-400"></div>
-                        <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                        <span className="text-xs text-slate-500 ml-2">Premium</span>
-                      </div>
+                    <div className="text-xs text-slate-500">
+                      Real-time data • Interactive visualizations • Export capabilities
                     </div>
                   </div>
-
-                  {/* Hover effects */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-slate-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl"></div>
                   
-                  {/* Floating particles effect */}
-                  <div className="absolute top-4 right-4 w-1 h-1 bg-blue-400 rounded-full opacity-0 group-hover:opacity-100 animate-bounce delay-100"></div>
-                  <div className="absolute bottom-8 left-6 w-1 h-1 bg-purple-400 rounded-full opacity-0 group-hover:opacity-100 animate-bounce delay-300"></div>
-                  <div className="absolute top-1/2 right-8 w-1 h-1 bg-green-400 rounded-full opacity-0 group-hover:opacity-100 animate-bounce delay-500"></div>
-                </div>
-              </div>
+                  {/* Status and features */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse shadow-lg" style={{ boxShadow: '0 0 10px rgba(34, 197, 94, 0.5)' }}></div>
+                      <Badge variant="success" size="sm">Active</Badge>
+                    </div>
+                    
+                    <div className="flex items-center space-x-1">
+                      <div className="w-2 h-2 rounded-full bg-blue-400"></div>
+                      <div className="w-2 h-2 rounded-full bg-purple-400"></div>
+                      <div className="w-2 h-2 rounded-full bg-green-400"></div>
+                      <Badge variant="secondary" size="xs" className="ml-2">Premium</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+
+                {/* Hover effects */}
+                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-slate-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl"></div>
+                
+                {/* Floating particles effect */}
+                <div className="absolute top-4 right-4 w-1 h-1 bg-blue-400 rounded-full opacity-0 group-hover:opacity-100 animate-bounce delay-100"></div>
+                <div className="absolute bottom-8 left-6 w-1 h-1 bg-purple-400 rounded-full opacity-0 group-hover:opacity-100 animate-bounce delay-300"></div>
+                <div className="absolute top-1/2 right-8 w-1 h-1 bg-green-400 rounded-full opacity-0 group-hover:opacity-100 animate-bounce delay-500"></div>
+              </Card>
             </motion.div>
           ))}
         </div>

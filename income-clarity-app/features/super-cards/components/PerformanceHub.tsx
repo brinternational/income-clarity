@@ -92,9 +92,9 @@ const TABS: TabConfig[] = [
 ];
 
 const PerformanceHubComponent = ({ 
-  portfolioReturn = 0.082,
-  spyReturn = 0.061,
-  outperformance = 0.021,
+  portfolioReturn = 0, // Removed hardcoded mock values
+  spyReturn = 0,       // Will be fetched from real data
+  outperformance = 0,  // Will be calculated from real data
   isLoading = false,
   timePeriodData,
   className = ''

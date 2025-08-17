@@ -2,6 +2,7 @@ import { Page, Locator, expect } from '@playwright/test';
 
 export class AuthPage {
   readonly page: Page;
+  readonly nameInput: Locator;
   readonly emailInput: Locator;
   readonly passwordInput: Locator;
   readonly confirmPasswordInput: Locator;
@@ -14,6 +15,7 @@ export class AuthPage {
 
   constructor(page: Page) {
     this.page = page;
+    this.nameInput = page.locator('#name, input[name="name"]');
     this.emailInput = page.locator('input[type="email"], input[name="email"]');
     this.passwordInput = page.locator('input[type="password"], input[name="password"]');
     this.confirmPasswordInput = page.locator('input[name="confirmPassword"], input[name="confirm-password"]');
@@ -42,7 +44,10 @@ export class AuthPage {
     await this.page.waitForLoadState('networkidle');
   }
 
-  async signup(email: string, password: string, confirmPassword?: string) {
+  async signup(email: string, password: string, confirmPassword?: string, name?: string) {
+    if (name && this.nameInput) {
+      await this.nameInput.fill(name);
+    }
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     if (confirmPassword && this.confirmPasswordInput) {

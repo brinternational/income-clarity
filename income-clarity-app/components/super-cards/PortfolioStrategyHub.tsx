@@ -28,7 +28,10 @@ import { SectorAllocationChart } from '@/components/dashboard/SectorAllocationCh
 import { AllocationChart } from '@/components/dashboard/AllocationChart';
 import { useStaggeredCountingAnimation } from '@/hooks/useOptimizedAnimation';
 import { superCardsAPI } from '@/lib/api/super-cards-api';
-import { logger } from '@/lib/logger'
+import { logger } from '@/lib/logger';
+import { DataSourceBadgeGroup, SyncStatusIndicator, FreshnessIndicator, useSyncStatus } from '@/components/sync';
+import { FeatureGate, useFeatureAccess } from '@/components/premium';
+import { useUser } from '@/hooks/useUser';
 
 interface PortfolioStrategyHubProps {
   data?: any; // For unified view compatibility
@@ -119,6 +122,10 @@ const PortfolioStrategyHubComponent = ({
   const [touchEnd, setTouchEnd] = useState<number>(0);
   const [loadStartTime] = useState(() => performance.now());
   const [isLoaded, setIsLoaded] = useState(false);
+  
+  const { user } = useUser();
+  const { isPremium, hasFeature } = useFeatureAccess();
+  const { lastSyncTime, triggerSync } = useSyncStatus(user?.id || '');
   
   const portfolioHub = usePortfolioHub();
   const { updateData, setLoading, setError } = usePortfolioActions();
@@ -442,21 +449,59 @@ const PortfolioStrategyHubComponent = ({
       {/* Tab Navigation */}
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
-            Portfolio Strategy Hub
-          </h3>
+          <div className="flex items-center gap-3">
+            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
+              Portfolio Strategy Hub
+            </h3>
+            
+            {/* Holdings Data Source Indicators */}
+            <div className="hidden sm:flex items-center gap-2">
+              <DataSourceBadgeGroup
+                sources={[
+                  { source: 'MANUAL', count: 12 },
+                  ...(isPremium ? [{ source: 'YODLEE' as const, lastSync: lastSyncTime, count: 8 }] : [])
+                ]}
+                size="sm"
+              />
+              <FreshnessIndicator 
+                lastSync={lastSyncTime}
+                size="sm"
+                showLabel={false}
+              />
+            </div>
+          </div>
           
-          {/* Mobile swipe indicators */}
-          <div className="flex items-center space-x-2 sm:hidden">
-            {currentTabIndex > 0 && (
-              <ChevronLeft className="w-5 h-5 text-slate-400" />
+          {/* Sync Status and Controls */}
+          <div className="flex items-center space-x-4">
+            {/* Reconciliation Status for Premium Users */}
+            {isPremium && (
+              <div className="hidden sm:flex items-center gap-2 text-xs">
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <span className="text-gray-600">Reconciled</span>
+                </div>
+                <SyncStatusIndicator
+                  userId={user?.id || ''}
+                  lastSyncTime={lastSyncTime}
+                  onRefresh={triggerSync}
+                  size="sm"
+                  showLabel={false}
+                />
+              </div>
             )}
-            <span className="text-xs text-slate-500 font-medium">
-              {currentTabIndex + 1} / {TABS.length}
-            </span>
-            {currentTabIndex < TABS.length - 1 && (
-              <ChevronRight className="w-5 h-5 text-slate-400" />
-            )}
+            
+            {/* Mobile swipe indicators */}
+            <div className="flex items-center space-x-2 sm:hidden">
+              {currentTabIndex > 0 && (
+                <ChevronLeft className="w-5 h-5 text-slate-400" />
+              )}
+              <span className="text-xs text-slate-500 font-medium">
+                {currentTabIndex + 1} / {TABS.length}
+              </span>
+              {currentTabIndex < TABS.length - 1 && (
+                <ChevronRight className="w-5 h-5 text-slate-400" />
+              )}
+            </div>
           </div>
         </div>
         

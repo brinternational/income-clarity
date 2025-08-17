@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { emailService } from '@/lib/services/email.service';
-import { EmailTemplateData } from '@/lib/services/email-templates.service';
+import { emailService } from '@/lib/services/email/email.service';
+import { EmailTemplateData } from '@/lib/services/email/email-templates.service';
 import { logger } from '@/lib/logger'
 
 /**

@@ -1,0 +1,85 @@
+# Multi-stage Dockerfile for Income Clarity Worker
+# Optimized for production deployment with security and performance in mind
+
+# Build stage
+FROM node:18-alpine AS builder
+
+# Install build dependencies
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    git
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY prisma ./prisma/
+
+# Install dependencies
+RUN npm ci --only=production --no-audit --no-fund
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Production stage
+FROM node:18-alpine AS production
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    curl \
+    dumb-init \
+    tzdata
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S worker -u 1001 -G nodejs
+
+# Set working directory
+WORKDIR /app
+
+# Copy application files
+COPY --from=builder --chown=worker:nodejs /app/node_modules ./node_modules
+COPY --chown=worker:nodejs . .
+
+# Create required directories
+RUN mkdir -p logs archives tmp && \
+    chown -R worker:nodejs logs archives tmp
+
+# Remove unnecessary files
+RUN rm -rf \
+    .git \
+    .github \
+    .vscode \
+    tests \
+    __tests__ \
+    *.test.js \
+    *.test.ts \
+    *.spec.js \
+    *.spec.ts \
+    .env.example \
+    README.md \
+    docs
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV WORKER_CONCURRENCY=3
+ENV HEALTH_CHECK_PORT=3001
+
+# Expose health check port
+EXPOSE 3001
+
+# Switch to non-root user
+USER worker
+
+# Add health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:${HEALTH_CHECK_PORT}/health || exit 1
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start the worker
+CMD ["node", "scripts/worker.js"]

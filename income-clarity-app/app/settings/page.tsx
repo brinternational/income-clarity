@@ -34,6 +34,12 @@ import {
   RotateCcw,
   Database
 } from 'lucide-react';
+// Design System imports
+import { Button } from '@/components/design-system/core/Button';
+import { TextField, EmailField } from '@/components/design-system/forms/TextField';
+import { Select } from '@/components/design-system/forms/Select';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/design-system/core/Card';
+import { Alert } from '@/components/design-system/core/Alert';
 import { logger } from '@/lib/logger';
 import { 
   EmailPreferences, 
@@ -43,6 +49,8 @@ import {
   EMAIL_FREQUENCY_OPTIONS,
   EMAIL_CATEGORY_DESCRIPTIONS
 } from '@/types/email-preferences';
+import { FastLinkConnect } from '@/components/yodlee/FastLinkConnect';
+import { ConnectedAccountsList } from '@/components/yodlee/ConnectedAccountsList';
 
 interface NotificationSettings {
   dividendAlerts: boolean;
@@ -463,13 +471,15 @@ export default function SettingsPage() {
         className="flex items-center justify-between mb-6"
       >
         <div className="flex items-center gap-3">
-          <button
+          <Button
             onClick={() => router.back()}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            aria-label="Go back"
+            variant="ghost"
+            size="sm"
+            iconOnly
+            ariaLabel="Go back"
           >
             <ArrowLeft className="h-5 w-5" />
-          </button>
+          </Button>
           <div className="flex items-center space-x-4">
             <div className="p-3 bg-gradient-to-br from-primary-100 to-primary-50 rounded-xl">
               <Settings className="w-8 h-8 text-primary-600" />
@@ -485,69 +495,44 @@ export default function SettingsPage() {
 
         <div className="flex items-center gap-3">
           {/* Save Button */}
-          <motion.button
+          <Button
             onClick={saveSettings}
             disabled={loading}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all ${
-              saved 
-                ? 'bg-green-600 text-white shadow-lg' 
-                : 'bg-primary-600 hover:bg-primary-700 text-white shadow-md hover:shadow-lg'
-            } disabled:opacity-50 disabled:cursor-not-allowed`}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            variant={saved ? 'success' : 'primary'}
+            size="md"
+            loading={loading}
+            leftIcon={saved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
           >
-            {loading ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Saving...</span>
-              </>
-            ) : saved ? (
-              <>
-                <Check className="w-4 h-4" />
-                <span>Saved!</span>
-              </>
-            ) : (
-              <>
-                <Save className="w-4 h-4" />
-                <span>Save Settings</span>
-              </>
-            )}
-          </motion.button>
+            {loading ? 'Saving...' : saved ? 'Saved!' : 'Save Settings'}
+          </Button>
 
           {/* Close Button */}
-          <button
+          <Button
             onClick={() => router.push('/dashboard/super-cards')}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            aria-label="Close settings"
+            variant="ghost"
+            size="sm"
+            iconOnly
+            ariaLabel="Close settings"
           >
             <X className="h-5 w-5" />
-          </button>
+          </Button>
         </div>
       </motion.div>
 
       {/* Error Message */}
       {error && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center space-x-2"
-        >
-          <AlertCircle className="w-5 h-5 text-red-600" />
-          <span className="text-red-800">{error}</span>
-        </motion.div>
+        <Alert variant="error" className="flex items-center space-x-2">
+          <AlertCircle className="w-5 h-5" />
+          <span>{error}</span>
+        </Alert>
       )}
 
       {/* Success Message */}
       {saved && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center space-x-2"
-        >
-          <Check className="w-5 h-5 text-green-600" />
-          <span className="text-green-800">Settings saved successfully!</span>
-        </motion.div>
+        <Alert variant="success" className="flex items-center space-x-2">
+          <Check className="w-5 h-5" />
+          <span>Settings saved successfully!</span>
+        </Alert>
       )}
 
       {/* Appearance Section */}
@@ -555,79 +540,138 @@ export default function SettingsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6"
       >
-        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-6 flex items-center">
-          <Globe className="w-5 h-5 text-slate-600 mr-2" />
-          Appearance
-        </h2>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Globe className="w-5 h-5 text-slate-600 mr-2" />
+              Appearance
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              {/* Theme Selection */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
+                  Theme
+                </label>
+                <div className="flex space-x-3">
+                  <Button
+                    onClick={() => handleThemeChange('light')}
+                    variant={settings.theme === 'light' ? 'primary' : 'outline'}
+                    size="md"
+                    leftIcon={<Sun className="w-4 h-4" />}
+                  >
+                    Light
+                  </Button>
+                  <Button
+                    onClick={() => handleThemeChange('dark')}
+                    variant={settings.theme === 'dark' ? 'primary' : 'outline'}
+                    size="md"
+                    leftIcon={<Moon className="w-4 h-4" />}
+                  >
+                    Dark
+                  </Button>
+                </div>
+              </div>
 
-        <div className="space-y-6">
-          {/* Theme Selection */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
-              Theme
-            </label>
-            <div className="flex space-x-3">
-              <button
-                onClick={() => handleThemeChange('light')}
-                className={`flex items-center space-x-2 px-4 py-3 rounded-lg border-2 transition-all ${
-                  settings.theme === 'light'
-                    ? 'border-primary-500 bg-primary-50 text-primary-700'
-                    : 'border-slate-300 hover:border-slate-400 bg-white text-slate-700'
-                }`}
-              >
-                <Sun className="w-4 h-4" />
-                <span>Light</span>
-              </button>
-              <button
-                onClick={() => handleThemeChange('dark')}
-                className={`flex items-center space-x-2 px-4 py-3 rounded-lg border-2 transition-all ${
-                  settings.theme === 'dark'
-                    ? 'border-primary-500 bg-primary-50 text-primary-700'
-                    : 'border-slate-300 hover:border-slate-400 bg-white text-slate-700'
-                }`}
-              >
-                <Moon className="w-4 h-4" />
-                <span>Dark</span>
-              </button>
+              {/* Currency */}
+              <div>
+                <label htmlFor="currency" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Currency
+                </label>
+                <Select
+                  id="currency"
+                  value={settings.currency}
+                  onChange={(value) => setSettings(prev => ({ ...prev, currency: value }))}
+                  options={[
+                    { value: 'USD', label: 'USD - US Dollar' },
+                    { value: 'EUR', label: 'EUR - Euro' },
+                    { value: 'GBP', label: 'GBP - British Pound' },
+                    { value: 'CAD', label: 'CAD - Canadian Dollar' }
+                  ]}
+                />
+              </div>
+
+              {/* Language */}
+              <div>
+                <label htmlFor="locale" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Language
+                </label>
+                <Select
+                  id="locale"
+                  value={settings.locale}
+                  onChange={(value) => setSettings(prev => ({ ...prev, locale: value }))}
+                  options={[
+                    { value: 'en-US', label: 'English (US)' },
+                    { value: 'en-GB', label: 'English (UK)' },
+                    { value: 'es-ES', label: 'Español' },
+                    { value: 'fr-FR', label: 'Français' }
+                  ]}
+                />
+              </div>
             </div>
-          </div>
+          </CardContent>
+        </Card>
+      </motion.div>
 
-          {/* Currency */}
-          <div>
-            <label htmlFor="currency" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-              Currency
-            </label>
-            <select
-              id="currency"
-              value={settings.currency}
-              onChange={(e) => setSettings(prev => ({ ...prev, currency: e.target.value }))}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-            >
-              <option value="USD">USD - US Dollar</option>
-              <option value="EUR">EUR - Euro</option>
-              <option value="GBP">GBP - British Pound</option>
-              <option value="CAD">CAD - Canadian Dollar</option>
-            </select>
+      {/* Bank Connections Section - Moved higher for premium feature visibility */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15 }}
+        className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6 ring-2 ring-purple-100 dark:ring-purple-900/20"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 flex items-center">
+            <Database className="w-5 h-5 text-purple-600 mr-2" />
+            Bank Connections
+            <span className="ml-3 px-2 py-1 text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 rounded-full">
+              Premium
+            </span>
+          </h2>
+          <div className="flex items-center text-sm text-purple-600 dark:text-purple-400">
+            <Zap className="w-4 h-4 mr-1" />
+            Auto-sync enabled
           </div>
-
-          {/* Language */}
-          <div>
-            <label htmlFor="locale" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-              Language
-            </label>
-            <select
-              id="locale"
-              value={settings.locale}
-              onChange={(e) => setSettings(prev => ({ ...prev, locale: e.target.value }))}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-            >
-              <option value="en-US">English (US)</option>
-              <option value="en-GB">English (UK)</option>
-              <option value="es-ES">Español</option>
-              <option value="fr-FR">Français</option>
-            </select>
+        </div>
+        
+        <div className="space-y-4">
+          {/* Premium benefit callout */}
+          <div className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
+            <div className="flex items-center mb-2">
+              <CheckCircle className="w-4 h-4 text-purple-600 mr-2" />
+              <span className="font-medium text-purple-900 dark:text-purple-100">
+                Automatic Transaction Import
+              </span>
+            </div>
+            <p className="text-sm text-purple-700 dark:text-purple-300">
+              Connect your bank accounts to automatically import transactions and portfolio data. 
+              Save hours of manual data entry every week.
+            </p>
+          </div>
+          
+          {/* Connected Accounts List */}
+          <ConnectedAccountsList />
+          
+          {/* FastLink Connection */}
+          <FastLinkConnect 
+            onSuccess={(accounts) => {
+              logger.info('Successfully connected accounts:', accounts);
+              setSaved(true);
+              setTimeout(() => setSaved(false), 3000);
+            }}
+            onError={(error) => {
+              logger.error('Failed to connect accounts:', error);
+            }}
+          />
+          
+          <div className="text-xs text-slate-500 dark:text-slate-400 mt-4 space-y-1">
+            <div className="flex items-center">
+              <Shield className="w-3 h-3 mr-1" />
+              <span>Bank connections are secured with industry-standard encryption</span>
+            </div>
+            <p>Powered by Yodlee for secure financial data aggregation</p>
           </div>
         </div>
       </motion.div>
@@ -637,45 +681,49 @@ export default function SettingsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6"
       >
-        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-6 flex items-center">
-          <Bell className="w-5 h-5 text-slate-600 mr-2" />
-          Notifications
-        </h2>
-
-        <div className="space-y-4">
-          {Object.entries(settings.notifications).map(([key, value]) => (
-            <div key={key} className="flex items-center justify-between">
-              <div>
-                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                  {key === 'dividendAlerts' && 'Dividend Alerts'}
-                  {key === 'milestoneAlerts' && 'Milestone Achievements'}
-                  {key === 'weeklyReport' && 'Weekly Reports'}
-                  {key === 'priceAlerts' && 'Price Alerts'}
-                </label>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  {key === 'dividendAlerts' && 'Get notified when dividends are paid'}
-                  {key === 'milestoneAlerts' && 'Celebrate when you reach expense milestones'}
-                  {key === 'weeklyReport' && 'Weekly portfolio performance summary'}
-                  {key === 'priceAlerts' && 'Alert when holdings move significantly'}
-                </p>
-              </div>
-              <button
-                onClick={() => handleNotificationChange(key as keyof NotificationSettings, !value)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  value ? 'bg-primary-600' : 'bg-slate-300 dark:bg-slate-600'
-                }`}
-              >
-                <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    value ? 'translate-x-6' : 'translate-x-1'
-                  }`}
-                />
-              </button>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Bell className="w-5 h-5 text-slate-600 mr-2" />
+              Notifications
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {Object.entries(settings.notifications).map(([key, value]) => (
+                <div key={key} className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                      {key === 'dividendAlerts' && 'Dividend Alerts'}
+                      {key === 'milestoneAlerts' && 'Milestone Achievements'}
+                      {key === 'weeklyReport' && 'Weekly Reports'}
+                      {key === 'priceAlerts' && 'Price Alerts'}
+                    </label>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      {key === 'dividendAlerts' && 'Get notified when dividends are paid'}
+                      {key === 'milestoneAlerts' && 'Celebrate when you reach expense milestones'}
+                      {key === 'weeklyReport' && 'Weekly portfolio performance summary'}
+                      {key === 'priceAlerts' && 'Alert when holdings move significantly'}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleNotificationChange(key as keyof NotificationSettings, !value)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      value ? 'bg-primary-600' : 'bg-slate-300 dark:bg-slate-600'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        value ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </CardContent>
+        </Card>
       </motion.div>
 
       {/* Email Notifications Section */}
@@ -683,67 +731,40 @@ export default function SettingsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
-        className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6"
       >
+        <Card>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 flex items-center">
             <Mail className="w-5 h-5 text-slate-600 mr-2" />
             Email Notifications
           </h2>
           
-          <motion.button
+          <Button
             onClick={saveEmailPreferences}
             disabled={emailLoading}
-            className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all ${
-              emailSaved 
-                ? 'bg-green-600 text-white shadow-lg' 
-                : 'bg-primary-600 hover:bg-primary-700 text-white shadow-md hover:shadow-lg'
-            } disabled:opacity-50 disabled:cursor-not-allowed`}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            variant={emailSaved ? 'success' : 'primary'}
+            size="md"
+            loading={emailLoading}
+            leftIcon={emailSaved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
           >
-            {emailLoading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Saving...</span>
-              </>
-            ) : emailSaved ? (
-              <>
-                <Check className="w-4 h-4" />
-                <span>Saved!</span>
-              </>
-            ) : (
-              <>
-                <Save className="w-4 h-4" />
-                <span>Save Email Settings</span>
-              </>
-            )}
-          </motion.button>
+            {emailLoading ? 'Saving...' : emailSaved ? 'Saved!' : 'Save Email Settings'}
+          </Button>
         </div>
 
         {/* Email Error Message */}
         {emailError && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center space-x-2 mb-6"
-          >
-            <AlertCircle className="w-5 h-5 text-red-600" />
-            <span className="text-red-800">{emailError}</span>
-          </motion.div>
+          <Alert variant="error" className="flex items-center space-x-2 mb-6">
+            <AlertCircle className="w-5 h-5" />
+            <span>{emailError}</span>
+          </Alert>
         )}
 
         {/* Email Success Message */}
         {emailSaved && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center space-x-2 mb-6"
-          >
-            <Check className="w-5 h-5 text-green-600" />
-            <span className="text-green-800">Email preferences saved successfully!</span>
-          </motion.div>
+          <Alert variant="success" className="flex items-center space-x-2 mb-6">
+            <Check className="w-5 h-5" />
+            <span>Email preferences saved successfully!</span>
+          </Alert>
         )}
 
         <div className="space-y-6">
@@ -753,37 +774,33 @@ export default function SettingsPage() {
               Email Address
             </label>
             <div className="flex items-center space-x-3">
-              <div className="flex-1 relative">
-                <input
-                  type="email"
+              <div className="flex-1">
+                <EmailField
                   id="email"
                   value={emailPreferences.email}
                   onChange={(e) => handleEmailPreferenceChange('email', e.target.value)}
                   placeholder="Enter your email address"
-                  className="w-full px-3 py-2 pr-10 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                  rightElement={
+                    emailVerified ? (
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                    ) : emailPreferences.email ? (
+                      <XCircle className="w-5 h-5 text-red-500" />
+                    ) : null
+                  }
                 />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  {emailVerified ? (
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                  ) : emailPreferences.email ? (
-                    <XCircle className="w-5 h-5 text-red-500" />
-                  ) : null}
-                </div>
               </div>
               
               {emailPreferences.email && !emailVerified && (
-                <button
+                <Button
                   onClick={sendVerificationEmail}
                   disabled={sendingVerification}
-                  className="flex items-center space-x-2 px-4 py-2 border border-primary-600 text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors disabled:opacity-50"
+                  variant="outline"
+                  size="md"
+                  loading={sendingVerification}
+                  leftIcon={<Send className="w-4 h-4" />}
                 >
-                  {sendingVerification ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Send className="w-4 h-4" />
-                  )}
-                  <span>{sendingVerification ? 'Sending...' : 'Verify'}</span>
-                </button>
+                  {sendingVerification ? 'Sending...' : 'Verify'}
+                </Button>
               )}
             </div>
             {!emailVerified && emailPreferences.email && (
@@ -922,7 +939,9 @@ export default function SettingsPage() {
             </div>
           </div>
         </div>
+        </Card>
       </motion.div>
+
 
       {/* Data & Privacy Section */}
       <motion.div

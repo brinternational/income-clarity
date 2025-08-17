@@ -53,7 +53,7 @@ export class DashboardPage {
   }
 
   async gotoSuperCards() {
-    await this.page.goto('/dashboard/super-cards');
+    await this.page.goto('/dashboard/super-cards-unified');
     await this.page.waitForLoadState('networkidle');
   }
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { CheckCircle, X } from 'lucide-react';
-import { checkPasswordStrength } from '../profile/utils/helpers';
+import { checkPasswordStrength } from '@/components/profile/utils/helpers';
 
 interface PasswordStrengthIndicatorProps {
   password: string;

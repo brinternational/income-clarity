@@ -69,7 +69,7 @@ test.describe('Comprehensive Income Clarity Feature Testing', () => {
       { name: 'Login Page', url: '/auth/login', expectElements: ['email', 'password'] },
       { name: 'Signup Page', url: '/auth/signup', expectElements: ['email', 'password'] },
       { name: 'Dashboard', url: '/dashboard', expectElements: ['Super Cards'] },
-      { name: 'Super Cards', url: '/dashboard/super-cards', expectElements: ['Performance Hub'] },
+      { name: 'Super Cards', url: '/dashboard/super-cards-unified', expectElements: ['Performance Hub'] },
       { name: 'Portfolio Page', url: '/portfolio', expectElements: ['Holdings'] },
       { name: 'Transactions Page', url: '/transactions', expectElements: ['Transaction'] },
       { name: 'Income Page', url: '/income', expectElements: ['Income'] },
@@ -411,7 +411,7 @@ test.describe('Comprehensive Income Clarity Feature Testing', () => {
         try {
           console.log(`🎯 Testing ${card.name}`);
           
-          await page.goto('/dashboard/super-cards');
+          await page.goto('/dashboard/super-cards-unified');
           await page.waitForLoadState('domcontentloaded');
           
           // Look for the specific super card

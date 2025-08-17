@@ -3,11 +3,17 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Input } from '@/components/forms/Input';
-import { Button } from '@/components/forms/Button';
 import { useAuth } from '@/contexts/AuthContext';
 import { Mail, Lock, LogIn, Loader2 } from 'lucide-react';
 import { logger } from '@/lib/logger'
+
+// Import Design System components
+import { Button } from '@/components/design-system/core/Button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/design-system/core/Card'
+import { Alert } from '@/components/design-system/core/Alert'
+import { EmailField, PasswordField } from '@/components/design-system/forms/TextField'
+import { Container } from '@/components/design-system/layout/Container'
+import { Stack } from '@/components/design-system/layout/Stack'
 
 interface LoginFormData {
   email: string;
@@ -123,54 +129,54 @@ function LoginPageContent() {
           </div>
 
           {/* Login Form */}
-          <div className="mt-8 bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 p-8 shadow-xl">
+          <Card 
+            variant="glass" 
+            size="lg" 
+            radius="xl" 
+            className="mt-8 shadow-xl border-white/20"
+          >
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* General Error */}
               {errors.general && (
-                <div 
-                  className="rounded-lg bg-red-500/10 border border-red-500/20 p-4"
+                <Alert 
+                  variant="error"
+                  size="sm"
+                  data-testid="login-error"
                   role="alert"
                   aria-live="polite"
                 >
-                  <p className="text-sm text-red-400">{errors.general}</p>
-                </div>
+                  {errors.general}
+                </Alert>
               )}
 
               {/* Email Field */}
               <div>
-                <Input
+                <EmailField
                   id="email"
-                  type="email"
+                  data-testid="login-email"
                   label="Email address"
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleInputChange('email')}
-                  error={!!errors.email}
                   errorMessage={errors.email}
                   leftIcon={<Mail className="h-5 w-5" />}
                   required
-                  autoComplete="email"
                   disabled={isLoading}
                 />
               </div>
 
               {/* Password Field */}
               <div>
-                <Input
+                <PasswordField
                   id="password"
-                  type="password"
+                  data-testid="login-password"
                   label="Password"
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleInputChange('password')}
-                  error={!!errors.password}
                   errorMessage={errors.password}
                   leftIcon={<Lock className="h-5 w-5" />}
-                  showPasswordToggle
-                  showPassword={showPassword}
-                  onPasswordToggle={() => setShowPassword(!showPassword)}
                   required
-                  autoComplete="current-password"
                   disabled={isLoading}
                 />
               </div>
@@ -178,13 +184,14 @@ function LoginPageContent() {
               {/* Submit Button */}
               <div>
                 <Button
+                  data-testid="login-button"
                   type="submit"
                   variant="primary"
                   size="lg"
                   fullWidth
                   loading={isLoading}
                   disabled={isLoading}
-                  leftIcon={isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <LogIn className="h-5 w-5" />}
+                  leftIcon={!isLoading ? <LogIn className="h-5 w-5" /> : undefined}
                 >
                   {isLoading ? 'Signing in...' : 'Sign in'}
                 </Button>
@@ -244,25 +251,27 @@ function LoginPageContent() {
                       setIsLoading(false);
                     }
                   }}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
                 >
                   🚀 Try Demo Mode
                 </Button>
               </div>
 
               {/* Demo credentials info */}
-              <div className="text-center bg-slate-800/50 rounded-lg p-4">
-                <p className="text-xs text-slate-400 mb-2">
-                  <strong className="text-emerald-400">Demo Credentials</strong>
-                </p>
-                <p className="text-xs text-slate-300">
-                  Email: test@example.com<br />
-                  Password: password123
-                </p>
-                <p className="text-xs text-yellow-400 mt-2">
-                  Pre-filled for testing with realistic portfolio data
-                </p>
-              </div>
+              <Card variant="filled" size="sm" className="text-center bg-slate-800/50">
+                <CardContent className="p-4">
+                  <p className="text-xs text-slate-400 mb-2">
+                    <strong className="text-emerald-400">Demo Credentials</strong>
+                  </p>
+                  <p className="text-xs text-slate-300">
+                    Email: test@example.com<br />
+                    Password: password123
+                  </p>
+                  <p className="text-xs text-yellow-400 mt-2">
+                    Pre-filled for testing with realistic portfolio data
+                  </p>
+                </CardContent>
+              </Card>
 
               {/* Sign up link */}
               <div className="text-center">
@@ -291,7 +300,7 @@ function LoginPageContent() {
                 </Link>
               </div>
             </form>
-          </div>
+          </Card>
 
           {/* Back to home */}
           <div className="text-center">

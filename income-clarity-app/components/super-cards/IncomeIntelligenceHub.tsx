@@ -32,7 +32,10 @@ import { useStaggeredCountingAnimation } from '@/hooks/useOptimizedAnimation';
 import { IncomeClarityResult } from '@/types';
 import { SkeletonIncomeClarityCard } from '@/components/ui/skeletons';
 import { superCardsAPI } from '@/lib/api/super-cards-api';
-import { logger } from '@/lib/logger'
+import { logger } from '@/lib/logger';
+import { DataSourceBadge, SyncStatusIndicator, FreshnessIndicator, useSyncStatus } from '@/components/sync';
+import { FeatureGate, useFeatureAccess, CompactUpgradePrompt } from '@/components/premium';
+import { useUser } from '@/hooks/useUser';
 
 // Remove local definition since we import it now
 
@@ -129,6 +132,10 @@ const IncomeIntelligenceHubComponent = ({
   const [touchStart, setTouchStart] = useState<number>(0);
   const [touchEnd, setTouchEnd] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(false);
+  
+  const { user } = useUser();
+  const { isPremium, isFreeTier } = useFeatureAccess();
+  const { lastSyncTime, triggerSync } = useSyncStatus(user?.id || '');
   
   const incomeHub = useIncomeHub();
   const { updateData, setLoading, setError } = useIncomeActions();
@@ -436,21 +443,60 @@ const IncomeIntelligenceHubComponent = ({
       {/* Tab Navigation */}
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
-            Income Intelligence Hub
-          </h3>
+          <div className="flex items-center gap-3">
+            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
+              Income Intelligence Hub
+            </h3>
+            
+            {/* Data Source Indicator for Income Data */}
+            <div className="hidden sm:flex items-center gap-2">
+              <DataSourceBadge source="MANUAL" size="sm" />
+              {isPremium && (
+                <DataSourceBadge 
+                  source="YODLEE" 
+                  lastSync={lastSyncTime}
+                  size="sm" 
+                />
+              )}
+              <FreshnessIndicator 
+                lastSync={lastSyncTime}
+                size="sm"
+                showLabel={false}
+              />
+            </div>
+          </div>
           
-          {/* Mobile swipe indicators */}
-          <div className="flex items-center space-x-2 sm:hidden">
-            {currentTabIndex > 0 && (
-              <ChevronLeft className="w-5 h-5 text-slate-400" />
+          {/* Sync Status and Controls */}
+          <div className="flex items-center space-x-4">
+            {/* Bank Sync Prompt for Free Users */}
+            {isFreeTier && (
+              <CompactUpgradePrompt feature="BANK_SYNC" />
             )}
-            <span className="text-xs text-slate-500 font-medium">
-              {currentTabIndex + 1} / {TABS.length}
-            </span>
-            {currentTabIndex < TABS.length - 1 && (
-              <ChevronRight className="w-5 h-5 text-slate-400" />
+            
+            {/* Premium Sync Status */}
+            {isPremium && (
+              <SyncStatusIndicator
+                userId={user?.id || ''}
+                lastSyncTime={lastSyncTime}
+                onRefresh={triggerSync}
+                size="sm"
+                showLabel={false}
+                className="hidden sm:flex"
+              />
             )}
+            
+            {/* Mobile swipe indicators */}
+            <div className="flex items-center space-x-2 sm:hidden">
+              {currentTabIndex > 0 && (
+                <ChevronLeft className="w-5 h-5 text-slate-400" />
+              )}
+              <span className="text-xs text-slate-500 font-medium">
+                {currentTabIndex + 1} / {TABS.length}
+              </span>
+              {currentTabIndex < TABS.length - 1 && (
+                <ChevronRight className="w-5 h-5 text-slate-400" />
+              )}
+            </div>
           </div>
         </div>
         

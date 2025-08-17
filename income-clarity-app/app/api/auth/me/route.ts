@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
-import { logger } from '@/lib/logger'
+import { logger } from '@/lib/logger';
+import { syncOrchestrator } from '@/lib/services/sync/sync-orchestrator.service';
 
 export async function GET(request: NextRequest) {
   try {
@@ -32,6 +33,12 @@ export async function GET(request: NextRequest) {
         { status: 401 }
       );
     }
+
+    // Trigger login sync in background if needed
+    // This runs async and doesn't block the response
+    syncOrchestrator.syncOnLogin(session.user.id).catch(error => {
+      logger.error('Login sync error:', error);
+    });
 
     return NextResponse.json({
       user: {

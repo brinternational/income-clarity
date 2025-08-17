@@ -29,7 +29,10 @@ import { LocationBasedWinner } from '@/components/tax/LocationBasedWinner';
 import { MultiStateTaxComparison } from '@/components/tax/MultiStateTaxComparison';
 import { ROCTracker } from '@/components/tax/ROCTracker';
 import { useStaggeredCountingAnimation } from '@/hooks/useOptimizedAnimation';
-import { logger } from '@/lib/logger'
+import { logger } from '@/lib/logger';
+import { DataSourceBadge, FreshnessIndicator, useSyncStatus } from '@/components/sync';
+import { useFeatureAccess } from '@/components/premium';
+import { useUser } from '@/hooks/useUser';
 
 interface TaxStrategyHubProps {
   data?: any; // For unified view compatibility
@@ -127,6 +130,10 @@ const TaxStrategyHubComponent = ({
   const [touchEnd, setTouchEnd] = useState<number>(0);
   const [loadStartTime] = useState(() => performance.now());
   const [isLoaded, setIsLoaded] = useState(false);
+  
+  const { user } = useUser();
+  const { isPremium } = useFeatureAccess();
+  const { lastSyncTime } = useSyncStatus(user?.id || '');
   
   const taxHub = useTaxHub();
   const { updateData, setLoading, setError } = useTaxActions();
@@ -409,21 +416,53 @@ const TaxStrategyHubComponent = ({
       {/* Tab Navigation */}
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
-            Tax Strategy Hub
-          </h3>
+          <div className="flex items-center gap-3">
+            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
+              Tax Strategy Hub
+            </h3>
+            
+            {/* Data Accuracy Indicators */}
+            <div className="hidden sm:flex items-center gap-2">
+              <DataSourceBadge 
+                source={isPremium ? "MERGED" : "MANUAL"} 
+                size="sm" 
+              />
+              <div className="flex items-center gap-1 text-xs">
+                <div className={`w-2 h-2 rounded-full ${isPremium ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
+                <span className="text-gray-600">
+                  {isPremium ? 'High Accuracy' : 'Estimated'}
+                </span>
+              </div>
+              <FreshnessIndicator 
+                lastSync={lastSyncTime}
+                size="sm"
+                showLabel={false}
+              />
+            </div>
+          </div>
           
-          {/* Mobile swipe indicators */}
-          <div className="flex items-center space-x-2 sm:hidden">
-            {currentTabIndex > 0 && (
-              <ChevronLeft className="w-5 h-5 text-slate-400" />
+          {/* Data Quality Info and Mobile Indicators */}
+          <div className="flex items-center space-x-4">
+            {/* Data Quality Notice */}
+            {!isPremium && (
+              <div className="hidden sm:flex items-center gap-2 text-xs bg-yellow-50 border border-yellow-200 rounded-lg px-2 py-1">
+                <AlertTriangle className="w-3 h-3 text-yellow-600" />
+                <span className="text-yellow-800">Manual data - upgrade for accuracy</span>
+              </div>
             )}
-            <span className="text-xs text-slate-500 font-medium">
-              {currentTabIndex + 1} / {TABS.length}
-            </span>
-            {currentTabIndex < TABS.length - 1 && (
-              <ChevronRight className="w-5 h-5 text-slate-400" />
-            )}
+            
+            {/* Mobile swipe indicators */}
+            <div className="flex items-center space-x-2 sm:hidden">
+              {currentTabIndex > 0 && (
+                <ChevronLeft className="w-5 h-5 text-slate-400" />
+              )}
+              <span className="text-xs text-slate-500 font-medium">
+                {currentTabIndex + 1} / {TABS.length}
+              </span>
+              {currentTabIndex < TABS.length - 1 && (
+                <ChevronRight className="w-5 h-5 text-slate-400" />
+              )}
+            </div>
           </div>
         </div>
         

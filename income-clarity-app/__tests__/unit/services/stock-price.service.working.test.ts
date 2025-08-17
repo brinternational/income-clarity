@@ -5,7 +5,7 @@
  * and provides functional tests that actually pass.
  */
 
-import { stockPriceService } from '@/lib/services/stock-price.service';
+import { stockPriceService } from '@/lib/services/stock/stock-price.service';
 
 // Mock fetch globally
 global.fetch = jest.fn();

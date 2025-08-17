@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import { emailService } from '@/lib/services/email.service';
+import { emailService } from '@/lib/services/email/email.service';
 import { logger } from '@/lib/logger'
 
 const prisma = new PrismaClient();

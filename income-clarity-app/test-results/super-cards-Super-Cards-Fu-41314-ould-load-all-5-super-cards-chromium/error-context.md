@@ -1,0 +1,237 @@
+# Page snapshot
+
+```yaml
+- navigation "Skip links":
+  - list:
+    - listitem:
+      - 'link "Skip to main content (Access key: 1)"':
+        - /url: "#main-content"
+    - listitem:
+      - 'link "Skip to navigation (Access key: 2)"':
+        - /url: "#main-navigation"
+    - listitem:
+      - 'link "Skip to search (Access key: 3)"':
+        - /url: "#search"
+    - listitem:
+      - 'link "Skip to footer (Access key: 4)"':
+        - /url: "#footer"
+- application "Income Clarity Application":
+  - navigation:
+    - heading "Unified Super Cards - All 5 Hubs" [level=1]
+    - button "Dashboard"
+    - button "Analytics"
+    - button "Transactions"
+    - button "Upgrade Premium"
+    - button "Settings"
+    - button "test@example.com"
+  - text: Real-time unified view of all 5 Super Cards
+  - button "Refresh All"
+  - heading "Performance Hub" [level=2]
+  - button "Maximize"
+  - text: +0.0% vs SPY Performance Strong Alpha Generation Time Period Global setting for all tabs
+  - button "1D"
+  - button "1W"
+  - button "1M"
+  - button "3M"
+  - button "6M"
+  - button "1Y"
+  - button "All"
+  - heading "Performance Hub" [level=3]
+  - button "Refresh data":
+    - img
+  - tablist "Performance hub navigation":
+    - tab "SPY Intelligence Market intelligence" [selected]
+    - tab "Performance Chart Portfolio vs SPY visualization"
+    - tab "Yield Analysis Yield on cost analysis"
+    - tab "Composition Portfolio composition"
+  - tabpanel:
+    - heading "SPY Intelligence Hub" [level=3]
+    - paragraph: Comprehensive market analysis with forward-looking projections
+    - button "Refresh SPY intelligence data"
+    - text: +47.0% Current Alpha ↗️ Improving 75% Success Rate 9.39 Info Ratio
+    - heading "Intelligence Insights" [level=5]
+    - text: Momentum Play Strong uptrend with bullish sentiment suggests continued momentum.
+    - button "Historical Analysis"
+    - button "Future Projections"
+    - heading "Historical Performance" [level=4]
+    - button "1Y"
+    - heading "1 Year Performance" [level=5]
+    - paragraph: Detailed analysis and risk metrics
+    - text: Portfolio +53.1% SPY +6.1% Alpha +47.0% Win Rate 75% Success Rate
+    - heading "Risk Analysis" [level=6]
+    - text: Volatility 18.0% Moderate Risk Sharpe Ratio 0.82 Good Max Drawdown 15.0% Low Risk
+    - heading "Performance Summary" [level=6]
+    - paragraph: All time periods comparison
+    - table:
+      - rowgroup:
+        - row "Period Portfolio SPY Alpha Win Rate":
+          - cell "Period"
+          - cell "Portfolio"
+          - cell "SPY"
+          - cell "Alpha"
+          - cell "Win Rate"
+      - rowgroup:
+        - row "1Y +53.1% +6.1% +47.0% 75%":
+          - cell "1Y"
+          - cell "+53.1%"
+          - cell "+6.1%"
+          - cell "+47.0%"
+          - cell "75%"
+    - text: Real-time market intelligence • Updated continuously
+  - heading "Income Intelligence" [level=2]
+  - button "Maximize"
+  - text: +$0/month ABOVE ZERO LINE You are building wealth every month! Above Zero Streak 6 months 6 Current 8 Record 100% Success Rate
+  - button "Monthly"
+  - button "Annual"
+  - heading "Income Intelligence Hub" [level=3]
+  - text: ✋ Manual 🔒 Premium Required
+  - tablist "Income intelligence navigation":
+    - tab "Clarity Animated income waterfall" [selected]
+    - tab "Progression Income journey & milestones"
+    - tab "Stability Risk & reliability analysis"
+    - tab "Projections Future cash flow & FIRE"
+    - tab "Calendar Dividend payment schedule"
+    - tab "Tracker Advanced progression tracking"
+    - tab "AI Engine Dividend intelligence & optimization"
+  - tabpanel:
+    - heading "Income Flow Visualization" [level=4]
+    - paragraph: Watch your income flow from gross dividends to available reinvestment
+    - heading "Gross Monthly Income" [level=4]
+    - paragraph: Your total dividend income before taxes (/month)
+    - text: +$0 per month
+    - heading "Federal Tax" [level=4]
+    - paragraph: Federal taxes on dividend income (/month)
+    - text: "-$0 per month"
+    - heading "State Tax" [level=4]
+    - paragraph: State taxes - varies by location (/month)
+    - text: "-$0 per month"
+    - heading "Net Income" [level=4]
+    - paragraph: Your income after all taxes (/month)
+    - text: +$0 per month
+    - heading "Monthly Expenses" [level=4]
+    - paragraph: Your fixed living expenses (/month)
+    - text: "-$0 per month"
+    - heading "Available to Reinvest" [level=4]
+    - paragraph: Money left for growing your portfolio (/month)
+    - text: "+$0 per month 🎯 You're building wealth every month! Annual impact: +$152,094"
+    - heading "Income Waterfall" [level=3]
+    - paragraph: Track your income flow and expenses
+    - heading "No Income Data Available" [level=4]
+    - paragraph: Add dividend income and expense records to see your income waterfall analysis. This chart shows how your income flows through taxes and expenses.
+    - button "Add Income Records"
+    - button "Add Expenses"
+    - heading "Income Clarity" [level=3]
+    - paragraph: Monthly income waterfall from gross to available
+    - text: Gross Income Monthly total income $5,000 Minus taxes Taxes 27.0% effective rate -$1,350 Equals net income Net Income After-tax income $3,650 Minus expenses Expenses Monthly living costs -$3,200 Available to invest THE MAGIC NUMBER +$450 Available to Reinvest (Monthly) 12.3% of net income
+    - heading "Key Insights" [level=4]
+    - list:
+      - listitem: • Your effective tax rate is 27.0%
+      - listitem: • Living expenses consume 87.7% of net income
+      - listitem: • You have 12.3% available for wealth building
+  - heading "Tax Strategy" [level=2]
+  - button "Maximize"
+  - text: $0 Potential Annual Tax Savings 0.0% Reduction 💸 High Tax Burden Moving to PR could save $5,000 Moving to Puerto Rico saves $5,000/year 0% tax on qualified dividends + federal benefits $0 Current Tax Bill $0 Optimized Bill
+  - heading "Tax Strategy Hub" [level=3]
+  - text: ✋ Manual Estimated Manual data - upgrade for accuracy
+  - tablist "Tax strategy navigation":
+    - tab "Tax Dashboard Enhanced tax efficiency analysis"
+    - tab "4-Strategy Compare 4 strategies" [selected]
+    - tab "Location Location-based winners"
+    - tab "All States 50 states + territories"
+    - tab "ROC Tracker 19a ROC tracking"
+    - tab "Planning Tax strategy planning"
+    - tab "Settings Location & preferences"
+  - tabpanel:
+    - heading "4-Strategy Tax Analysis" [level=3]
+    - paragraph: Compare after-tax returns across investment strategies
+    - text: California
+    - button "1Y"
+    - button "3Y"
+    - button "5Y"
+    - button "10Y"
+    - text: BEST
+    - heading "Sell SPY" [level=4]
+    - paragraph: Sell SPY ETF for capital gains
+    - text: After-Tax Return 0.00% Tax Rate 0.0% 5Y Value $0
+    - heading "Dividend Focus" [level=4]
+    - paragraph: High dividend yield portfolio
+    - text: After-Tax Return 0.00% Tax Rate 0.0% 5Y Value $0
+    - heading "Covered Call" [level=4]
+    - paragraph: Generate option premium income
+    - text: After-Tax Return 0.00% Tax Rate 0.0% 5Y Value $0
+    - heading "60/40 Portfolio" [level=4]
+    - paragraph: 60% stocks, 40% bonds
+    - text: After-Tax Return 0.00% Tax Rate 0.0% 5Y Value $0
+    - heading "Strategy Comparison Summary" [level=4]
+    - text: "Best Strategy: Sell SPY0.00% Annual Advantage: $0 5-Year Advantage: $0"
+  - heading "Portfolio Strategy" [level=2]
+  - button "Maximize"
+  - text: 0/100 Portfolio Health Score Grade A - Excellent ⚖️ Moderate Risk Profile 0% Diversification $0K Total Value 0 Risk Score Good Status
+  - heading "Portfolio Strategy Hub" [level=3]
+  - text: ✋ Manual (12)
+  - tablist "Portfolio strategy navigation":
+    - tab "Composition Portfolio composition chart" [selected]
+    - tab "Rebalancing Optimization suggestions"
+    - tab "Comparison Strategy comparison"
+    - tab "Peer Ranking Compare with peers"
+    - tab "Backtesting Historical analysis"
+    - tab "Margin Leverage intelligence"
+  - tabpanel:
+    - heading "Portfolio Composition" [level=3]
+    - paragraph: $166.0k total value
+    - button "By Sector"
+    - button "By Holdings"
+    - application
+    - text: 1 Sectors 9 holdings 100.0% $166.0k 0.0% yield 100% Largest Position Basic Diversification 0.0% Weighted Avg Yield Balanced Risk Profile Rebalancing Suggestion
+    - paragraph: Consider rebalancing sector as it represents100% of your portfolio.
+    - heading "Asset Allocation Overview" [level=4]
+    - paragraph: Visual breakdown of your portfolio allocation with diversification insights
+    - heading "Asset Allocation" [level=3]
+    - paragraph: Portfolio distribution
+    - text: 📊
+    - paragraph: Add holdings to see allocation breakdown
+    - heading "Sector Allocation" [level=3]
+    - paragraph: Portfolio sector breakdown
+    - text: 🏭
+    - paragraph: Add holdings to see sector breakdown
+    - heading "Strategy Health" [level=3]
+    - paragraph: Overall portfolio assessment
+    - text: 8.2/10
+    - heading "Health Factors" [level=4]
+    - text: Diversification 8.5 Risk Management 7.8 Cost Efficiency 8.9 Tax Efficiency 7.5
+    - heading "Quick Recommendations" [level=4]
+    - list:
+      - listitem: • Consider tax-loss harvesting to improve tax efficiency
+      - listitem: • Review expense ratios for cost optimization
+      - listitem: • Monitor correlation between holdings
+  - heading "Financial Planning" [level=2]
+  - button "Maximize"
+  - text: 🌱 0.0% Progress to FIRE Getting Started Strong start! 12.3 years estimated to FIRE. 0.0 years to financial independence $0K Net Worth 0% Savings Rate $0 Monthly Investment 0 Above Zero Streak
+  - heading "Financial Planning Hub" [level=3]
+  - text: ✋ Manual Partial Data 🔒 Premium Required Sync for better projections
+  - tablist "Financial planning navigation":
+    - tab "Milestones Enhanced milestone tracker"
+    - tab "FIRE Financial independence" [selected]
+    - tab "Above Zero Wealth building streak"
+    - tab "Goals SMART goal setting"
+    - tab "Coast FI Coast FI calculator"
+    - tab "What-If Scenario modeling"
+    - tab "Achievements Milestone celebrations"
+  - tabpanel:
+    - heading "Dividend Projections" [level=3]
+    - paragraph: Forecast future dividend income
+    - heading "No Dividend Data Available" [level=4]
+    - paragraph: Add dividend-paying holdings to your portfolio to see dividend income projections based on your current holdings and historical dividend data.
+    - button "Add Dividend Stocks"
+    - button "View Dividend History"
+    - heading "FIRE Progress Tracker" [level=3]
+    - paragraph: Your journey to financial independence and early retirement
+    - img
+    - text: 0.0% to FIRE $0K Current Portfolio $0K FIRE Number 0.0 Years to FIRE $0 Monthly Contribution
+    - heading "FIRE Milestones" [level=4]
+    - text: Coast FI 25% of FIRE number Lean FI 50% of FIRE number Fat FI 75% of FIRE number Full FI 100% of FIRE number
+    - heading "Acceleration Opportunity" [level=4]
+    - paragraph: Increasing your monthly investment by $500 could reduce your time to FIRE by 3-5 years!
+  - text: "Click expand icon to focus • All data updates in real-time Last refresh: 12:30:39 PM"
+- alert
+```

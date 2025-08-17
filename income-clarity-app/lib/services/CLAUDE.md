@@ -52,6 +52,22 @@ npx tsx --eval "import {superCardsDatabase} from './lib/services/super-cards-dat
 - `milestone-tracker.service.ts` - Progress tracking
 - `email.service.ts` - Notification system
 
+### 🚀 NEW - Freemium/Yodlee Services (2025-08-16):
+#### Subscription Services (`/subscription/`)
+- `subscription.service.ts` - User tier management (FREE/PREMIUM/ENTERPRISE)
+- `feature-gate.service.ts` - Feature access control & limits
+- `CLAUDE.md` - Complete subscription documentation
+
+#### Sync Services (`/sync/`)
+- `sync-orchestrator.service.ts` - Yodlee data synchronization
+- `CLAUDE.md` - Sync patterns and strategies
+
+#### Yodlee Services (`/yodlee/`)
+- `yodlee-client.service.ts` - Yodlee API wrapper
+- `yodlee-data-mapper.service.ts` - Data transformation
+- `yodlee-sync.service.ts` - Sync management
+- `CLAUDE.md` - Yodlee integration overview
+
 ### Database Integration:
 - Main database: Prisma SQLite (dev.db) - ACTIVE
 - Super Cards database: separate SQLite - DEPRECATED, no longer used

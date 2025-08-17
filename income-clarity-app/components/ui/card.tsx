@@ -20,6 +20,11 @@ interface CardTitleProps {
   children: React.ReactNode;
 }
 
+interface CardDescriptionProps {
+  className?: string;
+  children: React.ReactNode;
+}
+
 export const Card: React.FC<CardProps> = ({ className = '', children }) => {
   return (
     <div className={`rounded-lg border bg-white shadow-sm ${className}`}>
@@ -49,5 +54,13 @@ export const CardTitle: React.FC<CardTitleProps> = ({ className = '', children }
     <h3 className={`text-lg font-semibold leading-none tracking-tight ${className}`}>
       {children}
     </h3>
+  );
+};
+
+export const CardDescription: React.FC<CardDescriptionProps> = ({ className = '', children }) => {
+  return (
+    <p className={`text-sm text-gray-500 ${className}`}>
+      {children}
+    </p>
   );
 };

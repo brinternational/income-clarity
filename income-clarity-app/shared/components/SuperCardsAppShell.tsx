@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { AppShell } from './AppShell'
-import { SuperCardsNavigation } from './navigation/SuperCardsNavigation'
+import { SuperCardsNavigation } from '@/components/navigation/SuperCardsNavigation'
 import { useMobileDetection } from '@/hooks/useMobileDetection'
 import { useSwipeNavigation } from '@/hooks/useSwipeNavigation'
 import { useSuperCardStore } from '@/store/superCardStore'

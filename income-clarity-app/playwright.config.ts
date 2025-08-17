@@ -72,11 +72,13 @@ export default defineConfig({
     },
   ],
 
-  /* Run your local dev server before starting the tests */
+  /* Run your local production server before starting the tests */
   webServer: {
-    command: 'npm run dev',
+    command: 'NODE_ENV=production node custom-server.js',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
+    stderr: 'pipe',
+    stdout: 'pipe',
   },
 })

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { milestoneTracker } from '@/lib/services/milestone-tracker.service';
+import { milestoneTracker } from '@/lib/services/milestones/milestone-tracker.service';
 import { logger } from '@/lib/logger'
 
 // Mock session management - in production, use proper authentication

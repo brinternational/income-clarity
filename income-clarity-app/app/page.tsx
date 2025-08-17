@@ -4,6 +4,11 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+
+// Import Design System components
+import { Button } from '@/components/design-system/core/Button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/design-system/core/Card'
+import { Badge } from '@/components/design-system/core/Badge'
 import { 
   TrendingUp, 
   DollarSign, 
@@ -81,28 +86,35 @@ export default function LandingPage() {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-4">
-              <Link 
+              <Button 
                 href={'/auth' + '/login'}
-                className="text-slate-300 hover:text-white transition-colors"
+                variant="ghost"
+                size="sm"
+                className="text-slate-300 hover:text-white"
               >
                 Login
-              </Link>
-              <Link 
+              </Button>
+              <Button 
                 href="/auth/signup"
-                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all"
+                variant="primary"
+                size="sm"
               >
                 Get Started
-              </Link>
+              </Button>
             </div>
 
             {/* Mobile menu button */}
             <div className="md:hidden">
-              <button
+              <Button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                variant="ghost"
+                size="sm"
+                iconOnly
                 className="text-white"
+                ariaLabel={mobileMenuOpen ? "Close menu" : "Open menu"}
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -111,18 +123,23 @@ export default function LandingPage() {
         {mobileMenuOpen && (
           <div className="md:hidden bg-slate-900/95 backdrop-blur-xl border-t border-white/10">
             <div className="px-4 py-4 space-y-2">
-              <Link 
+              <Button 
                 href={'/auth' + '/login'}
-                className="block px-3 py-2 text-slate-300 hover:text-white transition-colors"
+                variant="ghost"
+                size="md"
+                fullWidth
+                className="text-slate-300 hover:text-white justify-start"
               >
                 Login
-              </Link>
-              <Link 
+              </Button>
+              <Button 
                 href="/auth/signup"
-                className="block px-3 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg text-center"
+                variant="primary"
+                size="md"
+                fullWidth
               >
                 Get Started
-              </Link>
+              </Button>
             </div>
           </div>
         )}
@@ -159,19 +176,23 @@ export default function LandingPage() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Link 
+            <Button 
               href="/auth/signup"
-              className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold text-lg hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-105 shadow-xl"
+              variant="primary"
+              size="xl"
+              rightIcon={<ArrowRight className="w-5 h-5" />}
+              className="px-8 py-4 font-semibold text-lg shadow-xl"
             >
               Start Free Trial
-              <ArrowRight className="inline ml-2 w-5 h-5" />
-            </Link>
-            <Link 
+            </Button>
+            <Button 
               href="/demo"
-              className="px-8 py-4 bg-white/10 backdrop-blur-xl text-white rounded-xl font-semibold text-lg hover:bg-white/20 transition-all border border-white/20"
+              variant="secondary"
+              size="xl"
+              className="px-8 py-4 font-semibold text-lg"
             >
               View Demo
-            </Link>
+            </Button>
           </motion.div>
 
           {/* Trust badges */}
@@ -217,13 +238,23 @@ export default function LandingPage() {
                 className="relative group"
               >
                 <div className={`absolute inset-0 bg-gradient-to-r ${feature.color} rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity`}></div>
-                <div className="relative bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all">
-                  <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-lg flex items-center justify-center mb-4`}>
-                    <feature.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
-                  <p className="text-slate-400">{feature.description}</p>
-                </div>
+                <Card 
+                  variant="glass"
+                  size="md"
+                  radius="xl"
+                  hover
+                  className="relative border-white/10 hover:border-white/20"
+                >
+                  <CardHeader className="pb-2">
+                    <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-lg flex items-center justify-center mb-4`}>
+                      <feature.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <CardTitle className="text-xl text-white">{feature.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-slate-400">{feature.description}</CardDescription>
+                  </CardContent>
+                </Card>
               </motion.div>
             ))}
           </div>
@@ -243,10 +274,17 @@ export default function LandingPage() {
                 initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="flex items-center space-x-3 bg-white/5 backdrop-blur-xl rounded-lg p-4 border border-white/10"
+                className="flex items-center space-x-3"
               >
-                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                <span className="text-slate-300">{benefit}</span>
+                <Card 
+                  variant="glass"
+                  size="sm"
+                  radius="md"
+                  className="flex items-center space-x-3 border-white/10"
+                >
+                  <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                  <span className="text-slate-300">{benefit}</span>
+                </Card>
               </motion.div>
             ))}
           </div>
@@ -265,13 +303,15 @@ export default function LandingPage() {
           <p className="text-xl text-slate-300 mb-8">
             Join thousands of investors who are already living off their portfolios.
           </p>
-          <Link 
+          <Button 
             href="/auth/signup"
-            className="inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold text-lg hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-105 shadow-xl"
+            variant="primary"
+            size="xl"
+            rightIcon={<ArrowRight className="w-5 h-5" />}
+            className="px-8 py-4 font-semibold text-lg shadow-xl"
           >
             Get Started Today
-            <ArrowRight className="inline ml-2 w-5 h-5" />
-          </Link>
+          </Button>
         </div>
       </section>
 

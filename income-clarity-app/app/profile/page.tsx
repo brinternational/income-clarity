@@ -3,8 +3,17 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Save, User, MapPin, DollarSign, FileText, Check, AlertCircle, ArrowLeft } from 'lucide-react';
-import { logger } from '@/lib/logger'
+import { Save, User, MapPin, DollarSign, FileText, Check, AlertCircle, ArrowLeft, CreditCard, Crown } from 'lucide-react';
+import { logger } from '@/lib/logger';
+import Link from 'next/link';
+
+// Import Design System components
+import { Button } from '@/components/design-system/core/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/design-system/core/Card';
+import { Alert, AlertDescription } from '@/components/design-system/core/Alert';
+import { TextField, EmailField, CurrencyField } from '@/components/design-system/forms/TextField';
+import { Select } from '@/components/design-system/forms/Select';
+import { Badge } from '@/components/design-system/core/Badge';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -30,7 +39,24 @@ export default function ProfilePage() {
     
     // Preferences
     currency: 'USD',
-    timezone: 'America/New_York'
+    timezone: 'America/New_York',
+    
+    // Subscription Info
+    isPremium: false,
+    plan: 'FREE',
+    subscriptionStatus: 'inactive',
+    trialEndDate: null,
+    nextBillingDate: null
+  });
+
+  // Mock subscription data - replace with actual API call
+  const [subscriptionData, setSubscriptionData] = useState({
+    plan: 'FREE',
+    status: 'inactive',
+    isTrialPeriod: false,
+    trialDaysRemaining: 0,
+    nextBillingDate: null,
+    pricePerMonth: 0
   });
 
   // US States for dropdown
@@ -160,12 +186,15 @@ export default function ProfilePage() {
         {/* Header with Navigation */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <button
+            <Button
               onClick={() => router.back()}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+              variant="ghost"
+              size="sm"
+              iconOnly
+              ariaLabel="Go back"
             >
               <ArrowLeft className="h-5 w-5" />
-            </button>
+            </Button>
             <h1 className="text-3xl font-bold">Profile</h1>
           </div>
         </div>
@@ -175,178 +204,241 @@ export default function ProfilePage() {
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-green-100 dark:bg-green-900/20 border border-green-500 rounded-lg flex items-center"
+            className="mb-6"
           >
-            <Check className="h-5 w-5 text-green-600 mr-2" />
-            Profile saved successfully!
+            <Alert variant="success" dismissible className="flex items-center">
+              <Check className="h-5 w-5 mr-2" />
+              Profile saved successfully!
+            </Alert>
           </motion.div>
         )}
 
         {/* Personal Information */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex items-center mb-4">
-            <User className="h-5 w-5 mr-2 text-gray-600 dark:text-gray-400" />
-            <h2 className="text-xl font-semibold">Personal Information</h2>
-          </div>
+        <Card variant="default" size="lg" className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <User className="h-5 w-5 mr-2 text-gray-600 dark:text-gray-400" />
+              Personal Information
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Full Name</label>
-              <input
-                type="text"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <TextField
+                label="Full Name"
+                name="fullName"
                 value={profile.fullName}
                 onChange={(e) => setProfile({...profile, fullName: e.target.value})}
-                className={`w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 ${
-                  errors.fullName ? 'border-red-500' : ''
-                }`}
+                errorMessage={errors.fullName}
+                required
               />
-              {errors.fullName && (
-                <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Email</label>
-              <input
-                type="email"
+              
+              <EmailField
+                label="Email"
+                name="email"
                 value={profile.email}
                 onChange={(e) => setProfile({...profile, email: e.target.value})}
-                className={`w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 ${
-                  errors.email ? 'border-red-500' : ''
-                }`}
+                errorMessage={errors.email}
+                required
               />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Subscription Management */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Crown className="h-5 w-5 text-purple-600" />
+              Subscription
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    Current Plan
+                  </span>
+                  <Badge 
+                    variant={profile.isPremium ? 'success' : 'secondary'}
+                    size="sm"
+                  >
+                    {profile.isPremium ? 'Premium' : 'Free'}
+                  </Badge>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {profile.isPremium 
+                    ? 'Access to all premium features including bank sync and real-time data'
+                    : 'Basic features with manual data entry'
+                  }
+                </p>
+              </div>
+            </div>
+            
+            {profile.isPremium && profile.trialEndDate && (
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  Trial ends: {new Date(profile.trialEndDate).toLocaleDateString()}
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            <div className="flex gap-3">
+              <Button 
+                href="/pricing"
+                variant={profile.isPremium ? "outline" : "primary"}
+                size="md"
+                leftIcon={<Crown className="h-4 w-4" />}
+              >
+                {profile.isPremium ? 'View Plans' : 'Upgrade to Premium'}
+              </Button>
+              {profile.isPremium && (
+                <Button 
+                  href="/settings/billing"
+                  variant="outline"
+                  size="md"
+                  leftIcon={<CreditCard className="h-4 w-4" />}
+                >
+                  Manage Billing
+                </Button>
               )}
             </div>
-          </div>
-        </div>
+            
+            {!profile.isPremium && (
+              <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                  Unlock Premium Features
+                </h4>
+                <div className="grid grid-cols-2 gap-2 text-sm text-blue-700 dark:text-blue-300">
+                  <div className="flex items-center gap-1">
+                    <span>🏦</span> Bank Sync
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span>📈</span> Real-time Data
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span>📊</span> Advanced Analytics
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span>📧</span> Email Reports
+                  </div>
+                </div>
+                <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
+                  14 days free • No credit card required
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Tax Information */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex items-center mb-4">
-            <MapPin className="h-5 w-5 mr-2 text-gray-600 dark:text-gray-400" />
-            <h2 className="text-xl font-semibold">Tax Information</h2>
-          </div>
+        <Card variant="default" size="lg" className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <MapPin className="h-5 w-5 mr-2 text-gray-600 dark:text-gray-400" />
+              Tax Information
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">State</label>
-              <select
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Select
+                label="State"
+                name="state"
+                native
                 value={profile.state}
                 onChange={(e) => handleStateChange(e.target.value)}
-                className={`w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 ${
-                  errors.state ? 'border-red-500' : ''
-                }`}
-              >
-                {states.map(state => (
-                  <option key={state.code} value={state.code}>
-                    {state.name} {state.tax === 0 && state.code ? '(No state tax!)' : ''}
-                  </option>
-                ))}
-              </select>
-              {errors.state && (
-                <p className="text-red-500 text-xs mt-1">{errors.state}</p>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Filing Status</label>
-              <select
+                errorMessage={errors.state}
+                required
+                options={states.map(state => ({
+                  value: state.code,
+                  label: `${state.name}${state.tax === 0 && state.code ? ' (No state tax!)' : ''}`
+                }))}
+                placeholder="Select State"
+              />
+              
+              <Select
+                label="Filing Status"
+                name="filingStatus"
+                native
                 value={profile.filingStatus}
                 onChange={(e) => setProfile({...profile, filingStatus: e.target.value})}
-                className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
-              >
-                <option value="single">Single</option>
-                <option value="married_jointly">Married Filing Jointly</option>
-                <option value="married_separately">Married Filing Separately</option>
-                <option value="head_of_household">Head of Household</option>
-              </select>
+                options={[
+                  { value: 'single', label: 'Single' },
+                  { value: 'married_jointly', label: 'Married Filing Jointly' },
+                  { value: 'married_separately', label: 'Married Filing Separately' },
+                  { value: 'head_of_household', label: 'Head of Household' }
+                ]}
+              />
             </div>
-          </div>
           
-          {/* Tax Rate Display */}
-          <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Effective Tax Rate</span>
-              <span className="text-2xl font-bold text-blue-600">{calculateTaxRate()}%</span>
+            {/* Tax Rate Display */}
+            <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Effective Tax Rate</span>
+                <span className="text-2xl font-bold text-blue-600">{calculateTaxRate()}%</span>
+              </div>
+              <div className="mt-2 text-xs text-gray-500">
+                Federal: {(profile.federalBracket * 100).toFixed(1)}% + 
+                State: {(profile.stateBracket * 100).toFixed(1)}%
+              </div>
             </div>
-            <div className="mt-2 text-xs text-gray-500">
-              Federal: {(profile.federalBracket * 100).toFixed(1)}% + 
-              State: {(profile.stateBracket * 100).toFixed(1)}%
-            </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Financial Goals */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex items-center mb-4">
-            <DollarSign className="h-5 w-5 mr-2 text-gray-600 dark:text-gray-400" />
-            <h2 className="text-xl font-semibold">Financial Goals</h2>
-          </div>
+        <Card variant="default" size="lg" className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <DollarSign className="h-5 w-5 mr-2 text-gray-600 dark:text-gray-400" />
+              Financial Goals
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Monthly Expenses</label>
-              <input
-                type="number"
-                value={profile.monthlyExpenses}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <CurrencyField
+                label="Monthly Expenses"
+                name="monthlyExpenses"
+                value={profile.monthlyExpenses.toString()}
                 onChange={(e) => setProfile({...profile, monthlyExpenses: parseFloat(e.target.value) || 0})}
-                className={`w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 ${
-                  errors.monthlyExpenses ? 'border-red-500' : ''
-                }`}
+                errorMessage={errors.monthlyExpenses}
               />
-              {errors.monthlyExpenses && (
-                <p className="text-red-500 text-xs mt-1">{errors.monthlyExpenses}</p>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Target Monthly Income</label>
-              <input
-                type="number"
-                value={profile.targetIncome}
+              
+              <CurrencyField
+                label="Target Monthly Income"
+                name="targetIncome"
+                value={profile.targetIncome.toString()}
                 onChange={(e) => setProfile({...profile, targetIncome: parseFloat(e.target.value) || 0})}
-                className={`w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 ${
-                  errors.targetIncome ? 'border-red-500' : ''
-                }`}
+                errorMessage={errors.targetIncome}
               />
-              {errors.targetIncome && (
-                <p className="text-red-500 text-xs mt-1">{errors.targetIncome}</p>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Target Retirement Age</label>
-              <input
+              
+              <TextField
+                label="Target Retirement Age"
+                name="retirementAge"
                 type="number"
-                value={profile.retirementAge}
+                value={profile.retirementAge.toString()}
                 onChange={(e) => setProfile({...profile, retirementAge: parseInt(e.target.value) || 65})}
-                className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Save Button */}
         <div className="flex justify-end">
-          <button
+          <Button
             onClick={handleSave}
             disabled={loading}
-            className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            loading={loading}
+            variant="primary"
+            size="lg"
+            leftIcon={!loading ? <Save className="h-4 w-4" /> : undefined}
+            className="px-6 py-3"
           >
-            {loading ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Save className="h-4 w-4 mr-2" />
-                Save Profile
-              </>
-            )}
-          </button>
+            {loading ? 'Saving...' : 'Save Profile'}
+          </Button>
         </div>
       </div>
     </div>

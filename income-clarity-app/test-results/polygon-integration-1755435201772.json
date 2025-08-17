@@ -1,0 +1,147 @@
+{
+  "passed": 2,
+  "failed": 10,
+  "warnings": 1,
+  "startTime": 1755435201262,
+  "tests": [
+    {
+      "name": "Quick Health Check",
+      "status": "pass",
+      "message": "Status: healthy",
+      "details": {
+        "quick": true,
+        "status": "healthy",
+        "message": "All systems operational",
+        "criticalIssues": [],
+        "timestamp": "2025-08-17T12:53:21.390Z"
+      },
+      "timestamp": "2025-08-17T12:53:21.413Z"
+    },
+    {
+      "name": "Full Environment Validation",
+      "status": "warn",
+      "message": "Overall: degraded, Passed: 6, Warnings: 1, Failed: 0",
+      "details": {
+        "checks": [
+          {
+            "name": "POLYGON_API_KEY",
+            "status": "pass",
+            "message": "Polygon API key is configured"
+          },
+          {
+            "name": "Polygon API Connection",
+            "status": "warning",
+            "message": "API request failed: 429"
+          },
+          {
+            "name": "DATABASE_URL",
+            "status": "pass",
+            "message": "Database URL is configured"
+          },
+          {
+            "name": "SESSION_SECRET",
+            "status": "pass",
+            "message": "Session secret is configured"
+          },
+          {
+            "name": "NODE_ENV",
+            "status": "pass",
+            "message": "Running in production mode"
+          },
+          {
+            "name": "NEXT_PUBLIC_APP_URL",
+            "status": "pass",
+            "message": "App URL is configured"
+          },
+          {
+            "name": "LITE_PRODUCTION_MODE",
+            "status": "pass",
+            "message": "Lite production mode: enabled"
+          }
+        ]
+      },
+      "timestamp": "2025-08-17T12:53:21.461Z"
+    },
+    {
+      "name": "Single Symbol Request (SPY)",
+      "status": "fail",
+      "message": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "details": null,
+      "timestamp": "2025-08-17T12:53:21.514Z"
+    },
+    {
+      "name": "Multiple Symbols Request",
+      "status": "fail",
+      "message": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "details": null,
+      "timestamp": "2025-08-17T12:53:21.541Z"
+    },
+    {
+      "name": "Invalid Symbol Handling",
+      "status": "fail",
+      "message": "Should handle invalid symbols gracefully",
+      "details": null,
+      "timestamp": "2025-08-17T12:53:21.573Z"
+    },
+    {
+      "name": "API Health Status",
+      "status": "fail",
+      "message": "Unexpected token 'M', \"Method Not Allowed\" is not valid JSON",
+      "details": null,
+      "timestamp": "2025-08-17T12:53:21.612Z"
+    },
+    {
+      "name": "Dividend Data Retrieval",
+      "status": "fail",
+      "message": "Unexpected token 'M', \"Method Not Allowed\" is not valid JSON",
+      "details": null,
+      "timestamp": "2025-08-17T12:53:21.622Z"
+    },
+    {
+      "name": "SPY Benchmark",
+      "status": "fail",
+      "message": "Unexpected token 'M', \"Method Not Allowed\" is not valid JSON",
+      "details": null,
+      "timestamp": "2025-08-17T12:53:21.632Z"
+    },
+    {
+      "name": "Cache Management",
+      "status": "fail",
+      "message": "Unexpected token 'M', \"Method Not Allowed\" is not valid JSON",
+      "details": null,
+      "timestamp": "2025-08-17T12:53:21.646Z"
+    },
+    {
+      "name": "Missing Parameters Handling",
+      "status": "fail",
+      "message": "Should return 400 for missing parameters",
+      "details": null,
+      "timestamp": "2025-08-17T12:53:21.666Z"
+    },
+    {
+      "name": "Invalid Action Handling",
+      "status": "fail",
+      "message": "Should return 400 for invalid actions",
+      "details": null,
+      "timestamp": "2025-08-17T12:53:21.682Z"
+    },
+    {
+      "name": "Response Time Performance",
+      "status": "pass",
+      "message": "Average: 16ms, Cached: 17ms",
+      "details": null,
+      "timestamp": "2025-08-17T12:53:21.731Z"
+    },
+    {
+      "name": "Concurrent Request Handling",
+      "status": "fail",
+      "message": "3 concurrent requests: 0 successful in 40ms",
+      "details": null,
+      "timestamp": "2025-08-17T12:53:21.771Z"
+    }
+  ],
+  "executionTime": 509,
+  "overallStatus": "CRITICAL",
+  "successRate": 15.4,
+  "timestamp": "2025-08-17T12:53:21.772Z"
+}

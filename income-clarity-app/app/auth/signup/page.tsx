@@ -3,11 +3,17 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Input } from '@/components/forms/Input';
-import { Button } from '@/components/forms/Button';
 import { useAuth } from '@/contexts/AuthContext';
 import { User, Mail, Lock, UserPlus, Loader2 } from 'lucide-react';
 import { logger } from '@/lib/logger'
+
+// Import Design System components
+import { Button } from '@/components/design-system/core/Button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/design-system/core/Card'
+import { Alert } from '@/components/design-system/core/Alert'
+import { TextField, EmailField, PasswordField } from '@/components/design-system/forms/TextField'
+import { Container } from '@/components/design-system/layout/Container'
+import { Stack } from '@/components/design-system/layout/Stack'
 
 interface SignupFormData {
   name: string;
@@ -187,29 +193,36 @@ function SignupPageContent() {
           </div>
 
           {/* Signup Form */}
-          <div className="mt-8 bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 p-8 shadow-xl">
+          <Card 
+            variant="glass" 
+            size="lg" 
+            radius="xl" 
+            className="mt-8 shadow-xl border-white/20"
+          >
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* General Error */}
               {errors.general && (
-                <div 
-                  className="rounded-lg bg-red-500/10 border border-red-500/20 p-4"
+                <Alert 
+                  variant="error"
+                  size="sm"
+                  data-testid="signup-error"
                   role="alert"
                   aria-live="polite"
                 >
-                  <p className="text-sm text-red-400">{errors.general}</p>
-                </div>
+                  {errors.general}
+                </Alert>
               )}
 
               {/* Name Field */}
               <div>
-                <Input
+                <TextField
                   id="name"
+                  data-testid="signup-name"
                   type="text"
                   label="Full name"
                   placeholder="Enter your full name"
                   value={formData.name}
                   onChange={handleInputChange('name')}
-                  error={!!errors.name}
                   errorMessage={errors.name}
                   leftIcon={<User className="h-5 w-5" />}
                   required
@@ -220,37 +233,31 @@ function SignupPageContent() {
 
               {/* Email Field */}
               <div>
-                <Input
+                <EmailField
                   id="email"
-                  type="email"
+                  data-testid="signup-email"
                   label="Email address"
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={handleInputChange('email')}
-                  error={!!errors.email}
                   errorMessage={errors.email}
                   leftIcon={<Mail className="h-5 w-5" />}
                   required
-                  autoComplete="email"
                   disabled={isLoading}
                 />
               </div>
 
               {/* Password Field */}
               <div>
-                <Input
+                <PasswordField
                   id="password"
-                  type="password"
+                  data-testid="signup-password"
                   label="Password"
                   placeholder="Create a strong password"
                   value={formData.password}
                   onChange={handleInputChange('password')}
-                  error={!!errors.password}
                   errorMessage={errors.password}
                   leftIcon={<Lock className="h-5 w-5" />}
-                  showPasswordToggle
-                  showPassword={showPassword}
-                  onPasswordToggle={() => setShowPassword(!showPassword)}
                   required
                   autoComplete="new-password"
                   disabled={isLoading}
@@ -287,19 +294,14 @@ function SignupPageContent() {
 
               {/* Confirm Password Field */}
               <div>
-                <Input
+                <PasswordField
                   id="confirmPassword"
-                  type="password"
                   label="Confirm password"
                   placeholder="Confirm your password"
                   value={formData.confirmPassword}
                   onChange={handleInputChange('confirmPassword')}
-                  error={!!errors.confirmPassword}
                   errorMessage={errors.confirmPassword}
                   leftIcon={<Lock className="h-5 w-5" />}
-                  showPasswordToggle
-                  showPassword={showConfirmPassword}
-                  onPasswordToggle={() => setShowConfirmPassword(!showConfirmPassword)}
                   required
                   autoComplete="new-password"
                   disabled={isLoading}
@@ -309,13 +311,14 @@ function SignupPageContent() {
               {/* Submit Button */}
               <div>
                 <Button
+                  data-testid="signup-button"
                   type="submit"
                   variant="primary"
                   size="lg"
                   fullWidth
                   loading={isLoading}
                   disabled={isLoading}
-                  leftIcon={isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <UserPlus className="h-5 w-5" />}
+                  leftIcon={!isLoading ? <UserPlus className="h-5 w-5" /> : undefined}
                 >
                   {isLoading ? 'Creating account...' : 'Create account'}
                 </Button>
@@ -348,7 +351,7 @@ function SignupPageContent() {
                 </p>
               </div>
             </form>
-          </div>
+          </Card>
 
           {/* Back to home */}
           <div className="text-center">

@@ -292,6 +292,7 @@ export function PWAHeader({ title, userName, onSettingsClick, onLogout, onAddCli
             {/* Profile Dropdown */}
             <div className="relative z-50">
               <button
+                data-testid="user-menu"
                 onClick={() => setShowProfileDropdown(!showProfileDropdown)}
                 className="group flex items-center space-x-3 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-white/20 relative"
                 style={{ 
@@ -316,7 +317,7 @@ export function PWAHeader({ title, userName, onSettingsClick, onLogout, onAddCli
                 </div>
                 
                 <div className="hidden sm:block">
-                  <span className="text-sm font-medium text-white block">
+                  <span data-testid="user-email" className="text-sm font-medium text-white block">
                     {userName || 'User'}
                   </span>
                   <span className="text-xs text-white/70">
@@ -397,6 +398,7 @@ export function PWAHeader({ title, userName, onSettingsClick, onLogout, onAddCli
                     <div className="my-2 h-px bg-white/10"></div>
                     
                     <button
+                      data-testid="logout-button"
                       onClick={() => {
                         onLogout()
                         setShowProfileDropdown(false)

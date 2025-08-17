@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { emailScheduler } from '@/lib/services/email-scheduler.service';
+import { emailScheduler } from '@/lib/services/email/email-scheduler.service';
 import { logger } from '@/lib/logger'
 
 /**

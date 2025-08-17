@@ -12,13 +12,13 @@ test.describe('Portfolio Management', () => {
     await page.fill('input[type="email"]', 'test@example.com')
     await page.fill('input[type="password"]', 'password123')
     await page.click('button[type="submit"]')
-    await expect(page).toHaveURL('/dashboard')
+    await expect(page).toHaveURL(/\/dashboard/)
   })
 
   test('should create a new portfolio', async ({ page }) => {
     // Navigate to portfolio page
     await page.click('text=Portfolio')
-    await expect(page).toHaveURL('/portfolio')
+    await expect(page).toHaveURL(/\/portfolio/)
     
     // Click create portfolio button
     await page.click('button:has-text("Create Portfolio")')

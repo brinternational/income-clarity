@@ -28,7 +28,10 @@ import { PerformanceChart, YieldOnCostAnalysis, PortfolioComposition } from '@/c
 import { SkeletonSPYComparison } from '@/components/ui/skeletons';
 import { superCardsAPI } from '@/lib/api/super-cards-api';
 import type { TimeRange } from '@/lib/api/super-cards-api';
-import { logger } from '@/lib/logger'
+import { logger } from '@/lib/logger';
+import { SyncStatusIndicator, FreshnessIndicator, useSyncStatus } from '@/components/sync';
+import { useFeatureAccess } from '@/components/premium';
+import { useUser } from '@/hooks/useUser';
 
 interface PerformanceHubProps {
   data?: any; // For unified view compatibility
@@ -96,9 +99,9 @@ const TABS: TabConfig[] = [
 const PerformanceHubComponent = ({ 
   data,
   isCompact = false,
-  portfolioReturn = 0.082,
-  spyReturn = 0.061,
-  outperformance = 0.021,
+  portfolioReturn = 0, // Removed hardcoded mock values
+  spyReturn = 0,       // Will be fetched from real data
+  outperformance = 0,  // Will be calculated from real data
   isLoading = false,
   timePeriodData,
   className = ''
@@ -115,6 +118,10 @@ const PerformanceHubComponent = ({
   const [touchEnd, setTouchEnd] = useState<number>(0);
   const [loadStartTime] = useState(() => performance.now());
   const [isLoaded, setIsLoaded] = useState(false);
+  
+  const { user } = useUser();
+  const { isPremium } = useFeatureAccess();
+  const { lastSyncTime, triggerSync } = useSyncStatus(user?.id || '');
   
   const performanceHub = usePerformanceHub();
   const { updateData, setLoading, setError } = usePerformanceActions();
@@ -428,12 +435,34 @@ const PerformanceHubComponent = ({
       {/* Tab Navigation - Mobile-first with swipe indicators */}
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
-            Performance Hub
-          </h3>
+          <div className="flex items-center gap-3">
+            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
+              Performance Hub
+            </h3>
+            
+            {/* Data Freshness Indicator */}
+            <FreshnessIndicator 
+              lastSync={lastSyncTime}
+              size="sm"
+              showLabel={false}
+              className="hidden sm:flex"
+            />
+          </div>
           
-          {/* Refresh Button and Mobile swipe indicators */}
+          {/* Sync Status and Controls */}
           <div className="flex items-center space-x-4">
+            {/* Premium Sync Status */}
+            {isPremium && (
+              <SyncStatusIndicator
+                userId={user?.id || ''}
+                lastSyncTime={lastSyncTime}
+                onRefresh={triggerSync}
+                size="sm"
+                showLabel={false}
+                className="hidden sm:flex"
+              />
+            )}
+            
             <button
               onClick={() => fetchPerformanceData(selectedTimePeriod as TimeRange)}
               disabled={performanceHub.loading}

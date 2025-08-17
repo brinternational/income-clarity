@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { emailService } from '@/lib/services/email.service';
-import { emailScheduler } from '@/lib/services/email-scheduler.service';
-import { milestoneTracker } from '@/lib/services/milestone-tracker.service';
+import { emailService } from '@/lib/services/email/email.service';
+import { emailScheduler } from '@/lib/services/email/email-scheduler.service';
+import { milestoneTracker } from '@/lib/services/milestones/milestone-tracker.service';
 import { logger } from '@/lib/logger'
 
 /**

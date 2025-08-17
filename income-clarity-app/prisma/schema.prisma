@@ -17,6 +17,13 @@ model User {
   onboarding_completed Boolean @default(false)
   settings           String? // JSON string for user preferences
   taxProfile         String? // JSON string for tax information
+  
+  // Premium features
+  isPremium         Boolean   @default(false)
+  premiumStartDate  DateTime?
+  premiumEndDate    DateTime?
+  trialEndDate      DateTime?
+  
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
@@ -26,6 +33,9 @@ model User {
   expenses     Expense[]
   transactions Transaction[]
   sessions     Session[]
+  yodleeConnection YodleeConnection?
+  subscription UserSubscription?
+  syncLogs     SyncLog[]
 
   @@map("users")
 }
@@ -52,6 +62,15 @@ model Portfolio {
   type        String // 401k, IRA, Taxable, Crypto
   institution String?
   isPrimary   Boolean  @default(false)
+  // Yodlee sync fields
+  yodleeAccountId String? // Link to Yodlee synced account
+  totalValue      Float?
+  totalCost       Float?
+  totalGain       Float?
+  totalGainPercent Float?
+  monthlyIncome   Float?
+  monthlyExpenses Float?
+  lastUpdated     DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -66,20 +85,34 @@ model Holding {
   id            String   @id @default(uuid())
   portfolioId   String
   ticker        String
+  name          String?  // Company name
   shares        Float
-  costBasis     Float
-  purchaseDate  DateTime
+  costBasis     Float?  // Made optional for Yodlee data
+  averageCost   Float?  // Average cost per share
+  purchaseDate  DateTime?  // Made optional for Yodlee data
   currentPrice  Float?
   dividendYield Float?
   sector        String?
   metadata      String? // JSON string for additional data
+  
+  // Data source tracking
+  dataSource        DataSource @default(MANUAL) // MANUAL, YODLEE, MERGED
+  yodleeAccountId   String?    // Links to specific bank account
+  lastSyncedAt      DateTime?  // When Yodlee last updated
+  isReconciled      Boolean    @default(false)
+  reconciledAt      DateTime?
+  
+  lastUpdated   DateTime? // For tracking Yodlee sync
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   // Relationships
   portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  yodleeAccount SyncedAccount? @relation(fields: [yodleeAccountId], references: [id])
 
   @@unique([portfolioId, ticker])
+  @@index([dataSource])
+  @@index([yodleeAccountId])
   @@map("holdings")
 }
 
@@ -105,47 +138,77 @@ model Transaction {
 }
 
 model Income {
-  id        String   @id @default(uuid())
-  userId    String
-  source    String // Company name or income source
-  category  String // SALARY, DIVIDEND, INTEREST, CAPITAL_GAINS, OTHER
-  amount    Float
-  date      DateTime
-  recurring Boolean  @default(false)
-  frequency String? // MONTHLY, QUARTERLY, ANNUALLY
-  taxable   Boolean  @default(true)
-  notes     String?
-  metadata  String? // JSON string for additional income data
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  userId      String
+  portfolioId String?  // Link to portfolio
+  source      String   // Company name or income source
+  category    String   // SALARY, DIVIDEND, INTEREST, CAPITAL_GAINS, OTHER
+  amount      Float
+  date        DateTime
+  recurring   Boolean  @default(false)
+  frequency   String?  // MONTHLY, QUARTERLY, ANNUALLY, ONCE
+  taxable     Boolean  @default(true)
+  description String?  // Transaction description from Yodlee
+  notes       String?
+  metadata    String?  // JSON string for additional income data
+  
+  // Data source tracking
+  dataSource        DataSource @default(MANUAL) // MANUAL, YODLEE, MERGED
+  yodleeAccountId   String?    // Links to specific bank account
+  yodleeTransactionId String?  // Yodlee transaction ID
+  lastSyncedAt      DateTime?  // When Yodlee last updated
+  isReconciled      Boolean    @default(false)
+  reconciledAt      DateTime?
+  
+  createdAt   DateTime @default(now())
 
   // Relationships
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  yodleeAccount SyncedAccount? @relation(fields: [yodleeAccountId], references: [id])
 
+  @@unique([portfolioId, source, date])
   @@index([userId, date])
   @@index([category, date])
+  @@index([dataSource])
+  @@index([yodleeAccountId])
   @@map("incomes")
 }
 
 model Expense {
-  id        String   @id @default(uuid())
-  userId    String
-  category  String // UTILITIES, INSURANCE, FOOD, RENT, ENTERTAINMENT, TRANSPORTATION, HEALTHCARE
-  merchant  String?
-  amount    Float
-  date      DateTime
-  recurring Boolean  @default(false)
-  frequency String? // MONTHLY, QUARTERLY, ANNUALLY
-  priority  Int      @default(5) // 1-10 scale for milestone tracking
-  essential Boolean  @default(true) // Essential vs discretionary spending
-  notes     String?
-  metadata  String? // JSON string for additional expense data
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  userId      String
+  portfolioId String?  // Link to portfolio
+  category    String   // UTILITIES, INSURANCE, FOOD, RENT, ENTERTAINMENT, TRANSPORTATION, HEALTHCARE
+  merchant    String?
+  amount      Float
+  date        DateTime
+  recurring   Boolean  @default(false)
+  frequency   String?  // MONTHLY, QUARTERLY, ANNUALLY
+  priority    Int      @default(5) // 1-10 scale for milestone tracking
+  essential   Boolean  @default(true) // Essential vs discretionary spending
+  description String?  // Transaction description from Yodlee
+  notes       String?
+  metadata    String?  // JSON string for additional expense data
+  
+  // Data source tracking
+  dataSource        DataSource @default(MANUAL) // MANUAL, YODLEE, MERGED
+  yodleeAccountId   String?    // Links to specific bank account
+  yodleeTransactionId String?  // Yodlee transaction ID
+  lastSyncedAt      DateTime?  // When Yodlee last updated
+  isReconciled      Boolean    @default(false)
+  reconciledAt      DateTime?
+  
+  createdAt   DateTime @default(now())
 
   // Relationships
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  yodleeAccount SyncedAccount? @relation(fields: [yodleeAccountId], references: [id])
 
+  @@unique([portfolioId, category, date])
   @@index([userId, date])
   @@index([category, date])
+  @@index([dataSource])
+  @@index([yodleeAccountId])
   @@map("expenses")
 }
 
@@ -164,6 +227,82 @@ model StockPrice {
   @@unique([ticker, date])
   @@index([ticker, date])
   @@map("stock_prices")
+}
+
+// Historical price data for portfolio performance tracking
+model HistoricalPrice {
+  id        String   @id @default(uuid())
+  ticker    String
+  date      DateTime
+  close     Float
+  open      Float?
+  high      Float?
+  low       Float?
+  volume    Int?
+  changePercent Float?
+  source    String   @default("polygon") // polygon, manual, calculated
+  createdAt DateTime @default(now())
+  
+  @@unique([ticker, date])
+  @@index([ticker])
+  @@index([date])
+  @@index([ticker, date])
+  @@map("historical_prices")
+}
+
+// Portfolio value snapshots for historical performance tracking
+model PortfolioSnapshot {
+  id          String   @id @default(uuid())
+  userId      String
+  portfolioId String?  // Null for aggregated portfolio snapshot
+  date        DateTime
+  totalValue  Float
+  costBasis   Float
+  dailyChange Float?
+  percentChange Float?
+  dividendIncome Float?
+  spyPrice    Float?   // SPY price for comparison
+  spyReturn   Float?   // SPY return for same period
+  outperformance Float? // Portfolio vs SPY performance
+  holdingsCount Int?
+  topHolding  String?  // Best performing holding
+  source      String   @default("calculated") // calculated, manual, imported
+  createdAt   DateTime @default(now())
+  
+  @@unique([userId, portfolioId, date])
+  @@index([userId])
+  @@index([date])
+  @@index([userId, date])
+  @@map("portfolio_snapshots")
+}
+
+// Real-time risk metrics calculation cache
+model RiskMetrics {
+  id           String   @id @default(uuid())
+  userId       String
+  portfolioId  String?  // Null for aggregated portfolio metrics
+  date         DateTime // Calculation date
+  beta         Float    // Portfolio beta vs SPY
+  sharpeRatio  Float    // Risk-adjusted return
+  volatility   Float    // Portfolio volatility (standard deviation)
+  maxDrawdown  Float    // Maximum drawdown percentage
+  alpha        Float    // Portfolio alpha vs SPY
+  correlation  Float    // Correlation with SPY
+  trackingError Float   // Tracking error vs SPY
+  informationRatio Float // Information ratio
+  sortino      Float?   // Sortino ratio
+  treynor      Float?   // Treynor ratio
+  calculationPeriod String @default("1Y") // 1M, 3M, 6M, 1Y, 3Y, 5Y
+  dataPoints   Int      // Number of data points used
+  confidence   Float    // Confidence level (0-1)
+  source       String   @default("calculated") // calculated, manual, imported
+  createdAt    DateTime @default(now())
+  
+  @@unique([userId, portfolioId, date, calculationPeriod])
+  @@index([userId])
+  @@index([date])
+  @@index([userId, calculationPeriod])
+  @@map("risk_metrics")
 }
 
 model DividendSchedule {
@@ -194,6 +333,19 @@ model CalculationCache {
 
   @@index([expiresAt])
   @@map("calculation_cache")
+}
+
+// Multi-tier cache entries for API rate limiting system
+model CacheEntry {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  data      String   // JSON string of cached data
+  ttl       Int      // Time to live in milliseconds
+  tags      String?  // JSON array of tags for invalidation
+  createdAt DateTime @default(now())
+
+  @@index([key])
+  @@map("cache_entries")
 }
 
 // User preferences and settings
@@ -290,4 +442,97 @@ model EmailPreferences {
   @@index([userId])
   @@index([email])
   @@map("email_preferences")
+}
+
+// Yodlee Integration Tables
+model YodleeConnection {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  yodleeUserId    String   @unique
+  accessToken     String   // Encrypted
+  refreshToken    String?  // Encrypted
+  lastSyncedAt    DateTime?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relationships
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  syncedAccounts  SyncedAccount[]
+  
+  @@index([userId])
+  @@map("yodlee_connections")
+}
+
+model SyncedAccount {
+  id              String   @id @default(uuid())
+  connectionId    String
+  yodleeAccountId String   @unique
+  accountName     String
+  accountType     String   // CHECKING, SAVINGS, INVESTMENT, CREDIT_CARD, etc.
+  accountNumber   String?  // Last 4 digits only
+  balance         Float
+  currency        String   @default("USD")
+  institution     String?
+  lastRefreshed   DateTime
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relationships
+  connection      YodleeConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  holdings        Holding[]
+  incomes         Income[]
+  expenses        Expense[]
+  
+  @@index([connectionId])
+  @@map("synced_accounts")
+}
+
+// User subscription for premium features
+model UserSubscription {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  plan              String   // FREE, PREMIUM, ENTERPRISE
+  status            String   // ACTIVE, CANCELLED, EXPIRED, TRIAL
+  stripeCustomerId  String?
+  stripeSubId       String?
+  features          String?  // JSON string for enabled features
+  usage             String?  // JSON string for usage tracking
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relationships
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("user_subscriptions")
+}
+
+// Sync log for tracking data synchronization
+model SyncLog {
+  id            String   @id @default(uuid())
+  userId        String
+  syncType      String   // LOGIN, SCHEDULED, MANUAL, WEBHOOK
+  status        String   // PENDING, SUCCESS, FAILED, PARTIAL
+  itemsSynced   Int      @default(0)
+  errorMessage  String?
+  errorDetails  String?  // JSON string for detailed error info
+  startedAt     DateTime
+  completedAt   DateTime?
+  duration      Int?     // Duration in milliseconds
+  
+  // Relationships
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, startedAt])
+  @@index([status])
+  @@map("sync_logs")
+}
+
+// Data source enum for tracking origin of financial data
+enum DataSource {
+  MANUAL
+  YODLEE
+  MERGED
 }

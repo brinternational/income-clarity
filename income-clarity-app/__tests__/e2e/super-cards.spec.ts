@@ -12,11 +12,11 @@ test.describe('Super Cards Functionality', () => {
     await page.fill('input[type="email"]', 'test@example.com')
     await page.fill('input[type="password"]', 'password123')
     await page.click('button[type="submit"]')
-    await expect(page).toHaveURL('/dashboard')
+    await expect(page).toHaveURL(/\/dashboard/)
     
     // Navigate to super cards
-    await page.click('text=Super Cards')
-    await expect(page).toHaveURL('/dashboard/super-cards')
+    await page.goto('/dashboard/super-cards-unified')
+    await expect(page).toHaveURL(/\/dashboard\/super-cards/)
   })
 
   test('should load all 5 super cards', async ({ page }) => {
@@ -159,7 +159,7 @@ test.describe('Super Cards Functionality', () => {
     await page.click('button[type="submit"]')
     
     // Return to super cards
-    await page.click('text=Super Cards')
+    await page.goto('/dashboard/super-cards-unified')
     
     // Should reflect updated portfolio value
     const newValue = await performanceHub.locator('[data-testid="portfolio-value"]').textContent()
