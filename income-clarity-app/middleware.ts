@@ -62,9 +62,18 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(loginUrl)
   }
   
-  // For API routes (except auth endpoints), let them handle their own validation
-  // to avoid circular dependencies
+  // For API routes (except auth endpoints), return JSON error if no session
   if (pathname.startsWith('/api/')) {
+    if (!sessionToken) {
+      return NextResponse.json(
+        { 
+          error: 'Authentication required',
+          message: 'Please log in to access this API endpoint',
+          code: 'UNAUTHORIZED'
+        },
+        { status: 401 }
+      )
+    }
     const nextResponse = NextResponse.next()
     addSecurityHeaders(nextResponse)
     return nextResponse

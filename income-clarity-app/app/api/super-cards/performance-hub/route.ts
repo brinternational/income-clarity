@@ -39,9 +39,7 @@ async function optimizedPerformanceLogic(timeRange: string, startTime: number) {
     include: {
       portfolios: {
         include: {
-          holdings: {
-            where: { dataSource: 'YODLEE' }
-          }
+          holdings: true  // Include ALL holdings regardless of dataSource
         }
       }
     }

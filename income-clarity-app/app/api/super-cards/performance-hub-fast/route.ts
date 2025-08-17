@@ -15,9 +15,7 @@ export async function GET(request: NextRequest) {
       include: {
         portfolios: {
           include: {
-            holdings: {
-              where: { dataSource: 'YODLEE' }
-            }
+            holdings: true  // Include all holdings regardless of dataSource
           }
         }
       }
