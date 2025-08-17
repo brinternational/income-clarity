@@ -137,10 +137,17 @@ const TaxStrategyHubComponent = ({
   
   const taxHub = useTaxHub();
   const { updateData, setLoading, setError } = useTaxActions();
-  const { taxSettings, taxProjections, loading: hubLoading } = taxHub;
   
   // When data prop is provided, use it directly; otherwise use store data
   const displayData = data || taxHub;
+  
+  // CRITICAL FIX: Use displayData consistently instead of individual store values
+  const { taxSettings, taxProjections, loading: hubLoading } = displayData;
+  
+  // Add extensive logging to verify data flow
+  console.log('🔍 TaxHub displayData:', displayData);
+  console.log('🔍 taxSettings from displayData:', taxSettings);
+  console.log('🔍 taxProjections from displayData:', taxProjections);
 
   // Fetch Tax Hub data from API
   const fetchTaxData = useCallback(async () => {

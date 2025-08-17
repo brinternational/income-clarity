@@ -138,10 +138,17 @@ const FinancialPlanningHubComponent = ({
   
   const planningHub = usePlanningHub();
   const { updateData, setLoading, setError } = usePlanningActions();
-  const { fireData, expenseMilestones, aboveZeroData, loading: hubLoading } = planningHub;
   
   // When data prop is provided, use it directly; otherwise use store data
   const displayData = data || planningHub;
+  
+  // CRITICAL FIX: Use displayData consistently instead of individual store values
+  const { fireData, expenseMilestones, aboveZeroData, loading: hubLoading } = displayData;
+  
+  // Add extensive logging to verify data flow
+  console.log('🔍 PlanningHub displayData:', displayData);
+  console.log('🔍 fireData from displayData:', fireData);
+  console.log('🔍 aboveZeroData from displayData:', aboveZeroData);
   
   // Get expense milestones from income hub (correct data structure for ExpenseMilestones component)
   const expenseMilestonesData = useExpenseMilestones();
@@ -149,8 +156,8 @@ const FinancialPlanningHubComponent = ({
   const incomeHub = useIncomeHub();
   const { totalExpenseCoverage } = incomeHub;
 
-  // If data prop is provided (from unified view), use it to override defaults
-  const effectivePlanningData = data?.planningData ?? planningData ?? displayData.fireData;
+  // SIMPLIFIED: Use displayData.fireData directly since displayData handles data prop fallback
+  const effectivePlanningData = displayData.fireData ?? planningData;
   
   // Default planning data - optimistic FIRE journey
   const activeData = effectivePlanningData || {

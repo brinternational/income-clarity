@@ -125,22 +125,30 @@ const PerformanceHubComponent = ({
   
   const performanceHub = usePerformanceHub();
   const { updateData, setLoading, setError } = usePerformanceActions();
-  const { spyComparison, holdings, portfolioValue, timePeriodData: storeTimePeriodData } = performanceHub;
+  // When data prop is provided, use it directly; otherwise use store data
+  const displayData = data || performanceHub;
+  
+  // CRITICAL FIX: Use displayData consistently instead of individual store values
+  const { spyComparison, holdings, portfolioValue, timePeriodData: storeTimePeriodData } = displayData;
+  
+  // Add extensive logging to verify data flow
+  console.log('🔍 PerformanceHub displayData:', displayData);
+  console.log('🔍 spyComparison from displayData:', spyComparison);
+  console.log('🔍 portfolioValue from displayData:', portfolioValue);
+  console.log('🔍 holdings count from displayData:', holdings?.length);
 
-  // Extract hero metric from SPY comparison (use store data first, then effective values as fallback)
+  // Extract hero metric from SPY comparison (use displayData values)
   const heroMetric = spyComparison?.outperformance || effectiveOutperformance;
   const isBeatingMarket = heroMetric > 0;
   
-  // When data prop is provided, use it directly; otherwise use store data
-  const displayData = data || performanceHub;
-  const activeTimePeriodData = data?.timePeriodData || storeTimePeriodData || effectiveTimePeriodData;
+  const activeTimePeriodData = displayData?.timePeriodData || storeTimePeriodData || effectiveTimePeriodData;
 
-  // Animated values for hero metric
+  // Animated values for hero metric - FIXED to use displayData
   const animatedValues = useStaggeredCountingAnimation(
     {
       heroMetric: heroMetric * 100,
-      portfolio: (spyComparison?.portfolioReturn || effectivePortfolioReturn) * 100,
-      spy: (spyComparison?.spyReturn || effectiveSpyReturn) * 100,
+      portfolio: (displayData.spyComparison?.portfolioReturn || effectivePortfolioReturn) * 100,
+      spy: (displayData.spyComparison?.spyReturn || effectiveSpyReturn) * 100,
     },
     1200,
     150
@@ -197,32 +205,32 @@ const PerformanceHubComponent = ({
     }
   }, []); // Remove dependencies to run only once on mount
 
-  // Performance insights engine - "Top 3 performers" analysis
+  // Performance insights engine - "Top 3 performers" analysis - FIXED to use displayData
   const performanceInsights = useMemo(() => {
-    if (!holdings || holdings.length === 0) return null;
+    if (!displayData.holdings || displayData.holdings.length === 0) return null;
 
-    const sortedHoldings = holdings
+    const sortedHoldings = displayData.holdings
       .filter(h => h.ytdPerformance !== undefined)
       .sort((a, b) => (b.ytdPerformance || 0) - (a.ytdPerformance || 0));
 
     const topPerformers = sortedHoldings.slice(0, 3);
     const underperformers = sortedHoldings.slice(-2);
     
-    const avgPerformance = holdings.reduce((sum, h) => sum + (h.ytdPerformance || 0), 0) / holdings.length;
-    const volatility = holdings.length > 1 
-      ? Math.sqrt(holdings.reduce((sum, h) => sum + Math.pow((h.ytdPerformance || 0) - avgPerformance, 2), 0) / holdings.length)
+    const avgPerformance = displayData.holdings.reduce((sum, h) => sum + (h.ytdPerformance || 0), 0) / displayData.holdings.length;
+    const volatility = displayData.holdings.length > 1 
+      ? Math.sqrt(displayData.holdings.reduce((sum, h) => sum + Math.pow((h.ytdPerformance || 0) - avgPerformance, 2), 0) / displayData.holdings.length)
       : 0;
 
-    const benchmarkReturn = spyComparison?.spyReturn || spyReturn;
+    const benchmarkReturn = displayData.spyComparison?.spyReturn || spyReturn;
     return {
       topPerformers,
       underperformers,
       avgPerformance,
       volatility,
-      outperformingCount: holdings.filter(h => (h.ytdPerformance || 0) > benchmarkReturn).length,
-      totalHoldings: holdings.length
+      outperformingCount: displayData.holdings.filter(h => (h.ytdPerformance || 0) > benchmarkReturn).length,
+      totalHoldings: displayData.holdings.length
     };
-  }, [holdings, spyReturn, spyComparison?.spyReturn]);
+  }, [displayData.holdings, spyReturn, displayData.spyComparison?.spyReturn]);
 
   // Portfolio-focused recommendations (SPY logic moved to SPY Intelligence tab)
   const recommendations = useMemo(() => {
@@ -374,8 +382,8 @@ const PerformanceHubComponent = ({
         <motion.div 
           className={`currency-display font-bold text-4xl sm:text-5xl lg:text-6xl animate-currency mb-2 ${
             isBeatingMarket 
-              ? 'text-gradient-prosperity' 
-              : 'text-gradient-wealth'
+              ? 'text-prosperity-800 dark:text-prosperity-400' 
+              : 'text-wealth-800 dark:text-wealth-400'
           }`}
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -385,7 +393,7 @@ const PerformanceHubComponent = ({
         </motion.div>
         
         <motion.div 
-          className="text-slate-600 font-medium text-sm sm:text-base"
+          className="text-slate-800 dark:text-slate-200 font-medium text-sm sm:text-base"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
@@ -411,9 +419,9 @@ const PerformanceHubComponent = ({
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
             <Clock className="w-4 h-4 text-slate-600" />
-            <span className="text-sm font-medium text-slate-700">Time Period</span>
+            <span className="text-sm font-medium text-slate-900 dark:text-slate-100">Time Period</span>
           </div>
-          <div className="text-xs text-slate-500">
+          <div className="text-xs text-slate-700 dark:text-slate-300">
             Global setting for all tabs
           </div>
         </div>
@@ -426,7 +434,7 @@ const PerformanceHubComponent = ({
               className={`flex-shrink-0 px-3 py-2 text-xs font-medium rounded-md transition-all duration-200 touch-friendly focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${
                 selectedTimePeriod === period
                   ? 'bg-primary-600 text-white shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  : 'text-slate-900 dark:text-slate-100 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
               }`}
               onClick={() => setSelectedTimePeriod(period)}
             >
@@ -440,7 +448,7 @@ const PerformanceHubComponent = ({
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
+            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-900 dark:text-slate-100">
               Performance Hub
             </h3>
             
@@ -513,7 +521,7 @@ const PerformanceHubComponent = ({
                 className={`flex-1 relative px-3 py-3 sm:py-4 text-center transition-all duration-300 rounded-md sm:rounded-lg touch-friendly focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${
                   isActive
                     ? 'text-white shadow-lg'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                    : 'text-slate-900 dark:text-slate-100 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-700/50'
                 }`}
                 onClick={() => setActiveTab(tab.id)}
                 whileHover={{ scale: 1.02 }}
@@ -534,7 +542,7 @@ const PerformanceHubComponent = ({
                     {tab.label}
                   </div>
                   <div className={`text-xs ${
-                    isActive ? 'text-primary-100' : 'text-slate-500'
+                    isActive ? 'text-primary-100' : 'text-slate-700 dark:text-slate-300'
                   } hidden sm:block`}>
                     {tab.description}
                   </div>
@@ -561,9 +569,9 @@ const PerformanceHubComponent = ({
           {activeTab === 'spy' && (
             <div>
               <SPYIntelligenceHub
-                portfolioReturn={spyComparison?.portfolioReturn || portfolioReturn}
-                spyReturn={spyComparison?.spyReturn || spyReturn}
-                outperformance={spyComparison?.outperformance || outperformance}
+                portfolioReturn={displayData.spyComparison?.portfolioReturn || portfolioReturn}
+                spyReturn={displayData.spyComparison?.spyReturn || spyReturn}
+                outperformance={displayData.spyComparison?.outperformance || outperformance}
                 className="min-h-[600px]"
               />
             </div>
@@ -581,31 +589,31 @@ const PerformanceHubComponent = ({
               {/* Performance Summary below chart */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
                 <div className="text-center p-4 bg-gradient-to-br from-primary-50 to-primary-25 rounded-lg border border-primary-100">
-                  <div className="text-2xl font-bold text-primary-600 mb-1">
+                  <div className="text-2xl font-bold text-primary-800 dark:text-primary-600 mb-1">
                     {animatedValues.portfolio.toFixed(1)}%
                   </div>
-                  <div className="text-xs text-slate-600">Portfolio Return</div>
+                  <div className="text-xs text-slate-800 dark:text-slate-600">Portfolio Return</div>
                 </div>
                 
                 <div className="text-center p-4 bg-gradient-to-br from-prosperity-50 to-prosperity-25 rounded-lg border border-prosperity-100">
-                  <div className="text-2xl font-bold text-prosperity-600 mb-1">
+                  <div className="text-2xl font-bold text-prosperity-800 dark:text-prosperity-600 mb-1">
                     {performanceInsights?.outperformingCount || 0}
                   </div>
-                  <div className="text-xs text-slate-600">Strong Holdings</div>
+                  <div className="text-xs text-slate-800 dark:text-slate-600">Strong Holdings</div>
                 </div>
                 
                 <div className="text-center p-4 bg-gradient-to-br from-wealth-50 to-wealth-25 rounded-lg border border-wealth-100">
-                  <div className="text-2xl font-bold text-wealth-600 mb-1">
+                  <div className="text-2xl font-bold text-wealth-800 dark:text-wealth-600 mb-1">
                     {performanceInsights?.totalHoldings || 0}
                   </div>
-                  <div className="text-xs text-slate-600">Total Holdings</div>
+                  <div className="text-xs text-slate-800 dark:text-slate-600">Total Holdings</div>
                 </div>
               </div>
 
               {/* Performance Insights */}
               {performanceInsights && (
                 <div className="bg-gradient-to-br from-slate-50 to-white rounded-xl p-6 border border-slate-100">
-                  <h4 className="font-semibold text-slate-800 mb-4 flex items-center">
+                  <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center">
                     <Zap className="w-5 h-5 text-primary-600 mr-2" />
                     Performance Insights
                   </h4>
@@ -617,7 +625,7 @@ const PerformanceHubComponent = ({
                           <div className="w-2 h-2 bg-prosperity-500 rounded-full"></div>
                           <span className="font-mono font-semibold text-sm">{holding.ticker}</span>
                         </div>
-                        <div className="text-prosperity-600 font-semibold text-sm">
+                        <div className="text-prosperity-800 dark:text-prosperity-600 font-semibold text-sm">
                           +{((holding.ytdPerformance || 0) * 100).toFixed(1)}%
                         </div>
                       </div>

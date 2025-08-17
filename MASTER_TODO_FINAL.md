@@ -81,6 +81,51 @@
 - **Duplication Prevention** via COMPLETED_FEATURES.md
 - **Verification Logging** via META_VERIFICATION_LOG.md
 
+### 🔴🔴🔴 CRITICAL - 49+ DISPLAY ISSUES IN UNIFIED VIEW (Aug 17, 2025)
+**USER CANNOT READ THE APP - WHITE TEXT ON WHITE BACKGROUND EVERYWHERE**
+
+#### Phase 1: Fix Text Contrast (5 issues - UNREADABLE)
+- [ ] **TEXT-FIX-001**: White text on white in Performance Hub headers → **ux-performance-specialist**
+- [ ] **TEXT-FIX-002**: "+0.0% vs SPY Performance" completely invisible → **ux-performance-specialist**
+- [ ] **TEXT-FIX-003**: Time period selector labels unreadable → **ux-performance-specialist**
+- [ ] **TEXT-FIX-004**: Chart axis labels invisible → **ux-performance-specialist**
+- [ ] **TEXT-FIX-005**: All percentage values hard to see → **ux-performance-specialist**
+
+#### Phase 2: Fix Data Display Logic (5 core issues - ROOT CAUSE)
+- [ ] **CORE-FIX-001**: Components not using data prop from unified page → **reliability-api-engineer**
+- [ ] **CORE-FIX-002**: Components using empty store instead of fetched data → **reliability-api-engineer**
+- [ ] **CORE-FIX-003**: displayData = data || storeData not working → **reliability-api-engineer**
+- [ ] **CORE-FIX-004**: Console shows data but UI shows zeros → **reliability-api-engineer**
+- [ ] **CORE-FIX-005**: Data fetched successfully but not rendered → **reliability-api-engineer**
+
+#### Phase 3: Fix Performance Hub (11 issues)
+- [ ] **PERF-FIX-001**: Fix -98.0% portfolio return (should be ~-4%) → **reliability-api-engineer**
+- [ ] **PERF-FIX-002**: Fix +0.0% vs SPY display (shows +6.1% in table) → **reliability-api-engineer**
+- [ ] **PERF-FIX-003**: Fix -104.1% Alpha calculation → **reliability-api-engineer**
+- [ ] **PERF-FIX-004**: Fix -20.83 Info Ratio → **reliability-api-engineer**
+- [ ] **PERF-FIX-005**: Fix 45% Win Rate logic → **reliability-api-engineer**
+- [ ] **PERF-FIX-006**: Display actual performance chart → **ux-performance-specialist**
+- [ ] **PERF-FIX-007**: Show all 14 holdings not just 5 → **reliability-api-engineer**
+- [ ] **PERF-FIX-008**: Calculate Strong Holdings correctly → **reliability-api-engineer**
+- [ ] **PERF-FIX-009**: Display actual yield % → **reliability-api-engineer**
+- [ ] **PERF-FIX-010**: Fix "No Holdings to Analyze" error → **reliability-api-engineer**
+- [ ] **PERF-FIX-011**: Render performance chart → **ux-performance-specialist**
+
+#### Phase 4: Fix Income Hub (8 issues)
+- [ ] **INCOME-FIX-001**: Display actual $80K+ monthly income → **reliability-api-engineer**
+- [ ] **INCOME-FIX-002**: Remove "No Income Data Available" → **reliability-api-engineer**
+- [ ] **INCOME-FIX-003**: Show Gross Monthly Income → **reliability-api-engineer**
+- [ ] **INCOME-FIX-004**: Calculate Federal Tax → **reliability-api-engineer**
+- [ ] **INCOME-FIX-005**: Calculate State Tax → **reliability-api-engineer**
+- [ ] **INCOME-FIX-006**: Display Net Income → **reliability-api-engineer**
+- [ ] **INCOME-FIX-007**: Show Monthly Expenses → **reliability-api-engineer**
+- [ ] **INCOME-FIX-008**: Calculate Available to Reinvest → **reliability-api-engineer**
+
+#### Phase 5: Fix Tax, Portfolio, Financial Planning (24 issues)
+- [ ] **TAX-FIX-001-009**: Fix all 9 tax strategy calculations → **reliability-api-engineer**
+- [ ] **PORT-FIX-001-007**: Fix all 7 portfolio strategy displays → **reliability-api-engineer**
+- [ ] **FIN-FIX-001-008**: Fix all 8 financial planning metrics → **reliability-api-engineer**
+
 ### 🔴 CRITICAL - BLOCKING PRODUCTION (This Week)
 
 #### Critical Runtime Errors (100% Complete) ✅ ALL FIXED!

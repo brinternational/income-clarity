@@ -1158,51 +1158,65 @@ kbd {
   }
 }
 
-/* FINANCIAL TEXT GRADIENTS - WCAG AA COMPLIANT */
+/* FINANCIAL TEXT GRADIENTS - WCAG AAA COMPLIANT WITH STRONG FALLBACKS */
 .text-gradient-prosperity {
+  /* Strong fallback first */
+  color: #065f46 !important; /* prosperity-800 for maximum contrast */
   background: linear-gradient(135deg, #047857 0%, #10b981 50%, #059669 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  color: transparent;
   font-weight: 700;
-  /* Fallback for non-supporting browsers */
-  color: #047857;
 }
 
 .text-gradient-wealth {
+  /* Strong fallback first */
+  color: #92400e !important; /* wealth-800 for maximum contrast */
   background: linear-gradient(135deg, #b45309 0%, #f59e0b 50%, #d97706 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  color: transparent;
   font-weight: 700;
-  /* Fallback for non-supporting browsers */
-  color: #b45309;
 }
 
 .text-gradient-primary {
+  /* Strong fallback first */
+  color: #075985 !important; /* primary-800 for maximum contrast */
   background: linear-gradient(135deg, #0369a1 0%, #0ea5e9 50%, #0284c7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  color: transparent;
   font-weight: 700;
-  /* Fallback for non-supporting browsers */
-  color: #0369a1;
 }
 
-/* Ensure gradients work properly on all browsers */
+/* Force high contrast fallbacks for all browsers and situations */
 @supports not (-webkit-background-clip: text) {
   .text-gradient-prosperity {
-    color: #047857 !important;
+    color: #065f46 !important; /* prosperity-800 */
   }
   .text-gradient-wealth {
-    color: #b45309 !important;
+    color: #92400e !important; /* wealth-800 */
   }
   .text-gradient-primary {
-    color: #0369a1 !important;
+    color: #075985 !important; /* primary-800 */
   }
+}
+
+/* Additional high contrast enforcement */
+.text-gradient-prosperity,
+.text-gradient-wealth,
+.text-gradient-primary {
+  /* Ensure text is never transparent/invisible */
+  text-shadow: none;
+  opacity: 1;
+}
+
+/* Force visible text in all contexts */
+.currency-display {
+  /* Override any conflicting styles that might make text invisible */
+  -webkit-text-fill-color: unset !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
 }
 
 /* High contrast mode overrides for accessibility */
@@ -1210,20 +1224,176 @@ kbd {
   .text-gradient-prosperity,
   .text-gradient-wealth,
   .text-gradient-primary {
-    -webkit-background-clip: unset;
-    -webkit-text-fill-color: unset;
-    background-clip: unset;
-    background: none;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: unset !important;
+    background-clip: unset !important;
+    background: none !important;
   }
   
   .text-gradient-prosperity {
-    color: #022c22 !important;
+    color: #022c22 !important; /* prosperity-950 */
   }
   .text-gradient-wealth {
-    color: #451a03 !important;
+    color: #451a03 !important; /* wealth-950 */
   }
   .text-gradient-primary {
-    color: #082f49 !important;
+    color: #082f49 !important; /* primary-950 */
+  }
+
+  /* Force maximum contrast for all text elements */
+  .text-slate-600,
+  .text-slate-700,
+  .text-slate-800 {
+    color: #000000 !important;
+  }
+}
+
+/* CRITICAL ACCESSIBILITY FIXES - NEVER LET TEXT BE INVISIBLE */
+
+/* Ensure all metric text is always visible with maximum contrast */
+.metric-text-high-contrast {
+  color: #1e293b !important; /* slate-800 */
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+.metric-value-high-contrast {
+  color: #0f172a !important; /* slate-900 */
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.9);
+  font-weight: 700;
+}
+
+/* FORCE VISIBILITY FOR ALL TEXT ELEMENTS - NUCLEAR OPTION */
+/* These rules ensure NO TEXT can ever be white on white */
+
+/* Performance Hub specific fixes */
+.premium-card .currency-display,
+.premium-card .text-4xl,
+.premium-card .text-5xl,
+.premium-card .text-6xl {
+  color: #0f172a !important; /* slate-900 - maximum contrast */
+  -webkit-text-fill-color: #0f172a !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+  background: none !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Force all percentage and metric displays to be visible */
+*[class*="percentage"],
+*[class*="metric"],
+*[class*="currency"],
+.currency-display,
+[aria-label*="performance"],
+[aria-label*="return"],
+[aria-label*="SPY"] {
+  color: #0f172a !important; /* Force slate-900 */
+  -webkit-text-fill-color: #0f172a !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  text-shadow: none !important;
+}
+
+/* Specific fix for vs SPY Performance text */
+*:contains("vs SPY Performance"),
+*:contains("SPY Performance"),
+*:contains("Performance") {
+  color: #0f172a !important;
+}
+
+/* Force all text in cards to be dark unless explicitly white */
+.premium-card *:not(.text-white):not(.bg-primary-600 *):not(.bg-primary-700 *):not(.bg-slate-800 *):not(.bg-slate-900 *) {
+  color: #0f172a !important;
+}
+
+/* Override gradient text classes completely */
+.text-gradient-prosperity,
+.text-gradient-wealth,
+.text-gradient-primary,
+.text-gradient-alert {
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+  background: none !important;
+  text-shadow: none !important;
+}
+
+/* Emergency override for ANY invisible text */
+.text-invisible-fix,
+*[style*="color: transparent"],
+*[style*="color:transparent"],
+*[style*="-webkit-text-fill-color: transparent"],
+*[style*="-webkit-text-fill-color:transparent"] {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+  background: none !important;
+  text-shadow: none !important;
+}
+
+/* Specific targeting for hero metrics that user complained about */
+*:contains("+0.0%"),
+*:contains("0.0%"),
+*:contains("%") {
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+}
+
+/* Force all text to be dark on light backgrounds */
+.bg-white *:not(.text-white):not(.bg-primary-600 *):not(.bg-primary-700 *),
+.bg-slate-50 *:not(.text-white):not(.bg-primary-600 *):not(.bg-primary-700 *),
+.bg-primary-50 *:not(.text-white):not(.bg-primary-600 *):not(.bg-primary-700 *),
+.bg-prosperity-50 *:not(.text-white):not(.bg-primary-600 *):not(.bg-primary-700 *),
+.bg-wealth-50 *:not(.text-white):not(.bg-primary-600 *):not(.bg-primary-700 *) {
+  color: #0f172a !important;
+}
+
+/* Nuclear option: ensure ALL text is visible by default */
+* {
+  text-rendering: optimizeLegibility;
+}
+
+body * {
+  /* Only apply to light backgrounds */
+  color: inherit;
+}
+
+/* Light background = dark text rule */
+.bg-white,
+.bg-slate-50,
+.bg-slate-100,
+.bg-primary-50,
+.bg-prosperity-50,
+.bg-wealth-50,
+[class*="-50"],
+[class*="-100"] {
+  color: #0f172a;
+}
+
+.bg-white *,
+.bg-slate-50 *,
+.bg-slate-100 *,
+.bg-primary-50 *,
+.bg-prosperity-50 *,
+.bg-wealth-50 *,
+[class*="-50"] *,
+[class*="-100"] * {
+  color: inherit;
+}
+
+/* ACCESSIBILITY DEBUGGING - SHOW INVISIBLE TEXT ISSUES */
+@media (max-width: 768px) {
+  /* Mobile debugging: highlight any potentially invisible text */
+  *[style*="color: transparent"],
+  *[style*="-webkit-text-fill-color: transparent"] {
+    background-color: yellow !important;
+    color: red !important;
   }
 }
 

@@ -139,10 +139,17 @@ const IncomeIntelligenceHubComponent = ({
   
   const incomeHub = useIncomeHub();
   const { updateData, setLoading, setError } = useIncomeActions();
-  const { incomeClarityData, loading: profileLoading, expenseMilestones, monthlyDividendIncome } = incomeHub;
   
   // When data prop is provided, use it directly; otherwise use store data
   const displayData = data || incomeHub;
+  
+  // CRITICAL FIX: Use displayData consistently instead of individual store values
+  const { incomeClarityData, loading: profileLoading, expenseMilestones, monthlyDividendIncome } = displayData;
+  
+  // Add extensive logging to verify data flow
+  console.log('🔍 IncomeHub displayData:', displayData);
+  console.log('🔍 incomeClarityData from displayData:', incomeClarityData);
+  console.log('🔍 monthlyDividendIncome from displayData:', monthlyDividendIncome);
   
   const [incomeViewMode, setIncomeViewMode] = useState<IncomeViewMode>(() => {
     // Load from localStorage with fallback to initialViewMode
@@ -209,8 +216,8 @@ const IncomeIntelligenceHubComponent = ({
     totalMonths: 24
   });
 
-  // If data prop is provided (from unified view), use it to override defaults
-  const effectiveClarityData = data?.incomeClarityData ?? clarityData ?? displayData.incomeClarityData;
+  // SIMPLIFIED: Use displayData.incomeClarityData directly since displayData handles data prop fallback
+  const effectiveClarityData = displayData.incomeClarityData ?? clarityData;
   
   // Use provided data or context data
   const activeData = effectiveClarityData || {
@@ -376,8 +383,8 @@ const IncomeIntelligenceHubComponent = ({
         <motion.div 
           className={`currency-display font-bold text-4xl sm:text-5xl lg:text-6xl animate-currency mb-2 ${
             isAboveZero 
-              ? 'text-gradient-prosperity' 
-              : 'text-gradient-alert'
+              ? 'text-prosperity-800 dark:text-prosperity-400' 
+              : 'text-alert-800 dark:text-alert-400'
           }`}
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -388,7 +395,7 @@ const IncomeIntelligenceHubComponent = ({
         
         <motion.div 
           className={`font-semibold text-lg sm:text-xl mb-2 ${
-            isAboveZero ? 'text-green-700' : 'text-red-700'
+            isAboveZero ? 'text-green-800 dark:text-green-600' : 'text-red-800 dark:text-red-600'
           }`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -398,7 +405,7 @@ const IncomeIntelligenceHubComponent = ({
         </motion.div>
         
         <motion.div 
-          className={`text-sm ${isAboveZero ? 'text-green-600' : 'text-red-600'}`}
+          className={`text-sm ${isAboveZero ? 'text-green-800 dark:text-green-600' : 'text-red-800 dark:text-red-600'}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
@@ -414,25 +421,25 @@ const IncomeIntelligenceHubComponent = ({
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
               <Flame className="w-5 h-5 text-prosperity-600" />
-              <span className="font-semibold text-slate-700">Above Zero Streak</span>
+              <span className="font-semibold text-slate-900 dark:text-slate-100">Above Zero Streak</span>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold text-prosperity-600">{aboveZeroStreak.current}</div>
-              <div className="text-xs text-slate-500">months</div>
+              <div className="text-2xl font-bold text-prosperity-800 dark:text-prosperity-600">{aboveZeroStreak.current}</div>
+              <div className="text-xs text-slate-700 dark:text-slate-300">months</div>
             </div>
           </div>
           <div className="grid grid-cols-3 gap-3 text-center">
             <div>
-              <div className="text-lg font-bold text-primary-600">{aboveZeroStreak.current}</div>
-              <div className="text-xs text-slate-600">Current</div>
+              <div className="text-lg font-bold text-primary-800 dark:text-primary-600">{aboveZeroStreak.current}</div>
+              <div className="text-xs text-slate-800 dark:text-slate-600">Current</div>
             </div>
             <div>
-              <div className="text-lg font-bold text-wealth-600">{aboveZeroStreak.longest}</div>
-              <div className="text-xs text-slate-600">Record</div>
+              <div className="text-lg font-bold text-wealth-800 dark:text-wealth-600">{aboveZeroStreak.longest}</div>
+              <div className="text-xs text-slate-800 dark:text-slate-600">Record</div>
             </div>
             <div>
-              <div className="text-lg font-bold text-green-600">{Math.round((aboveZeroStreak.totalMonths / 24) * 100)}%</div>
-              <div className="text-xs text-slate-600">Success Rate</div>
+              <div className="text-lg font-bold text-green-800 dark:text-green-600">{Math.round((aboveZeroStreak.totalMonths / 24) * 100)}%</div>
+              <div className="text-xs text-slate-800 dark:text-slate-600">Success Rate</div>
             </div>
           </div>
         </div>
@@ -450,7 +457,7 @@ const IncomeIntelligenceHubComponent = ({
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
+            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-900 dark:text-slate-100">
               Income Intelligence Hub
             </h3>
             
@@ -525,7 +532,7 @@ const IncomeIntelligenceHubComponent = ({
                 className={`flex-1 relative px-3 py-3 sm:py-4 text-center transition-all duration-300 rounded-md sm:rounded-lg touch-friendly focus:outline-none focus:ring-2 focus:ring-primary-500 ${
                   isActive
                     ? 'text-white shadow-lg'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                    : 'text-slate-900 dark:text-slate-100 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-700/50'
                 }`}
                 onClick={() => setActiveTab(tab.id)}
                 whileHover={{ scale: 1.02 }}
@@ -546,7 +553,7 @@ const IncomeIntelligenceHubComponent = ({
                     {tab.label}
                   </div>
                   <div className={`text-xs ${
-                    isActive ? 'text-primary-100' : 'text-slate-500'
+                    isActive ? 'text-primary-100' : 'text-slate-700 dark:text-slate-300'
                   } hidden sm:block`}>
                     {tab.description}
                   </div>
@@ -574,10 +581,10 @@ const IncomeIntelligenceHubComponent = ({
               {/* Waterfall Animation */}
               <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-slate-200">
                 <div className="mb-4">
-                  <h4 className="text-lg font-semibold text-slate-800 mb-2">
+                  <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
                     Income Flow Visualization
                   </h4>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-slate-800 dark:text-slate-200">
                     Watch your income flow from gross dividends to available reinvestment
                   </p>
                 </div>

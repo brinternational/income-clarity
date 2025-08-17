@@ -92,10 +92,10 @@ const SPYIntelligenceHubComponent = ({
       <div className="bg-gradient-to-br from-primary-50 via-primary-25 to-white rounded-xl p-6 border border-primary-200">
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h3 className="text-xl font-display font-semibold text-slate-800 mb-2">
+            <h3 className="text-xl font-display font-semibold text-slate-900 dark:text-slate-100 mb-2">
               SPY Intelligence Hub
             </h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-800 dark:text-slate-200">
               Comprehensive market analysis with forward-looking projections
             </p>
           </div>
@@ -126,11 +126,11 @@ const SPYIntelligenceHubComponent = ({
               )}
             </div>
             <div className={`text-xl font-bold mb-1 ${
-              isBeatingMarket ? 'text-prosperity-600' : 'text-alert-600'
+              isBeatingMarket ? 'text-prosperity-800 dark:text-prosperity-600' : 'text-alert-800 dark:text-alert-600'
             }`}>
               {outperformance >= 0 ? '+' : ''}{(outperformance * 100).toFixed(1)}%
             </div>
-            <div className="text-xs text-slate-600">Current Alpha</div>
+            <div className="text-xs text-slate-800 dark:text-slate-600">Current Alpha</div>
           </div>
 
           {/* Trend Direction */}
@@ -138,11 +138,11 @@ const SPYIntelligenceHubComponent = ({
             <div className="flex items-center justify-center mb-2">
               <Activity className="w-5 h-5 text-secondary-600" />
             </div>
-            <div className="text-xl font-bold text-secondary-600 mb-1">
+            <div className="text-xl font-bold text-secondary-800 dark:text-secondary-600 mb-1">
               {intelligenceData?.trends?.direction === 'improving' ? '↗️' :
                intelligenceData?.trends?.direction === 'declining' ? '↘️' : '➡️'}
             </div>
-            <div className="text-xs text-slate-600">
+            <div className="text-xs text-slate-800 dark:text-slate-600">
               {intelligenceData?.trends?.direction ? 
                 (intelligenceData.trends.direction.charAt(0).toUpperCase() + 
                  intelligenceData.trends.direction.slice(1)) : 
@@ -155,13 +155,13 @@ const SPYIntelligenceHubComponent = ({
             <div className="flex items-center justify-center mb-2">
               <Target className="w-5 h-5 text-wealth-600" />
             </div>
-            <div className="text-xl font-bold text-wealth-600 mb-1">
+            <div className="text-xl font-bold text-wealth-800 dark:text-wealth-600 mb-1">
               {intelligenceData?.historicalData ? 
                 `${(intelligenceData.historicalData.find(d => d.period === '1Y')?.winRate * 100 || 50).toFixed(0)}%` : 
                 'Loading...'
               }
             </div>
-            <div className="text-xs text-slate-600">Success Rate</div>
+            <div className="text-xs text-slate-800 dark:text-slate-600">Success Rate</div>
           </div>
 
           {/* Information Ratio */}
@@ -169,17 +169,17 @@ const SPYIntelligenceHubComponent = ({
             <div className="flex items-center justify-center mb-2">
               <BarChart3 className="w-5 h-5 text-primary-600" />
             </div>
-            <div className="text-xl font-bold text-primary-600 mb-1">
+            <div className="text-xl font-bold text-primary-800 dark:text-primary-600 mb-1">
               {intelligenceData?.riskMetrics?.informationRatio?.toFixed(2) || 'Loading...'}
             </div>
-            <div className="text-xs text-slate-600">Info Ratio</div>
+            <div className="text-xs text-slate-800 dark:text-slate-600">Info Ratio</div>
           </div>
         </div>
 
         {/* Intelligence Recommendations */}
         {intelligenceData?.recommendations && intelligenceData.recommendations.length > 0 && (
           <div className="space-y-3">
-            <h5 className="font-semibold text-slate-800 flex items-center text-sm">
+            <h5 className="font-semibold text-slate-900 dark:text-slate-100 flex items-center text-sm">
               <Zap className="w-4 h-4 text-primary-600 mr-2" />
               Intelligence Insights
             </h5>
@@ -199,8 +199,8 @@ const SPYIntelligenceHubComponent = ({
                       : 'bg-primary-50 border border-primary-200'
                   }`}
                 >
-                  <div className="font-semibold text-slate-800 mb-1">{rec.title}</div>
-                  <div className="text-slate-600 text-xs">{rec.description}</div>
+                  <div className="font-semibold text-slate-900 dark:text-slate-100 mb-1">{rec.title}</div>
+                  <div className="text-slate-800 dark:text-slate-200 text-xs">{rec.description}</div>
                 </motion.div>
               ))}
             </div>
@@ -216,7 +216,7 @@ const SPYIntelligenceHubComponent = ({
             className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
               viewMode === 'historical'
                 ? 'bg-primary-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                : 'text-slate-800 dark:text-slate-200 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
             }`}
           >
             <div className="flex items-center space-x-2">
@@ -230,7 +230,7 @@ const SPYIntelligenceHubComponent = ({
             className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
               viewMode === 'projections'
                 ? 'bg-primary-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                : 'text-slate-800 dark:text-slate-200 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
             }`}
           >
             <div className="flex items-center space-x-2">
@@ -243,7 +243,7 @@ const SPYIntelligenceHubComponent = ({
         {/* Mobile navigation indicators */}
         <div className="flex items-center space-x-2 sm:hidden">
           <ChevronLeft className="w-5 h-5 text-slate-400" />
-          <span className="text-xs text-slate-500 font-medium">
+          <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">
             {viewMode === 'historical' ? 'Historical' : 'Projections'}
           </span>
           <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -284,12 +284,12 @@ const SPYIntelligenceHubComponent = ({
       {isLoading && !intelligenceData && !projections.length && (
         <div className="text-center py-12">
           <div className="animate-spin w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <div className="text-slate-600 text-sm">Loading SPY intelligence data...</div>
+          <div className="text-slate-800 dark:text-slate-200 text-sm">Loading SPY intelligence data...</div>
         </div>
       )}
 
       {/* Footer */}
-      <div className="text-center text-xs text-slate-500 bg-slate-50 rounded-lg p-3">
+      <div className="text-center text-xs text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 rounded-lg p-3">
         <div className="flex items-center justify-center space-x-2">
           <Activity className="w-3 h-3" />
           <span>Real-time market intelligence • Updated continuously</span>

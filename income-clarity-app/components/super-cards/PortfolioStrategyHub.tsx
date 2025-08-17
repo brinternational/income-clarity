@@ -129,13 +129,20 @@ const PortfolioStrategyHubComponent = ({
   
   const portfolioHub = usePortfolioHub();
   const { updateData, setLoading, setError } = usePortfolioActions();
-  const { portfolioHealth, strategyComparison, loading: hubLoading } = portfolioHub;
   
   // When data prop is provided, use it directly; otherwise use store data
   const displayData = data || portfolioHub;
+  
+  // CRITICAL FIX: Use displayData consistently instead of individual store values
+  const { portfolioHealth, strategyComparison, loading: hubLoading } = displayData;
+  
+  // Add extensive logging to verify data flow
+  console.log('🔍 PortfolioHub displayData:', displayData);
+  console.log('🔍 portfolioHealth from displayData:', portfolioHealth);
+  console.log('🔍 strategyComparison from displayData:', strategyComparison);
 
-  // If data prop is provided (from unified view), use it to override defaults
-  const effectiveStrategyData = data?.strategyData ?? strategyData ?? displayData.portfolioHealth;
+  // SIMPLIFIED: Use displayData.portfolioHealth directly since displayData handles data prop fallback
+  const effectiveStrategyData = displayData.portfolioHealth ?? strategyData;
   
   // Default strategy data with strong portfolio health
   const activeData = effectiveStrategyData || {
