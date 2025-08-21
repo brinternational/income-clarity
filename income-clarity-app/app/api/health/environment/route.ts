@@ -1,6 +1,6 @@
 // API endpoint for environment validation and health checks
 import { NextRequest, NextResponse } from 'next/server';
-import { environmentValidatorService } from '@/lib/services/environment-validator.service';
+import { environmentValidatorService } from '@/lib/services/environment/environment-validator.service';
 import { logger } from '@/lib/logger'
 
 // GET /api/health/environment - Get environment validation status

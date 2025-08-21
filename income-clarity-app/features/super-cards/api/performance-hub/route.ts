@@ -1,7 +1,7 @@
 // Performance Hub API Route with Polygon Integration
 import { NextRequest, NextResponse } from 'next/server';
-import { superCardsDatabase } from '@/lib/services/super-cards-database.service';
-import { stockPriceService, getStockPrice, getSPYPrice } from '@/lib/services/stock-price.service';
+import { superCardsDatabase } from '@/lib/services/super-cards-db/super-cards-database.service';
+import { stockPriceService, getStockPrice, getSPYPrice } from '@/lib/services/stock/stock-price.service';
 import { prisma } from '@/lib/db';
 import { logger } from '@/lib/logger'
 

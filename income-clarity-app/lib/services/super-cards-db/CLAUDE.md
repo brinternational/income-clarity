@@ -1,3 +1,25 @@
+# 🚨 CRITICAL PORT PROTECTION RULE - READ FIRST
+
+## ⛔ ABSOLUTE MANDATE - NEVER TOUCH THESE PORTS:
+- **PORT 3000**: Income Clarity production server - NEVER KILL
+- **PORT 22**: SSH connection to Claude Code CLI - NEVER KILL  
+- **PORT 8080**: Any other critical services - NEVER KILL
+
+## 🚫 FORBIDDEN COMMANDS:
+- `pkill -f node` (kills Claude Code CLI connection)
+- `killall node` (kills everything)
+- `npm run dev` with port changes
+- Any command that kills ports other than 3000
+
+## ✅ SAFE COMMANDS ONLY:
+- `pkill -f custom-server.js` (targets specific server only)
+- `lsof -ti:3000 | xargs kill` (port 3000 only)
+- Standard npm install/build without server restarts
+
+**VIOLATION = IMMEDIATE TASK FAILURE**
+
+---
+
 # SUPER CARDS DATABASE SERVICE - CLAUDE.md
 
 ## 🗃️ Super Cards Database Service (Central Data Hub)

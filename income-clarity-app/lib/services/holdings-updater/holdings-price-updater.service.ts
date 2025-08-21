@@ -1,6 +1,6 @@
 // Holdings Price Updater Service - Database Integration
 import { prisma } from '@/lib/db';
-import { stockPriceService } from './stock/stock-price.service';
+import { stockPriceService } from '../stock/stock-price.service';
 import { logger } from '@/lib/logger'
 
 interface HoldingUpdate {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { portfolioImportService } from '@/lib/services/portfolio-import.service';
+import { portfolioImportService } from '@/lib/services/portfolio-import/portfolio-import.service';
 import { logger } from '@/lib/logger'
 
 export async function POST(request: NextRequest) {

@@ -1,0 +1,150 @@
+{
+  "timestamp": "2025-08-18T14:51:17.008Z",
+  "testType": "authenticated",
+  "authentication": {
+    "attempted": true,
+    "sessionCookie": true,
+    "authToken": false
+  },
+  "summary": {
+    "total": 7,
+    "excellent": 7,
+    "good": 0,
+    "acceptable": 0,
+    "slow": 0,
+    "verySlow": 0,
+    "errors": 0,
+    "authFailures": 0
+  },
+  "results": [
+    {
+      "name": "Health Check",
+      "url": "/api/health",
+      "method": "GET",
+      "status": 200,
+      "duration": 13,
+      "critical": true,
+      "needsAuth": false,
+      "success": true,
+      "responseSize": 347,
+      "dataComplexity": "complex (6 items)",
+      "category": "EXCELLENT",
+      "isAuthFailure": false
+    },
+    {
+      "name": "Performance Hub",
+      "url": "/api/super-cards/performance-hub",
+      "method": "GET",
+      "status": 200,
+      "duration": 28,
+      "critical": true,
+      "needsAuth": true,
+      "success": true,
+      "responseSize": 6301,
+      "dataComplexity": "complex (14 items)",
+      "category": "EXCELLENT",
+      "isAuthFailure": false
+    },
+    {
+      "name": "Income Hub",
+      "url": "/api/super-cards/income-hub",
+      "method": "GET",
+      "status": 200,
+      "duration": 31,
+      "critical": true,
+      "needsAuth": true,
+      "success": true,
+      "responseSize": 618,
+      "dataComplexity": "complex (6 items)",
+      "category": "EXCELLENT",
+      "isAuthFailure": false
+    },
+    {
+      "name": "Tax Strategy Hub",
+      "url": "/api/super-cards/tax-strategy-hub",
+      "method": "GET",
+      "status": 200,
+      "duration": 37,
+      "critical": true,
+      "needsAuth": true,
+      "success": true,
+      "responseSize": 1722,
+      "dataComplexity": "complex (10 items)",
+      "category": "EXCELLENT",
+      "isAuthFailure": false
+    },
+    {
+      "name": "Portfolio Strategy Hub",
+      "url": "/api/super-cards/portfolio-strategy-hub",
+      "method": "GET",
+      "status": 200,
+      "duration": 32,
+      "critical": true,
+      "needsAuth": true,
+      "success": true,
+      "responseSize": 265,
+      "dataComplexity": "moderate (2 items)",
+      "category": "EXCELLENT",
+      "isAuthFailure": false
+    },
+    {
+      "name": "Financial Planning Hub",
+      "url": "/api/super-cards/financial-planning-hub",
+      "method": "GET",
+      "status": 200,
+      "duration": 36,
+      "critical": true,
+      "needsAuth": true,
+      "success": true,
+      "responseSize": 3212,
+      "dataComplexity": "complex (10 items)",
+      "category": "EXCELLENT",
+      "isAuthFailure": false
+    },
+    {
+      "name": "Portfolios List",
+      "url": "/api/portfolios",
+      "method": "GET",
+      "status": 200,
+      "duration": 99,
+      "critical": false,
+      "needsAuth": true,
+      "success": true,
+      "responseSize": 3251,
+      "dataComplexity": "moderate (1 items)",
+      "category": "EXCELLENT",
+      "isAuthFailure": false
+    },
+    {
+      "name": "Holdings List",
+      "url": "/api/holdings",
+      "method": "GET",
+      "status": 404,
+      "duration": 97,
+      "critical": false,
+      "needsAuth": true,
+      "success": false,
+      "responseSize": 23874,
+      "dataComplexity": "unknown",
+      "category": "EXCELLENT",
+      "isAuthFailure": false
+    }
+  ],
+  "thresholds": {
+    "EXCELLENT": 200,
+    "GOOD": 500,
+    "ACCEPTABLE": 1000,
+    "SLOW": 2000,
+    "VERY_SLOW": 5000
+  },
+  "slowEndpoints": [],
+  "recommendations": {
+    "immediateActions": 0,
+    "authIssues": 0,
+    "infrastructureNeeded": [
+      "Redis",
+      "Caching",
+      "Query Optimization"
+    ]
+  }
+}

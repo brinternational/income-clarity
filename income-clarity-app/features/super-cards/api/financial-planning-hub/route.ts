@@ -8,7 +8,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { superCardsDatabase } from '@/lib/services/super-cards-database.service';
+import { superCardsDatabase } from '@/lib/services/super-cards-db/super-cards-database.service';
 import { logger } from '@/lib/logger'
 
 // Helper function to ensure percentage is valid (0-100)

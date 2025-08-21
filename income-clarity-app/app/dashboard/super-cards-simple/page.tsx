@@ -13,7 +13,7 @@
  * - Simple debugging
  */
 
-import { superCardsDatabase } from '@/lib/services/super-cards-database.service';
+import { superCardsDatabase } from '@/lib/services/super-cards-db/super-cards-database.service';
 
 // Utility function to format currency
 function formatCurrency(amount: number): string {

@@ -1,5 +1,5 @@
 // Environment Validator Service - Startup checks for reliability
-import { stockPriceService } from './stock/stock-price.service';
+import { stockPriceService } from '../stock/stock-price.service';
 import { logger } from '@/lib/logger'
 
 interface EnvironmentCheck {

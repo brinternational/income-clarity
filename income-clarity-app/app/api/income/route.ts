@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
-import { emailScheduler } from '@/lib/services/email-scheduler.service';
+import { emailScheduler } from '@/lib/services/email/email-scheduler.service';
 import { logger } from '@/lib/logger'
 
 // Helper function to get user ID from session

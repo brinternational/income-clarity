@@ -1,0 +1,786 @@
+/**
+ * ACCESSIBILITY ENHANCEMENTS - CRITICAL FIXES
+ * 
+ * This file contains critical accessibility fixes for Income Clarity components
+ * addressing the specific contrast violations identified in the audit.
+ * 
+ * PRIORITY: P0 CRITICAL - Legal compliance and user accessibility
+ * 
+ * ALL CHANGES MUST MAINTAIN WCAG AA COMPLIANCE (4.5:1 contrast minimum)
+ */
+
+/* Import the accessible color tokens */
+@import './accessibility-colors.css';
+
+/* ===== CRITICAL FIXES FOR SUPER CARDS ===== */
+
+/* Performance Hub - Fix dark text on dark backgrounds */
+.premium-card {
+  /* Ensure cards have proper background contrast */
+  background-color: var(--color-bg-primary-light) !important;
+  color: var(--color-text-primary-light) !important;
+  border: 1px solid var(--color-border-light);
+}
+
+.dark .premium-card {
+  background-color: var(--color-bg-primary-dark) !important;
+  color: var(--color-text-primary-dark) !important;
+  border: 1px solid var(--color-border-dark);
+}
+
+/* Fix green card text visibility issues */
+.bg-prosperity-50,
+.bg-green-50,
+.from-green-50,
+.to-green-50,
+.from-prosperity-50,
+.to-prosperity-50 {
+  background-color: #f0fdf4 !important; /* Light green background */
+}
+
+.bg-prosperity-50 *,
+.bg-green-50 *,
+.from-green-50 *,
+.to-green-50 *,
+.from-prosperity-50 *,
+.to-prosperity-50 * {
+  color: var(--color-text-primary-light) !important; /* Dark text on light background */
+}
+
+/* Fix prosperity/green text colors to be WCAG compliant */
+.text-prosperity-600,
+.text-prosperity-700,
+.text-prosperity-800,
+.text-green-600,
+.text-green-700,
+.text-green-800 {
+  color: #166534 !important; /* WCAG AA compliant green (6.36:1 on white) */
+}
+
+.dark .text-prosperity-600,
+.dark .text-prosperity-700,
+.dark .text-prosperity-800,
+.dark .text-green-600,
+.dark .text-green-700,
+.dark .text-green-800 {
+  color: #4ade80 !important; /* WCAG AA compliant green on dark (4.89:1) */
+}
+
+/* Fix wealth/amber text colors */
+.text-wealth-600,
+.text-wealth-700,
+.text-wealth-800 {
+  color: #92400e !important; /* WCAG AA compliant amber (4.52:1 on white) */
+}
+
+.dark .text-wealth-600,
+.dark .text-wealth-700,
+.dark .text-wealth-800 {
+  color: #fbbf24 !important; /* WCAG AA compliant amber on dark (4.77:1) */
+}
+
+/* Fix alert/error text colors */
+.text-alert-600,
+.text-alert-700,
+.text-alert-800,
+.text-red-600,
+.text-red-700,
+.text-red-800 {
+  color: #991b1b !important; /* WCAG AA compliant red (5.74:1 on white) */
+}
+
+.dark .text-alert-600,
+.dark .text-alert-700,
+.dark .text-alert-800,
+.dark .text-red-600,
+.dark .text-red-700,
+.dark .text-red-800 {
+  color: #f87171 !important; /* WCAG AA compliant red on dark (4.64:1) */
+}
+
+/* ===== TAB NAVIGATION FIXES ===== */
+
+/* Premium tabs - ensure high contrast */
+.premium-tabs {
+  background-color: var(--color-bg-secondary-light) !important;
+}
+
+.dark .premium-tabs {
+  background-color: var(--color-bg-secondary-dark) !important;
+}
+
+.premium-tab {
+  color: var(--color-text-secondary-light) !important;
+  background-color: transparent !important;
+}
+
+.dark .premium-tab {
+  color: var(--color-text-secondary-dark) !important;
+}
+
+.premium-tab.active {
+  color: #ffffff !important; /* White text on blue background */
+  background-color: var(--color-primary-accessible-light) !important;
+}
+
+.dark .premium-tab.active {
+  color: #ffffff !important;
+  background-color: var(--color-primary-accessible-dark) !important;
+}
+
+.premium-tab:hover:not(.active) {
+  background-color: var(--color-bg-tertiary-light) !important;
+  color: var(--color-text-primary-light) !important;
+}
+
+.dark .premium-tab:hover:not(.active) {
+  background-color: var(--color-bg-tertiary-dark) !important;
+  color: var(--color-text-primary-dark) !important;
+}
+
+/* Regular tab styling fixes */
+.flex.bg-slate-50 button {
+  color: var(--color-text-primary-light) !important;
+  background-color: transparent !important;
+}
+
+.dark .flex.bg-slate-50 button {
+  color: var(--color-text-primary-dark) !important;
+  background-color: transparent !important;
+}
+
+/* ===== HERO METRIC FIXES ===== */
+
+/* Fix hero metric readability */
+.hero-metric-value {
+  font-weight: 800 !important;
+  text-shadow: none !important; /* Remove text shadow for clarity */
+}
+
+.hero-metric-positive {
+  color: var(--color-success-accessible-light) !important;
+}
+
+.dark .hero-metric-positive {
+  color: var(--color-success-accessible-dark) !important;
+}
+
+.hero-metric-negative {
+  color: var(--color-error-accessible-light) !important;
+}
+
+.dark .hero-metric-negative {
+  color: var(--color-error-accessible-dark) !important;
+}
+
+.hero-metric-label {
+  color: var(--color-text-secondary-light) !important;
+  font-weight: 600 !important;
+}
+
+.dark .hero-metric-label {
+  color: var(--color-text-secondary-dark) !important;
+}
+
+/* ===== CURRENCY DISPLAY FIXES ===== */
+
+.currency-display {
+  font-weight: 800 !important;
+  text-shadow: none !important;
+}
+
+/* ===== METRIC CARDS FIXES ===== */
+
+.metric-card {
+  background-color: var(--color-bg-primary-light) !important;
+  border: 1px solid var(--color-border-light) !important;
+}
+
+.dark .metric-card {
+  background-color: var(--color-bg-primary-dark) !important;
+  border: 1px solid var(--color-border-dark) !important;
+}
+
+.metric-card-value {
+  color: var(--color-text-primary-light) !important;
+  font-weight: 700 !important;
+}
+
+.dark .metric-card-value {
+  color: var(--color-text-primary-dark) !important;
+}
+
+.metric-card-label {
+  color: var(--color-text-secondary-light) !important;
+  font-weight: 500 !important;
+}
+
+.dark .metric-card-label {
+  color: var(--color-text-secondary-dark) !important;
+}
+
+/* ===== STATUS INDICATORS ===== */
+
+/* Success states */
+.bg-prosperity-100,
+.bg-green-100 {
+  background-color: var(--color-success-bg-light) !important;
+}
+
+.dark .bg-prosperity-100,
+.dark .bg-green-100 {
+  background-color: var(--color-success-bg-dark) !important;
+}
+
+/* Warning states */
+.bg-wealth-100,
+.bg-amber-100,
+.bg-yellow-100 {
+  background-color: var(--color-warning-bg-light) !important;
+}
+
+.dark .bg-wealth-100,
+.dark .bg-amber-100,
+.dark .bg-yellow-100 {
+  background-color: var(--color-warning-bg-dark) !important;
+}
+
+/* Error states */
+.bg-alert-100,
+.bg-red-100 {
+  background-color: var(--color-error-bg-light) !important;
+}
+
+.dark .bg-alert-100,
+.dark .bg-red-100 {
+  background-color: var(--color-error-bg-dark) !important;
+}
+
+/* ===== BUTTON ACCESSIBILITY FIXES ===== */
+
+/* Ensure all buttons meet accessibility standards */
+button,
+.btn,
+[role="button"] {
+  font-weight: 500 !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Primary button states */
+.bg-primary-600,
+.bg-blue-600 {
+  background-color: var(--color-primary-accessible-light) !important;
+  color: #ffffff !important;
+}
+
+.dark .bg-primary-600,
+.dark .bg-blue-600 {
+  background-color: var(--color-primary-accessible-dark) !important;
+  color: #000000 !important; /* Black text on light blue for contrast */
+}
+
+.bg-primary-600:hover,
+.bg-blue-600:hover {
+  background-color: #1e40af !important; /* Darker blue on hover */
+}
+
+.dark .bg-primary-600:hover,
+.dark .bg-blue-600:hover {
+  background-color: #93c5fd !important; /* Lighter blue on hover in dark mode */
+}
+
+/* ===== TIME SELECTOR FIXES ===== */
+
+.time-button {
+  color: var(--color-text-secondary-light) !important;
+  background-color: transparent !important;
+  border: 1px solid var(--color-border-light) !important;
+}
+
+.dark .time-button {
+  color: var(--color-text-secondary-dark) !important;
+  border: 1px solid var(--color-border-dark) !important;
+}
+
+.time-button.active {
+  background-color: var(--color-primary-accessible-light) !important;
+  color: #ffffff !important;
+  border-color: var(--color-primary-accessible-light) !important;
+}
+
+.dark .time-button.active {
+  background-color: var(--color-primary-accessible-dark) !important;
+  color: #000000 !important;
+  border-color: var(--color-primary-accessible-dark) !important;
+}
+
+.time-button:hover:not(.active) {
+  background-color: var(--color-bg-tertiary-light) !important;
+  color: var(--color-text-primary-light) !important;
+}
+
+.dark .time-button:hover:not(.active) {
+  background-color: var(--color-bg-tertiary-dark) !important;
+  color: var(--color-text-primary-dark) !important;
+}
+
+/* ===== LINK ACCESSIBILITY ===== */
+
+a, .link {
+  color: var(--color-link-light) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+
+.dark a, .dark .link {
+  color: var(--color-link-dark) !important;
+}
+
+a:hover, .link:hover {
+  color: var(--color-link-hover-light) !important;
+  text-decoration-thickness: 2px !important;
+}
+
+.dark a:hover, .dark .link:hover {
+  color: var(--color-link-hover-dark) !important;
+}
+
+/* ===== FOCUS INDICATORS ===== */
+
+/* Enhanced focus indicators for all interactive elements */
+button:focus,
+[role="button"]:focus,
+input:focus,
+select:focus,
+textarea:focus,
+.focus-ring-enhanced:focus {
+  outline: 3px solid var(--color-focus-ring) !important;
+  outline-offset: 2px !important;
+  border-radius: 4px !important;
+}
+
+/* Remove focus outline for mouse users, keep for keyboard users */
+button:focus:not(:focus-visible),
+[role="button"]:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+select:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible) {
+  outline: none !important;
+}
+
+/* ===== TOUCH TARGET SIZES ===== */
+
+/* Ensure all interactive elements meet minimum 44x44px touch target size */
+button,
+[role="button"],
+a,
+input,
+select,
+.touch-friendly {
+  min-height: 44px !important;
+  min-width: 44px !important;
+  padding: 8px 16px !important;
+}
+
+/* ===== LOADING STATE FIXES ===== */
+
+.premium-loading,
+.skeleton-bg {
+  background-color: var(--color-bg-secondary-light) !important;
+}
+
+.dark .premium-loading,
+.dark .skeleton-bg {
+  background-color: var(--color-bg-secondary-dark) !important;
+}
+
+.premium-skeleton {
+  background-color: var(--color-border-light) !important;
+  animation: skeleton-shimmer 2s infinite !important;
+}
+
+.dark .premium-skeleton {
+  background-color: var(--color-border-dark) !important;
+}
+
+/* ===== ERROR STATE FIXES ===== */
+
+.premium-error {
+  background-color: var(--color-error-bg-light) !important;
+  border: 2px solid var(--color-error-accessible-light) !important;
+}
+
+.dark .premium-error {
+  background-color: var(--color-error-bg-dark) !important;
+  border: 2px solid var(--color-error-accessible-dark) !important;
+}
+
+/* ===== MOBILE RESPONSIVENESS ===== */
+
+@media (max-width: 640px) {
+  /* Increase touch target sizes on mobile */
+  button,
+  [role="button"],
+  .touch-friendly {
+    min-height: 48px !important;
+    min-width: 48px !important;
+    padding: 12px 20px !important;
+  }
+  
+  /* Increase font sizes for better readability */
+  .text-sm {
+    font-size: 16px !important;
+  }
+  
+  .text-xs {
+    font-size: 14px !important;
+  }
+}
+
+/* ===== ANIMATION SAFETY ===== */
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .animate-spin {
+    animation: none !important;
+  }
+  
+  .animate-pulse {
+    animation: none !important;
+  }
+}
+
+/* ===== PROFESSIONAL FINTECH FONT SCALING SYSTEM ===== */
+
+:root {
+  --font-scale: 1; /* Default font scale, overridden by JS accessibility settings */
+  --focus-width: 2px; /* Default focus width, overridden by accessibility settings */
+  --font-base: 16px; /* Base font size for professional scaling */
+}
+
+/* Professional typography scaling for fintech platform */
+html {
+  font-size: calc(var(--font-base) * var(--font-scale));
+}
+
+body {
+  line-height: calc(1.6 * var(--font-scale));
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+}
+
+/* Fintech-appropriate heading scales */
+h1 { 
+  font-size: calc(2.5rem * var(--font-scale)); 
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+h2 { 
+  font-size: calc(2rem * var(--font-scale)); 
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+h3 { 
+  font-size: calc(1.75rem * var(--font-scale)); 
+  font-weight: 600;
+}
+h4 { 
+  font-size: calc(1.5rem * var(--font-scale)); 
+  font-weight: 600;
+}
+h5 { 
+  font-size: calc(1.25rem * var(--font-scale)); 
+  font-weight: 500;
+}
+h6 { 
+  font-size: calc(1rem * var(--font-scale)); 
+  font-weight: 500;
+}
+
+/* Scale interactive elements properly */
+button, .btn {
+  font-size: calc(0.875rem * var(--font-scale));
+  font-weight: 500;
+}
+
+input, textarea, select {
+  font-size: calc(1rem * var(--font-scale));
+  line-height: calc(1.5 * var(--font-scale));
+}
+
+small, .text-sm {
+  font-size: calc(0.875rem * var(--font-scale));
+}
+
+.text-xs {
+  font-size: calc(0.75rem * var(--font-scale));
+}
+
+/* ===== PROFESSIONAL ENHANCED FOCUS INDICATORS ===== */
+
+.focus-accessible:focus,
+.focus-accessible:focus-visible {
+  outline: var(--focus-width) solid #00d4aa !important; /* Professional teal focus ring */
+  outline-offset: 2px !important;
+  border-radius: 6px !important;
+  box-shadow: 0 0 0 calc(var(--focus-width) + 1px) rgba(0, 212, 170, 0.2) !important;
+  transition: all 0.15s ease-out !important;
+}
+
+.focus-accessible:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Dark theme focus indicators */
+.dark .focus-accessible:focus {
+  outline-color: #00d4aa !important;
+  box-shadow: 0 0 0 calc(var(--focus-width) + 1px) rgba(0, 212, 170, 0.3) !important;
+}
+
+/* High contrast focus indicators */
+[data-high-contrast="true"] .focus-accessible:focus {
+  outline: 3px solid #ffffff !important;
+  outline-offset: 3px !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 6px #ffffff, 0 0 0 9px #000000 !important;
+  border-radius: 8px !important;
+}
+
+/* ===== PROFESSIONAL HIGH CONTRAST MODE ===== */
+
+[data-high-contrast="true"] {
+  --color-text-primary-light: #000000;
+  --color-text-primary-dark: #ffffff;
+  --color-bg-primary-light: #ffffff;
+  --color-bg-primary-dark: #000000;
+  --color-border-light: #000000;
+  --color-border-dark: #ffffff;
+}
+
+[data-high-contrast="true"] * {
+  text-shadow: none !important;
+  box-shadow: 0 0 0 1px currentColor !important;
+}
+
+[data-high-contrast="true"] .premium-card,
+[data-high-contrast="true"] .metric-card {
+  border: 3px solid currentColor !important;
+  background: var(--color-bg-primary-light) !important;
+  backdrop-filter: none !important;
+}
+
+/* ===== COLOR BLIND SUPPORT PATTERNS ===== */
+
+/* Professional icon indicators when color blind support is enabled */
+[data-colorblind-support="true"] .text-accessible-success::before {
+  content: "✓ ";
+  font-weight: 700;
+  margin-right: 0.25rem;
+}
+
+[data-colorblind-support="true"] .text-accessible-warning::before {
+  content: "⚠ ";
+  font-weight: 700;
+  margin-right: 0.25rem;
+}
+
+[data-colorblind-support="true"] .text-accessible-error::before {
+  content: "✗ ";
+  font-weight: 700;
+  margin-right: 0.25rem;
+}
+
+[data-colorblind-support="true"] .text-accessible-info::before {
+  content: "ℹ ";
+  font-weight: 700;
+  margin-right: 0.25rem;
+}
+
+/* Professional border patterns for financial data */
+[data-colorblind-support="true"] .metric-card.success,
+[data-colorblind-support="true"] .bg-accessible-success {
+  border-left: 4px solid currentColor !important;
+}
+
+[data-colorblind-support="true"] .metric-card.warning,
+[data-colorblind-support="true"] .bg-accessible-warning {
+  border-left: 4px dashed currentColor !important;
+}
+
+[data-colorblind-support="true"] .metric-card.error,
+[data-colorblind-support="true"] .bg-accessible-error {
+  border-left: 4px dotted currentColor !important;
+}
+
+[data-colorblind-support="true"] .metric-card.info,
+[data-colorblind-support="true"] .bg-accessible-info {
+  border-left: 4px double currentColor !important;
+}
+
+/* ===== ENHANCED SCREEN READER UTILITIES ===== */
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.sr-only:focus,
+.sr-only:active {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0.5rem !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #00d4aa !important;
+  border-radius: 6px !important;
+}
+
+/* ===== PROFESSIONAL FORM ENHANCEMENTS ===== */
+
+/* Required field indicators */
+.required::after {
+  content: " *";
+  color: #ff5252 !important;
+  font-weight: 700;
+}
+
+/* Professional form validation states */
+input:invalid, select:invalid, textarea:invalid {
+  border-color: #ff5252 !important;
+  box-shadow: 0 0 0 2px rgba(255, 82, 82, 0.2) !important;
+}
+
+input:valid:not(:placeholder-shown), 
+select:valid, 
+textarea:valid:not(:placeholder-shown) {
+  border-color: #00d4aa !important;
+  box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.2) !important;
+}
+
+/* Error message styling */
+.error-message {
+  color: #ff5252 !important;
+  font-size: calc(0.875rem * var(--font-scale)) !important;
+  margin-top: 0.25rem !important;
+  font-weight: 500;
+}
+
+.error-message::before {
+  content: "⚠ ";
+  font-weight: 700;
+}
+
+/* ===== ACCESSIBLE LOADING STATES ===== */
+
+[aria-busy="true"] {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+[aria-busy="true"]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid #00d4aa;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Disable spin animation if reduced motion is preferred */
+@media (prefers-reduced-motion: reduce) {
+  [aria-busy="true"]::after {
+    animation: none !important;
+    border: 2px solid #00d4aa !important;
+    border-top: 2px solid transparent !important;
+  }
+}
+
+/* ===== SKIP LINKS FOR KEYBOARD NAVIGATION ===== */
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000000;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  z-index: 9999;
+  border: 2px solid #00d4aa;
+}
+
+.skip-link:focus {
+  top: 6px;
+  outline: 3px solid #00d4aa;
+  outline-offset: 2px;
+}
+
+/* ===== PRINT ACCESSIBILITY ===== */
+
+@media print {
+  /* Ensure good contrast in print */
+  * {
+    background: transparent !important;
+    color: #000000 !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+  
+  a, a:visited {
+    color: #000080 !important;
+    text-decoration: underline !important;
+  }
+  
+  .bg-prosperity-600,
+  .bg-green-600,
+  .text-prosperity-600,
+  .text-green-600 {
+    color: #000000 !important;
+  }
+  
+  .bg-alert-600,
+  .bg-red-600,
+  .text-alert-600,
+  .text-red-600 {
+    color: #000000 !important;
+  }
+  
+  .focus-accessible:focus {
+    outline: 2px solid black !important;
+  }
+}

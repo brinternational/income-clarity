@@ -1,3 +1,25 @@
+# 🚨 CRITICAL PORT PROTECTION RULE - READ FIRST
+
+## ⛔ ABSOLUTE MANDATE - NEVER TOUCH THESE PORTS:
+- **PORT 3000**: Income Clarity production server - NEVER KILL
+- **PORT 22**: SSH connection to Claude Code CLI - NEVER KILL  
+- **PORT 8080**: Any other critical services - NEVER KILL
+
+## 🚫 FORBIDDEN COMMANDS:
+- `pkill -f node` (kills Claude Code CLI connection)
+- `killall node` (kills everything)
+- `npm run dev` with port changes
+- Any command that kills ports other than 3000
+
+## ✅ SAFE COMMANDS ONLY:
+- `pkill -f custom-server.js` (targets specific server only)
+- `lsof -ti:3000 | xargs kill` (port 3000 only)
+- Standard npm install/build without server restarts
+
+**VIOLATION = IMMEDIATE TASK FAILURE**
+
+---
+
 # INCOME CLARITY - PRODUCTION READY FREEMIUM SAAS
 *Status: 100% Complete | Last Updated: 2025-08-17*
 
@@ -44,8 +66,46 @@
 - **Verified**: `/api/super-cards/performance-hub` and `/api/super-cards/perf-optimized` working
 - **Performance**: New optimized endpoint responds in ~19ms vs ~58s for standard endpoint
 
+### 🚀 DEVELOPMENT COMMANDS (44% FASTER!)
+```bash
+# FASTEST DEVELOPMENT STARTUP (2.1s - RECOMMENDED)
+npm run dev:instant
+
+# FAST DEVELOPMENT WITH VALIDATION SKIP (2.2s)
+npm run dev:fast
+
+# STANDARD OPTIMIZED DEVELOPMENT (2.4s)
+npm run dev
+
+# EXPERIMENTAL TURBOPACK SUPPORT
+npm run dev:turbo
+
+# PRODUCTION SERVER (when needed)
+NODE_ENV=production node custom-server.js
+```
+
+### Development Modes:
+- **dev:instant**: Maximum speed, minimal checks (recommended for development)
+- **dev:fast**: Skip environment validation for speed
+- **dev**: Standard development with optimizations
+- **dev:turbo**: Experimental Turbopack support
+
+### 🔧 BUILD TROUBLESHOOTING:
+```bash
+# Slow startup issues
+npm run dev:instant  # Use fastest mode (2.1s)
+rm -rf .next && npm run dev:instant  # Clear cache
+
+# Type checking (disabled during dev for speed)
+npm run type-check   # Run manually when needed
+
+# Node.js memory allocation
+# Automatically allocates 4GB for optimal performance
+```
+
 ### Quick Access
-- **Server**: `NODE_ENV=production node custom-server.js`
+- **Dev Server**: `npm run dev:instant` (2.1s startup - 44% faster!)
+- **Production**: `NODE_ENV=production node custom-server.js`
 - **Login**: test@example.com / password123 (Premium trial active)
 - **Docs**: `/MASTER_TODO_FINAL.md` | `/SUPER_CARDS_BLUEPRINT.md` | `/PREMIUM_INTEGRATION_FINAL.md`
 - **New Docs**: `/docs/ADDING_NEW_ENDPOINTS.md` | `/docs/DEPLOYMENT_CHECKLIST.md` | `/docs/API_RATE_LIMITS.md`

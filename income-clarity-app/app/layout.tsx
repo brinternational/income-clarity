@@ -9,7 +9,7 @@ import { GlobalLoadingIndicator } from "@/components/ui/GlobalLoadingIndicator";
 import { ThemeLoader } from "@/components/ThemeLoader";
 
 // Initialize email services
-import "@/lib/services/email-init.service";
+import "@/lib/services/email/email-init.service";
 import { logger } from '@/lib/logger'
 
 const geistSans = Geist({

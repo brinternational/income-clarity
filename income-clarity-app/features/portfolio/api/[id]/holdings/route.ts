@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
-import { holdingsPriceUpdaterService } from '@/lib/services/holdings-price-updater.service';
-import { stockPriceService } from '@/lib/services/stock-price.service';
-import { milestoneTracker } from '@/lib/services/milestone-tracker.service';
+import { holdingsPriceUpdaterService } from '@/lib/services/holdings-updater/holdings-price-updater.service';
+import { stockPriceService } from '@/lib/services/stock/stock-price.service';
+import { milestoneTracker } from '@/lib/services/milestones/milestone-tracker.service';
 import { logger } from '@/lib/logger'
 
 // Helper function to get user ID from session

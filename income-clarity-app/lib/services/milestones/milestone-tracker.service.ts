@@ -4,7 +4,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import { emailScheduler } from './email/email-scheduler.service';
+import { emailScheduler } from '../email/email-scheduler.service';
 import { logger } from '@/lib/logger'
 
 const prisma = new PrismaClient();

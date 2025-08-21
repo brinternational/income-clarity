@@ -1,6 +1,6 @@
 // API Route for Stock Prices with Polygon Integration
 import { NextRequest, NextResponse } from 'next/server';
-import { stockPriceService } from '@/lib/services/stock-price.service';
+import { stockPriceService } from '@/lib/services/stock/stock-price.service';
 import { logger } from '@/lib/logger'
 
 export async function GET(request: NextRequest) {

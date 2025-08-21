@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-08-20T16:44:53.649Z",
+  "overallStatus": "FAIL",
+  "tests": [
+    {
+      "viewport": "desktop",
+      "status": "PASS",
+      "consoleErrors": 2,
+      "progressiveDisclosureWorking": true,
+      "mobileOptimized": true,
+      "screenshotsTaken": 4
+    },
+    {
+      "viewport": "mobile",
+      "status": "FAIL",
+      "error": "mobileLayoutVisible is not defined",
+      "consoleErrors": 2
+    }
+  ]
+}

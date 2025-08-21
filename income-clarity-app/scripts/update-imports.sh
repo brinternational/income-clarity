@@ -52,7 +52,7 @@ update_file() {
     sed -i "s|from '@/components/pwa/|from '@/infrastructure/pwa/|g" "$file"
     
     # Services updates
-    sed -i "s|from '@/lib/services/super-cards-database.service'|from '@/features/super-cards/services/super-cards-database.service'|g" "$file"
+    sed -i "s|from '@/lib/services/super-cards-database.service'|from '@/lib/services/super-cards-db/super-cards-database.service'|g" "$file"
     sed -i "s|from '@/lib/services/portfolio-import.service'|from '@/features/portfolio/services/portfolio-import.service'|g" "$file"
     sed -i "s|from '@/lib/services/tax-calculator.service'|from '@/features/tax-strategy/services/tax-calculator.service'|g" "$file"
     sed -i "s|from '@/lib/services/milestone-tracker.service'|from '@/features/financial-planning/services/milestone-tracker.service'|g" "$file"

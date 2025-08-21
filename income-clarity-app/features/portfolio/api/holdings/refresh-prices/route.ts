@@ -1,7 +1,7 @@
 // API endpoint for manual holdings price refresh
 import { NextRequest, NextResponse } from 'next/server';
-import { holdingsPriceUpdaterService } from '@/lib/services/holdings-price-updater.service';
-import { stockPriceService } from '@/lib/services/stock-price.service';
+import { holdingsPriceUpdaterService } from '@/lib/services/holdings-updater/holdings-price-updater.service';
+import { stockPriceService } from '@/lib/services/stock/stock-price.service';
 import { logger } from '@/lib/logger'
 
 // Helper function to get user ID from session

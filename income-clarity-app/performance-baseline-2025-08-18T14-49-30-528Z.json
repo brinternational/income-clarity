@@ -1,0 +1,120 @@
+{
+  "timestamp": "2025-08-18T14:49:30.529Z",
+  "summary": {
+    "total": 2,
+    "excellent": 2,
+    "good": 0,
+    "acceptable": 0,
+    "slow": 0,
+    "verySlow": 0,
+    "errors": 0
+  },
+  "results": [
+    {
+      "name": "Health Check",
+      "url": "/api/health",
+      "method": "GET",
+      "status": 200,
+      "duration": 33,
+      "critical": true,
+      "success": true,
+      "responseSize": 347,
+      "category": "EXCELLENT"
+    },
+    {
+      "name": "Performance Hub",
+      "url": "/api/super-cards/performance-hub",
+      "method": "GET",
+      "status": 401,
+      "duration": 7,
+      "critical": true,
+      "success": false,
+      "responseSize": 111,
+      "category": "EXCELLENT"
+    },
+    {
+      "name": "Income Hub",
+      "url": "/api/super-cards/income-hub",
+      "method": "GET",
+      "status": 401,
+      "duration": 6,
+      "critical": true,
+      "success": false,
+      "responseSize": 111,
+      "category": "EXCELLENT"
+    },
+    {
+      "name": "Tax Strategy Hub",
+      "url": "/api/super-cards/tax-strategy-hub",
+      "method": "GET",
+      "status": 401,
+      "duration": 4,
+      "critical": true,
+      "success": false,
+      "responseSize": 111,
+      "category": "EXCELLENT"
+    },
+    {
+      "name": "Portfolio Strategy Hub",
+      "url": "/api/super-cards/portfolio-strategy-hub",
+      "method": "GET",
+      "status": 401,
+      "duration": 7,
+      "critical": true,
+      "success": false,
+      "responseSize": 111,
+      "category": "EXCELLENT"
+    },
+    {
+      "name": "Financial Planning Hub",
+      "url": "/api/super-cards/financial-planning-hub",
+      "method": "GET",
+      "status": 401,
+      "duration": 11,
+      "critical": true,
+      "success": false,
+      "responseSize": 111,
+      "category": "EXCELLENT"
+    },
+    {
+      "name": "Auth Check",
+      "url": "/api/auth/me",
+      "method": "GET",
+      "status": 401,
+      "duration": 5,
+      "critical": true,
+      "success": true,
+      "responseSize": 111,
+      "category": "EXCELLENT"
+    },
+    {
+      "name": "Portfolios List",
+      "url": "/api/portfolios",
+      "method": "GET",
+      "status": 401,
+      "duration": 4,
+      "critical": false,
+      "success": false,
+      "responseSize": 111,
+      "category": "EXCELLENT"
+    },
+    {
+      "name": "Demo Reset",
+      "url": "/api/demo/reset",
+      "method": "POST",
+      "status": 403,
+      "duration": 16,
+      "critical": false,
+      "success": false,
+      "responseSize": 138,
+      "category": "EXCELLENT"
+    }
+  ],
+  "thresholds": {
+    "EXCELLENT": 200,
+    "GOOD": 500,
+    "ACCEPTABLE": 1000,
+    "SLOW": 2000,
+    "VERY_SLOW": 5000
+  }
+}

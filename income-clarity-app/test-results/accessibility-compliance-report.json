@@ -1,0 +1,266 @@
+{
+  "summary": {
+    "timestamp": "2025-08-20T18:01:23.340Z",
+    "theme": "income-clarity-professional",
+    "totalTests": 21,
+    "passedTests": 9,
+    "failedTests": 10,
+    "warnings": 2,
+    "categories": {
+      "colorContrast": {
+        "passed": 7,
+        "failed": 1,
+        "warnings": 0
+      },
+      "keyboardNavigation": {
+        "passed": 1,
+        "failed": 2,
+        "warnings": 0
+      },
+      "screenReader": {
+        "passed": 1,
+        "failed": 4,
+        "warnings": 0
+      },
+      "touchTargets": {
+        "passed": 0,
+        "failed": 1,
+        "warnings": 0
+      },
+      "forms": {
+        "passed": 0,
+        "failed": 0,
+        "warnings": 1
+      },
+      "focus": {
+        "passed": 0,
+        "failed": 2,
+        "warnings": 1
+      }
+    },
+    "details": [
+      {
+        "category": "colorContrast",
+        "testName": "Primary Text on Primary Background",
+        "passed": true,
+        "message": "Contrast ratio: 18.51:1 (Required: 4.5:1) - WCAG AAA Compliant!",
+        "severity": "success",
+        "timestamp": "2025-08-20T18:01:23.995Z",
+        "contrastRatio": 18.511802826131916,
+        "requirement": 4.5,
+        "foreground": "#ffffff",
+        "background": "#0f1419"
+      },
+      {
+        "category": "colorContrast",
+        "testName": "Secondary Text on Primary Background",
+        "passed": true,
+        "message": "Contrast ratio: 9.17:1 (Required: 4.5:1) - WCAG AAA Compliant!",
+        "severity": "success",
+        "timestamp": "2025-08-20T18:01:23.995Z",
+        "contrastRatio": 9.174310116845934,
+        "requirement": 4.5,
+        "foreground": "#b0b7c3",
+        "background": "#0f1419"
+      },
+      {
+        "category": "colorContrast",
+        "testName": "Muted Text on Primary Background",
+        "passed": true,
+        "message": "Contrast ratio: 5.94:1 (Required: 4.5:1) - WCAG AA Compliant",
+        "severity": "success",
+        "timestamp": "2025-08-20T18:01:23.995Z",
+        "contrastRatio": 5.9398345547458495,
+        "requirement": 4.5,
+        "foreground": "#8b92a3",
+        "background": "#0f1419"
+      },
+      {
+        "category": "colorContrast",
+        "testName": "Accent Color on Primary Background",
+        "passed": true,
+        "message": "Contrast ratio: 9.69:1 (Required: 3:1) - WCAG AAA Compliant!",
+        "severity": "success",
+        "timestamp": "2025-08-20T18:01:23.996Z",
+        "contrastRatio": 9.694762750538677,
+        "requirement": 3,
+        "foreground": "#00d4aa",
+        "background": "#0f1419"
+      },
+      {
+        "category": "colorContrast",
+        "testName": "Success Color on Primary Background",
+        "passed": true,
+        "message": "Contrast ratio: 9.69:1 (Required: 4.5:1) - WCAG AAA Compliant!",
+        "severity": "success",
+        "timestamp": "2025-08-20T18:01:23.996Z",
+        "contrastRatio": 9.694762750538677,
+        "requirement": 4.5,
+        "foreground": "#00d4aa",
+        "background": "#0f1419"
+      },
+      {
+        "category": "colorContrast",
+        "testName": "Warning Color on Primary Background",
+        "passed": true,
+        "message": "Contrast ratio: 9.53:1 (Required: 4.5:1) - WCAG AAA Compliant!",
+        "severity": "success",
+        "timestamp": "2025-08-20T18:01:23.996Z",
+        "contrastRatio": 9.526944839165157,
+        "requirement": 4.5,
+        "foreground": "#ffa726",
+        "background": "#0f1419"
+      },
+      {
+        "category": "colorContrast",
+        "testName": "Error Color on Primary Background",
+        "passed": true,
+        "message": "Contrast ratio: 5.80:1 (Required: 4.5:1) - WCAG AA Compliant",
+        "severity": "success",
+        "timestamp": "2025-08-20T18:01:23.996Z",
+        "contrastRatio": 5.80103182117011,
+        "requirement": 4.5,
+        "foreground": "#ff5252",
+        "background": "#0f1419"
+      },
+      {
+        "category": "colorContrast",
+        "testName": "Border on Primary Background",
+        "passed": false,
+        "message": "Contrast ratio: 1.76:1 (Required: 3:1)",
+        "severity": "error",
+        "timestamp": "2025-08-20T18:01:23.996Z",
+        "contrastRatio": 1.7638420628970777,
+        "requirement": 3,
+        "foreground": "#3a3f4e",
+        "background": "#0f1419"
+      },
+      {
+        "category": "keyboardNavigation",
+        "testName": "Focusable Elements Present",
+        "passed": false,
+        "message": "Found 0 focusable elements",
+        "severity": "error",
+        "timestamp": "2025-08-20T18:01:29.178Z"
+      },
+      {
+        "category": "keyboardNavigation",
+        "testName": "Focus Indicators Visible",
+        "passed": false,
+        "message": "0/0 elements have visible focus indicators (NaN%)",
+        "severity": "error",
+        "timestamp": "2025-08-20T18:01:29.178Z"
+      },
+      {
+        "category": "keyboardNavigation",
+        "testName": "Escape Key Handling",
+        "passed": true,
+        "message": "Escape key properly handled (no open dialogs remain)",
+        "severity": "error",
+        "timestamp": "2025-08-20T18:01:29.193Z"
+      },
+      {
+        "category": "screenReader",
+        "testName": "ARIA Labels Present",
+        "passed": false,
+        "message": "Found 0 elements with ARIA labels",
+        "severity": "error",
+        "timestamp": "2025-08-20T18:01:31.263Z"
+      },
+      {
+        "category": "screenReader",
+        "testName": "ARIA Roles Present",
+        "passed": false,
+        "message": "Found 0 elements with ARIA roles",
+        "severity": "error",
+        "timestamp": "2025-08-20T18:01:31.263Z"
+      },
+      {
+        "category": "screenReader",
+        "testName": "Image Alt Text",
+        "passed": false,
+        "message": "Found 0 images with alt text",
+        "severity": "error",
+        "timestamp": "2025-08-20T18:01:31.263Z"
+      },
+      {
+        "category": "screenReader",
+        "testName": "Heading Structure",
+        "passed": true,
+        "message": "Found 1 headings with proper hierarchy",
+        "severity": "error",
+        "timestamp": "2025-08-20T18:01:31.263Z"
+      },
+      {
+        "category": "screenReader",
+        "testName": "Skip Links Present",
+        "passed": false,
+        "message": "Found 0 skip links for navigation",
+        "severity": "error",
+        "timestamp": "2025-08-20T18:01:31.287Z"
+      },
+      {
+        "category": "touchTargets",
+        "testName": "Overall Touch Target Compliance",
+        "passed": false,
+        "message": "0/0 targets meet minimum size (0.0%)",
+        "severity": "error",
+        "timestamp": "2025-08-20T18:01:33.333Z"
+      },
+      {
+        "category": "forms",
+        "testName": "Form Elements",
+        "passed": false,
+        "message": "No form elements found on login page",
+        "severity": "warning",
+        "timestamp": "2025-08-20T18:01:35.360Z"
+      },
+      {
+        "category": "focus",
+        "testName": "Initial Focus Set",
+        "passed": false,
+        "message": "Initial focus is on: BODY",
+        "severity": "error",
+        "timestamp": "2025-08-20T18:01:37.380Z"
+      },
+      {
+        "category": "focus",
+        "testName": "Modal Focus Trap",
+        "passed": false,
+        "message": "No modals found to test focus trapping",
+        "severity": "warning",
+        "timestamp": "2025-08-20T18:01:37.401Z"
+      },
+      {
+        "category": "focus",
+        "testName": "Focus Navigation",
+        "passed": false,
+        "message": "Focus moves to: BODY",
+        "severity": "error",
+        "timestamp": "2025-08-20T18:01:37.406Z"
+      }
+    ],
+    "successRate": "42.9",
+    "wcagCompliance": "Needs Improvement"
+  },
+  "recommendations": [
+    {
+      "category": "colorContrast",
+      "priority": "HIGH",
+      "issue": "Color contrast failures detected",
+      "solution": "Use the Income Clarity Professional theme colors which meet WCAG AA standards"
+    },
+    {
+      "category": "keyboardNavigation",
+      "priority": "HIGH",
+      "issue": "Keyboard navigation issues",
+      "solution": "Ensure all interactive elements are focusable and have visible focus indicators"
+    },
+    {
+      "category": "touchTargets",
+      "priority": "MEDIUM",
+      "issue": "Touch targets too small",
+      "solution": "Increase button and link sizes to minimum 44x44px"
+    }
+  ]
+}
