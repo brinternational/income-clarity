@@ -131,6 +131,8 @@ function SuperCardsDashboard() {
   // Get mapped hub ID
   const mappedHub = hubParam ? hubMapping[hubParam] || hubParam : null
   
+  // Progressive Disclosure implementation active
+  
   // Check if single-page layout is requested
   const useSinglePage = searchParams.get('layout') === 'single' || searchParams.get('singlepage') === 'true'
   
@@ -341,6 +343,7 @@ function SuperCardsDashboard() {
       onCardSelect={handleCardSelect}
       showBackButton={false}
     >
+      
       {/* Header */}
       <div className="relative overflow-hidden">
         {/* Background gradient */}
