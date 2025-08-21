@@ -116,6 +116,21 @@ function SuperCardsDashboard() {
   // Get card from URL on initial render
   const initialCard = searchParams.get('card')
   
+  // Progressive Disclosure URL parameters
+  const level = searchParams.get('level') // momentum, hero-view, detailed
+  const hubParam = searchParams.get('hub') // performance, income-tax, portfolio, planning
+  
+  // Map hub URL names to component IDs
+  const hubMapping: { [key: string]: string } = {
+    'performance': 'performance',
+    'income-tax': 'income',
+    'portfolio': 'portfolio',
+    'planning': 'planning'
+  }
+  
+  // Get mapped hub ID
+  const mappedHub = hubParam ? hubMapping[hubParam] || hubParam : null
+  
   // Check if single-page layout is requested
   const useSinglePage = searchParams.get('layout') === 'single' || searchParams.get('singlepage') === 'true'
   
@@ -147,6 +162,106 @@ function SuperCardsDashboard() {
 
   // Get current card configuration
   const currentCard = selectedCard ? SUPER_CARDS.find(c => c.id === selectedCard) : null
+
+  // Hero-view handler for back to momentum dashboard
+  const handleBackToMomentum = useCallback(() => {
+    const newUrl = '/dashboard/super-cards'
+    window.history.pushState(null, '', newUrl)
+    window.location.reload()
+  }, [])
+
+  // Progressive Disclosure: Hero-view implementation
+  if (level === 'hero-view' && mappedHub) {
+    const heroCard = SUPER_CARDS.find(c => c.id === mappedHub)
+    if (heroCard) {
+      const HeroCardComponent = heroCard.component
+      
+      return (
+        <SuperCardsAppShell
+          selectedCard={mappedHub}
+          onCardSelect={handleCardSelect}
+          showBackButton={true}
+          cardTitle={heroCard.title}
+          cardDescription={heroCard.description}
+        >
+          <div className="hero-view" data-level="hero-view" data-hub={hubParam}>
+            {/* Back to Dashboard Button */}
+            <div className="back-to-dashboard mb-6">
+              <Button 
+                onClick={handleBackToMomentum}
+                variant="outline"
+                size="md"
+                className="flex items-center space-x-2 hover:bg-slate-100 transition-colors"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                <span>Back to Dashboard</span>
+              </Button>
+            </div>
+            
+            {/* Hero View Header */}
+            <div className="mb-8 text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="flex items-center justify-center space-x-4 mb-4"
+              >
+                <div className="relative">
+                  <div className={`absolute inset-0 bg-gradient-to-r ${heroCard.color} rounded-2xl blur-lg opacity-50`}></div>
+                  <div className={`relative p-4 rounded-2xl bg-gradient-to-r ${heroCard.color} text-white shadow-2xl`}>
+                    <heroCard.icon className="h-8 w-8" />
+                  </div>
+                </div>
+                <div>
+                  <h1 className="text-4xl font-bold text-slate-800">
+                    {heroCard.title}
+                  </h1>
+                  <p className="text-lg text-slate-600 mt-2">
+                    {heroCard.description}
+                  </p>
+                </div>
+              </motion.div>
+              <Badge variant="primary" size="md" className="mb-6">
+                Hero View - Focused Analytics
+              </Badge>
+            </div>
+            
+            {/* Hero Card Component */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <HeroCardComponent />
+            </div>
+          </div>
+        </SuperCardsAppShell>
+      )
+    } else {
+      // Invalid hub specified for hero-view
+      return (
+        <SuperCardsAppShell
+          selectedCard={null}
+          onCardSelect={handleCardSelect}
+          showBackButton={false}
+        >
+          <div className="hero-view" data-level="hero-view">
+            <div className="min-h-screen flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-red-600 text-lg mb-4">
+                  Hub "{hubParam}" not found for hero view
+                </p>
+                <Button 
+                  onClick={handleBackToMomentum}
+                  variant="primary"
+                  size="md"
+                  className="back-to-dashboard"
+                >
+                  Back to Dashboard
+                </Button>
+              </div>
+            </div>
+          </div>
+        </SuperCardsAppShell>
+      )
+    }
+  }
 
   // If full content layout is requested (all cards expanded)
   if (useFullContent) {
