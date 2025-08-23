@@ -2,6 +2,208 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import accessibility styles BEFORE @layer directives */
+@import '../styles/accessibility-colors.css';
+@import '../styles/accessibility-enhancements.css';
+@import '../styles/component-accessibility-enhancements.css';
+
+/* shadcn/ui CSS Variables for Proper Dark Mode */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+
+  /* DEFAULT TO SYSTEM PREFERENCE BUT ENSURE LIGHT MODE WORKS */
+  html {
+    color-scheme: light dark;
+  }
+
+  /* CRITICAL FIX: Ensure HTML with dark class applies dark styles */
+  html.dark {
+    color-scheme: dark;
+  }
+
+  /* NUCLEAR APPROACH: FORCE PROPER CONTRAST ON ALL TEXT */
+  /* This ensures text is ALWAYS readable regardless of theme system */
+  
+  /* Default state: Dark text on light background (most common) */
+  body {
+    background-color: #ffffff !important;
+    color: #0f172a !important; /* slate-900 for maximum contrast */
+  }
+
+  /* All text elements get proper contrast by default */
+  h1, h2, h3, h4, h5, h6, p, span, div, a, button, label, input, textarea, select {
+    color: inherit;
+  }
+
+  /* Specific overrides for shadcn classes to ensure they work */
+  .text-foreground {
+    color: #0f172a !important; /* slate-900 */
+  }
+  
+  .text-muted-foreground {
+    color: #475569 !important; /* slate-600 for muted but readable */
+  }
+
+  /* Navigation and sidebar text */
+  nav, .sidebar, [role="navigation"] {
+    background-color: #f8fafc !important; /* slate-50 */
+    color: #0f172a !important; /* slate-900 */
+  }
+
+  nav *, .sidebar *, [role="navigation"] * {
+    color: inherit !important;
+  }
+
+  /* Button text must be readable */
+  button, [role="button"], .btn {
+    color: inherit !important;
+  }
+
+  /* Primary buttons with dark background need light text */
+  .bg-primary-600, .bg-blue-600, .bg-primary, .btn-primary {
+    background-color: #0284c7 !important; /* sky-600 */
+    color: #ffffff !important;
+  }
+
+  /* Success/error/warning states */
+  .text-green-600, .text-emerald-600, .success {
+    color: #059669 !important; /* emerald-600 */
+  }
+
+  .text-red-600, .text-red-500, .error {
+    color: #dc2626 !important; /* red-600 */
+  }
+
+  .text-yellow-600, .text-amber-600, .warning {
+    color: #d97706 !important; /* amber-600 */
+  }
+
+  /* Cards and containers */
+  .card, .premium-card, [class*="card"] {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #e2e8f0 !important; /* slate-200 */
+  }
+
+  /* DARK MODE SUPPORT: Only activate when explicitly requested */
+  @media (prefers-color-scheme: dark) {
+    html.dark body {
+      background-color: #0f172a !important; /* slate-900 */
+      color: #f1f5f9 !important; /* slate-100 */
+    }
+
+    html.dark .text-foreground {
+      color: #f1f5f9 !important; /* slate-100 */
+    }
+    
+    html.dark .text-muted-foreground {
+      color: #94a3b8 !important; /* slate-400 */
+    }
+
+    html.dark nav,
+    html.dark .sidebar,
+    html.dark [role="navigation"] {
+      background-color: #1e293b !important; /* slate-800 */
+      color: #f1f5f9 !important; /* slate-100 */
+    }
+
+    html.dark .card,
+    html.dark .premium-card,
+    html.dark [class*="card"] {
+      background-color: #1e293b !important; /* slate-800 */
+      color: #f1f5f9 !important; /* slate-100 */
+      border-color: #475569 !important; /* slate-600 */
+    }
+  }
+
+  /* FORCE dark mode when .dark class is present */
+  html.dark body {
+    background-color: #0f172a !important; /* slate-900 */
+    color: #f1f5f9 !important; /* slate-100 */
+  }
+
+  html.dark .text-foreground {
+    color: #f1f5f9 !important; /* slate-100 */
+  }
+  
+  html.dark .text-muted-foreground {
+    color: #94a3b8 !important; /* slate-400 */
+  }
+
+  html.dark nav,
+  html.dark .sidebar,
+  html.dark [role="navigation"] {
+    background-color: #1e293b !important; /* slate-800 */
+    color: #f1f5f9 !important; /* slate-100 */
+  }
+
+  html.dark nav *,
+  html.dark .sidebar *,
+  html.dark [role="navigation"] * {
+    color: inherit !important;
+  }
+
+  html.dark .card,
+  html.dark .premium-card,
+  html.dark [class*="card"] {
+    background-color: #1e293b !important; /* slate-800 */
+    color: #f1f5f9 !important; /* slate-100 */
+    border-color: #475569 !important; /* slate-600 */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
 /* Critical CSS for preventing FOUC and hydration issues */
 html { 
   font-family: system-ui, -apple-system, sans-serif;
@@ -13,7 +215,6 @@ html {
 
 body { 
   margin: 0; 
-  background: #f8fafc;
   font-size: var(--base-font-size, 1rem);
   /* Mobile optimizations */
   -webkit-tap-highlight-color: transparent;
@@ -822,7 +1023,7 @@ html {
 /* Skip Links */
 .skip-link {
   position: absolute;
-  top: -40px;
+  top: 6px;
   left: 6px;
   background: #000;
   color: #fff;
@@ -831,11 +1032,16 @@ html {
   z-index: 9999;
   font-weight: bold;
   border-radius: 4px;
-  transition: top 0.3s ease;
+  transform: translateY(-200%);
+  transition: transform 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .skip-link:focus {
-  top: 6px;
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Focus Management */
@@ -1266,22 +1472,19 @@ kbd {
 /* FORCE VISIBILITY FOR ALL TEXT ELEMENTS - NUCLEAR OPTION */
 /* These rules ensure NO TEXT can ever be white on white */
 
-/* Performance Hub specific fixes */
+/* IMPROVED: Performance Hub visibility without breaking dark mode */
 .premium-card .currency-display,
 .premium-card .text-4xl,
 .premium-card .text-5xl,
 .premium-card .text-6xl {
-  color: #0f172a !important; /* slate-900 - maximum contrast */
-  -webkit-text-fill-color: #0f172a !important;
-  background-clip: unset !important;
-  -webkit-background-clip: unset !important;
-  background: none !important;
-  text-shadow: none !important;
+  /* Ensure visibility and readability */
   opacity: 1 !important;
   visibility: visible !important;
+  text-shadow: none !important;
+  /* Allow proper color inheritance - dark mode handled by Tailwind dark: classes */
 }
 
-/* Force all percentage and metric displays to be visible */
+/* IMPROVED: Ensure metric displays are visible but respect dark mode */
 *[class*="percentage"],
 *[class*="metric"],
 *[class*="currency"],
@@ -1289,13 +1492,11 @@ kbd {
 [aria-label*="performance"],
 [aria-label*="return"],
 [aria-label*="SPY"] {
-  color: #0f172a !important; /* Force slate-900 */
-  -webkit-text-fill-color: #0f172a !important;
-  background-clip: unset !important;
-  -webkit-background-clip: unset !important;
+  /* Ensure visibility without overriding dark mode colors */
   opacity: 1 !important;
   visibility: visible !important;
   text-shadow: none !important;
+  /* Let Tailwind dark: classes control colors properly */
 }
 
 /* Specific fix for vs SPY Performance text */
@@ -1305,23 +1506,12 @@ kbd {
   color: #0f172a !important;
 }
 
-/* Force all text in cards to be dark unless explicitly white */
-.premium-card *:not(.text-white):not(.bg-primary-600 *):not(.bg-primary-700 *):not(.bg-slate-800 *):not(.bg-slate-900 *) {
-  color: #0f172a !important;
-}
+/* REMOVED: Overly broad card text override that prevented dark mode colors */
+/* Now allowing proper text color inheritance and dark mode classes */
 
-/* Override gradient text classes completely */
-.text-gradient-prosperity,
-.text-gradient-wealth,
-.text-gradient-primary,
-.text-gradient-alert {
-  color: #0f172a !important;
-  -webkit-text-fill-color: #0f172a !important;
-  background-clip: unset !important;
-  -webkit-background-clip: unset !important;
-  background: none !important;
-  text-shadow: none !important;
-}
+/* REMOVED: Nuclear override that was causing dark text on dark backgrounds */
+/* These overrides were too broad and prevented proper dark mode text colors */
+/* Now allowing Tailwind dark: classes to work properly */
 
 /* Emergency override for ANY invisible text */
 .text-invisible-fix,
@@ -1394,6 +1584,522 @@ body * {
   *[style*="-webkit-text-fill-color: transparent"] {
     background-color: yellow !important;
     color: red !important;
+  }
+}
+
+/* ============================================================================
+   DARK MODE DEFAULT - WCAG AAA COMPLIANT STYLES
+   ============================================================================ */
+
+/* Default dark mode styles - applied to html.dark and html (fallback) */
+html.dark,
+html {
+  color-scheme: dark;
+}
+
+html.dark body,
+html body {
+  background-color: #0f172a;
+  color: #ffffff;
+}
+
+/* Light mode override */
+html:not(.dark) {
+  color-scheme: light;
+}
+
+html:not(.dark) body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* WCAG AAA Dark Mode Component Defaults */
+html.dark .bg-white,
+html.dark [class*="bg-white"] {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+}
+
+html.dark .bg-slate-50,
+html.dark [class*="bg-slate-50"] {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark .bg-slate-100,
+html.dark [class*="bg-slate-100"] {
+  background-color: #334155 !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-slate-600,
+html.dark .text-slate-700,
+html.dark .text-slate-800,
+html.dark .text-slate-900,
+html.dark .text-gray-600,
+html.dark .text-gray-700,
+html.dark .text-gray-800,
+html.dark .text-gray-900 {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-black {
+  color: #ffffff !important;
+}
+
+/* Dark mode card and container styles */
+html.dark .bg-primary-50,
+html.dark .bg-prosperity-50,
+html.dark .bg-wealth-50 {
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+
+/* Dark mode border styles */
+html.dark .border-slate-200,
+html.dark .border-slate-300,
+html.dark .border-gray-200,
+html.dark .border-gray-300 {
+  border-color: #475569 !important;
+}
+
+/* Dark mode input styles */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #1e293b;
+  color: #ffffff;
+  border-color: #475569;
+}
+
+html.dark input:focus,
+html.dark textarea:focus,
+html.dark select:focus {
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+/* Dark mode button styles */
+html.dark .bg-primary-600,
+html.dark .bg-blue-600 {
+  background-color: #0ea5e9 !important;
+  color: #ffffff !important;
+}
+
+html.dark .bg-primary-600:hover,
+html.dark .bg-blue-600:hover {
+  background-color: #0284c7 !important;
+}
+
+/* Dark mode link styles */
+html.dark a {
+  color: #38bdf8; /* sky-400 for WCAG AAA compliance */
+}
+
+html.dark a:hover {
+  color: #7dd3fc; /* sky-300 for hover */
+}
+
+/* Dark mode shadow styles */
+html.dark .shadow-sm,
+html.dark .shadow,
+html.dark .shadow-md,
+html.dark .shadow-lg {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Force visibility for metrics and performance text */
+html.dark .currency-display,
+html.dark .metric-value,
+html.dark .percentage-display,
+html.dark [class*="performance"],
+html.dark [aria-label*="performance"],
+html.dark [aria-label*="return"],
+html.dark [aria-label*="SPY"] {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Dark mode skeleton styles */
+html.dark .skeleton-bg,
+html.dark .loading-skeleton {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+}
+
+/* Dark mode success/warning/error states - WCAG AAA compliant colors */
+html.dark .text-green-600,
+html.dark .text-green-700 {
+  color: #22c55e !important; /* green-500 - already AAA compliant */
+}
+
+html.dark .text-red-600,
+html.dark .text-red-700 {
+  color: #fca5a5 !important; /* red-300 - WCAG AAA compliant */
+}
+
+html.dark .text-yellow-600,
+html.dark .text-yellow-700 {
+  color: #fbbf24 !important; /* amber-400 - WCAG AAA compliant */
+}
+
+/* Dark mode navigation and sidebar */
+html.dark nav,
+html.dark .sidebar {
+  background-color: #1e293b;
+  border-color: #475569;
+}
+
+html.dark .navbar-brand,
+html.dark .nav-link {
+  color: #f1f5f9 !important;
+}
+
+html.dark .nav-link:hover {
+  color: #ffffff !important;
+  background-color: #334155;
+}
+
+/* Dark mode modal and dialog styles */
+html.dark .modal-backdrop {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+html.dark .modal-content,
+html.dark .dialog-content {
+  background-color: #1e293b;
+  color: #ffffff;
+  border: 1px solid #475569;
+}
+
+/* Dark mode table styles */
+html.dark table {
+  background-color: #1e293b;
+  color: #ffffff;
+}
+
+html.dark th {
+  background-color: #334155;
+  color: #f1f5f9;
+  border-color: #475569;
+}
+
+html.dark td {
+  border-color: #475569;
+}
+
+html.dark tbody tr:nth-child(even) {
+  background-color: #334155;
+}
+
+html.dark tbody tr:hover {
+  background-color: #475569;
+}
+
+/* Dark mode form styles */
+html.dark .form-label,
+html.dark label {
+  color: #f1f5f9;
+}
+
+html.dark .form-control,
+html.dark .form-select {
+  background-color: #1e293b;
+  border-color: #475569;
+  color: #ffffff;
+}
+
+html.dark .form-control:focus,
+html.dark .form-select:focus {
+  background-color: #1e293b;
+  border-color: #0ea5e9;
+  color: #ffffff;
+  box-shadow: 0 0 0 0.25rem rgba(14, 165, 233, 0.25);
+}
+
+/* Dark mode alert styles */
+html.dark .alert-info {
+  background-color: #1e40af;
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+
+html.dark .alert-success {
+  background-color: #065f46;
+  color: #ffffff;
+  border-color: #22c55e;
+}
+
+html.dark .alert-warning {
+  background-color: #92400e;
+  color: #ffffff;
+  border-color: #f59e0b;
+}
+
+html.dark .alert-danger,
+html.dark .alert-error {
+  background-color: #991b1b;
+  color: #ffffff;
+  border-color: #ef4444;
+}
+
+/* COMPREHENSIVE TAILWIND DARK MODE OVERRIDES */
+/* These ensure all Tailwind utility classes work properly in dark mode */
+
+/* CRITICAL FIX: Ensure prosperity and wealth colors work properly in dark mode */
+html.dark .text-prosperity-800 {
+  color: #22c55e !important; /* green-500 - WCAG AAA compliant on dark */
+}
+
+html.dark .text-prosperity-400 {
+  color: #4ade80 !important; /* green-400 - bright and visible on dark */
+}
+
+html.dark .text-wealth-800 {
+  color: #fbbf24 !important; /* amber-400 - WCAG AAA compliant on dark */
+}
+
+html.dark .text-wealth-400 {
+  color: #fcd34d !important; /* amber-300 - bright and visible on dark */
+}
+
+/* CRITICAL FIX: Navigation and sidebar text contrast issues */
+html.dark .text-slate-900 {
+  color: #f1f5f9 !important; /* slate-100 - light text for dark mode */
+}
+
+html.dark .text-slate-800 {
+  color: #f8fafc !important; /* slate-50 - very light text for dark mode */
+}
+
+html.dark .text-slate-700 {
+  color: #e2e8f0 !important; /* slate-200 - light text for dark mode */
+}
+
+html.dark .text-slate-600 {
+  color: #cbd5e1 !important; /* slate-300 - medium light text for dark mode */
+}
+
+html.dark .text-slate-500 {
+  color: #94a3b8 !important; /* slate-400 - already light enough */
+}
+
+/* Fix navigation and sidebar specifically */
+html.dark nav,
+html.dark .sidebar {
+  color: #f1f5f9 !important; /* Default light text */
+}
+
+html.dark nav *,
+html.dark .sidebar * {
+  color: inherit;
+}
+
+/* Fix button text in navigation */
+html.dark nav button,
+html.dark .sidebar button {
+  color: #cbd5e1 !important; /* slate-300 for buttons */
+}
+
+html.dark nav button:hover,
+html.dark .sidebar button:hover {
+  color: #f1f5f9 !important; /* slate-100 on hover */
+}
+
+/* Fix spans and text elements in navigation */
+html.dark nav span,
+html.dark .sidebar span {
+  color: inherit !important;
+}
+
+/* Background utilities for dark mode */
+html.dark .bg-gray-50 { background-color: #1e293b !important; }
+html.dark .bg-gray-100 { background-color: #334155 !important; }
+html.dark .bg-gray-200 { background-color: #475569 !important; }
+html.dark .bg-gray-300 { background-color: #64748b !important; }
+
+/* Text utilities for dark mode */
+html.dark .text-gray-500 { color: #cbd5e1 !important; }
+html.dark .text-gray-600 { color: #e2e8f0 !important; }
+html.dark .text-gray-700 { color: #f1f5f9 !important; }
+html.dark .text-gray-800 { color: #f8fafc !important; }
+html.dark .text-gray-900 { color: #ffffff !important; }
+
+/* Primary color utilities for dark mode */
+html.dark .bg-primary-100 { background-color: #1e293b !important; }
+html.dark .bg-primary-200 { background-color: #334155 !important; }
+html.dark .text-primary-600 { color: #38bdf8 !important; }
+html.dark .text-primary-700 { color: #7dd3fc !important; }
+html.dark .text-primary-800 { color: #bae6fd !important; }
+
+/* Border utilities for dark mode */
+html.dark .border { border-color: #475569 !important; }
+html.dark .border-gray-200 { border-color: #475569 !important; }
+html.dark .border-gray-300 { border-color: #64748b !important; }
+
+/* Ring utilities for dark mode */
+html.dark .ring-gray-200 { --tw-ring-color: #475569 !important; }
+html.dark .ring-gray-300 { --tw-ring-color: #64748b !important; }
+
+/* Divide utilities for dark mode */
+html.dark .divide-gray-200 > * + * { border-color: #475569 !important; }
+html.dark .divide-gray-300 > * + * { border-color: #64748b !important; }
+
+/* ACCESSIBILITY ENHANCEMENTS FOR DARK MODE */
+
+/* Ensure minimum touch target size in dark mode */
+html.dark .touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* High contrast focus indicators for dark mode */
+html.dark *:focus {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+html.dark *:focus-visible {
+  outline: 3px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+/* Enhanced button focus for dark mode */
+html.dark button:focus,
+html.dark [role="button"]:focus {
+  outline: 3px solid #38bdf8;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+}
+
+/* Dark mode placeholder text */
+html.dark ::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+/* Dark mode selection styles */
+html.dark ::selection {
+  background-color: #0ea5e9;
+  color: #ffffff;
+}
+
+/* Dark mode scrollbar */
+html.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* FORCE READABLE TEXT IN ALL SCENARIOS - NUCLEAR APPROACH */
+/* This ensures no text can ever be invisible in dark mode */
+
+html.dark * {
+  /* Reset any problematic text properties */
+  -webkit-text-fill-color: unset !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+}
+
+/* Ensure all text elements have proper contrast in dark mode */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6,
+html.dark p,
+html.dark span,
+html.dark div:not([class*="bg-primary"]):not([class*="bg-blue"]):not([class*="bg-green"]):not([class*="bg-red"]),
+html.dark label,
+html.dark .text-sm,
+html.dark .text-base,
+html.dark .text-lg,
+html.dark .text-xl {
+  color: #ffffff !important;
+}
+
+/* Override any gradient text that might be invisible */
+html.dark .text-gradient-prosperity,
+html.dark .text-gradient-wealth,
+html.dark .text-gradient-primary {
+  color: #ffffff !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Performance and metric text MUST be visible */
+html.dark [data-testid*="performance"],
+html.dark [data-testid*="metric"],
+html.dark [data-testid*="spy"],
+html.dark .performance-metric,
+html.dark .spy-comparison {
+  color: #ffffff !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+}
+
+/* Card content visibility */
+html.dark .card,
+html.dark .premium-card,
+html.dark [class*="card"] {
+  background-color: #1e293b;
+  color: #ffffff;
+  border: 1px solid #475569;
+}
+
+html.dark .card *,
+html.dark .premium-card *,
+html.dark [class*="card"] * {
+  color: inherit;
+}
+
+/* Status indicators must be visible - WCAG AAA compliant */
+html.dark .text-success,
+html.dark .success {
+  color: #22c55e !important; /* green-500 - AAA compliant */
+}
+
+html.dark .text-warning,
+html.dark .warning {
+  color: #fbbf24 !important; /* amber-400 - AAA compliant */
+}
+
+html.dark .text-error,
+html.dark .text-danger,
+html.dark .error {
+  color: #fca5a5 !important; /* red-300 - AAA compliant */
+}
+
+html.dark .text-info,
+html.dark .info {
+  color: #38bdf8 !important; /* sky-400 - AAA compliant */
+}
+
+/* REDUCED MOTION RESPECT */
+@media (prefers-reduced-motion: reduce) {
+  html.dark * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
@@ -1606,4 +2312,114 @@ body * {
 
 .animate-feature-highlight {
   animation: feature-highlight 3s ease-in-out infinite;
+}
+
+/**
+ * ENHANCED MOBILE TOUCH OPTIMIZATION
+ * Added by Accessibility Enhancement Script
+ */
+
+/* Enhanced mobile touch targets - ensures 48x48px minimum on touch devices */
+@media (pointer: coarse) {
+  /* All interactive elements get enhanced touch targets */
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  a,
+  [onclick],
+  .clickable,
+  .touch-friendly,
+  select,
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-height: 48px !important;
+    min-width: 48px !important;
+    padding: 12px 16px !important;
+  }
+  
+  /* Enhanced spacing between touch targets */
+  button + button,
+  [role="button"] + [role="button"],
+  a + a {
+    margin-left: 8px !important;
+  }
+  
+  /* Stack touch targets vertically on small screens with better spacing */
+  @media (max-width: 480px) {
+    .button-group,
+    .btn-group {
+      flex-direction: column !important;
+      gap: 12px !important;
+    }
+    
+    .button-group button,
+    .btn-group button,
+    .button-group [role="button"],
+    .btn-group [role="button"] {
+      width: 100% !important;
+      margin: 0 !important;
+    }
+  }
+  
+  /* Enhanced tab navigation for touch */
+  .premium-tabs button,
+  .tab-button {
+    min-height: 48px !important;
+    padding: 12px 20px !important;
+    margin-right: 4px !important;
+  }
+  
+  /* Enhanced form elements on touch devices */
+  input,
+  textarea,
+  select {
+    min-height: 48px !important;
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+  
+  /* Enhanced card interactions */
+  .super-card,
+  .premium-card,
+  .metric-card {
+    padding: 16px !important;
+  }
+  
+  .super-card button,
+  .premium-card button,
+  .metric-card button {
+    min-height: 48px !important;
+    min-width: 48px !important;
+  }
+}
+
+/* Enhanced hover states for devices that support hover */
+@media (hover: hover) {
+  button:hover,
+  [role="button"]:hover,
+  a:hover {
+    transform: translateY(-1px);
+    transition: transform 0.15s ease-out;
+  }
+}
+
+/* Ensure touch targets are not too close together */
+.touch-spacing > * + * {
+  margin-top: 12px;
+}
+
+.touch-spacing.horizontal > * + * {
+  margin-top: 0;
+  margin-left: 12px;
+}
+
+/* Large text mode enhancements for mobile */
+@media (pointer: coarse) {
+  .large-text button,
+  .large-text input,
+  .large-text select {
+    min-height: 56px !important;
+    font-size: 18px !important;
+  }
 }

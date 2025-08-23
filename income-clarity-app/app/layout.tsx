@@ -2,11 +2,12 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "../styles/themes.css";
-import { ThemeProvider } from "@/contexts/ThemeContext";
+import "../styles/sidebar.css";
+import { ThemeProvider as ShadcnThemeProvider } from "@/components/providers/theme-provider";
 import { AppProviders } from "@/contexts/AppProviders";
 import SkipLinks from "@/components/SkipLinks";
 import { GlobalLoadingIndicator } from "@/components/ui/GlobalLoadingIndicator";
-import { ThemeLoader } from "@/components/ThemeLoader";
+import { EnvironmentBadge } from "@/components/EnvironmentBadge";
 
 // Initialize email services
 import "@/lib/services/email/email-init.service";
@@ -134,7 +135,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -167,26 +168,7 @@ export default function RootLayout({
           />
         )}
         
-        {/* Theme loading script - prevents flash of unstyled content */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  const savedThemeId = localStorage.getItem('income-clarity-theme');
-                  if (savedThemeId) {
-                    const isDarkTheme = savedThemeId.includes('dark') || savedThemeId.includes('cyberpunk') || savedThemeId.includes('ocean') || savedThemeId.includes('midnight');
-                    if (isDarkTheme) {
-                      document.documentElement.classList.add('dark');
-                    } else {
-                      document.documentElement.classList.remove('dark');
-                    }
-                  }
-                } catch (e) {}
-              })();
-            `
-          }}
-        />
+        {/* Shadcn theme system handles theme management automatically */}
         
         {/* Accessibility meta tags */}
         <meta name="color-scheme" content="light dark" />
@@ -194,16 +176,21 @@ export default function RootLayout({
         <meta name="theme-color" content="#0ea5e9" media="(prefers-color-scheme: dark)" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeLoader />
-        <ThemeProvider>
+        <ShadcnThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <AppProviders>
             <SkipLinks />
             <GlobalLoadingIndicator position="top" />
+            <EnvironmentBadge position="top-right" showDetails={true} hideInProduction={false} />
             <div id="app-root" role="application" aria-label="Income Clarity Application">
               {children}
             </div>
           </AppProviders>
-        </ThemeProvider>
+        </ShadcnThemeProvider>
       </body>
     </html>
   );
