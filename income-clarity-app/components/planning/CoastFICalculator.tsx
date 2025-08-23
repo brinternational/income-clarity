@@ -325,8 +325,8 @@ export const CoastFICalculator = ({
               <Calculator className="w-6 h-6 text-green-600" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-slate-800">Coast FI Calculator</h2>
-              <p className="text-slate-600">Calculate when you can stop contributing and coast to FIRE</p>
+              <h2 className="text-2xl font-bold text-foreground">Coast FI Calculator</h2>
+              <p className="text-muted-foreground">Calculate when you can stop contributing and coast to FIRE</p>
             </div>
           </div>
           
@@ -336,14 +336,14 @@ export const CoastFICalculator = ({
               className="p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
               title="Advanced Settings"
             >
-              <Settings className="w-5 h-5 text-slate-600" />
+              <Settings className="w-5 h-5 text-muted-foreground" />
             </button>
             <button
               onClick={resetToDefaults}
               className="p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
               title="Reset to Defaults"
             >
-              <RefreshCw className="w-5 h-5 text-slate-600" />
+              <RefreshCw className="w-5 h-5 text-muted-foreground" />
             </button>
             <button
               onClick={saveToProfile}
@@ -421,7 +421,7 @@ export const CoastFICalculator = ({
               }`}>
                 {coastProgress.toFixed(1)}%
               </div>
-              <div className="text-xs text-slate-500">Progress to Coast FI</div>
+              <div className="text-xs text-muted-foreground">Progress to Coast FI</div>
             </div>
           </div>
           
@@ -445,10 +445,10 @@ export const CoastFICalculator = ({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Basic Inputs */}
         <div className="bg-white rounded-xl border border-slate-200 p-6">
-          <h3 className="font-semibold text-slate-800 mb-4">Basic Information</h3>
+          <h3 className="font-semibold text-foreground mb-4">Basic Information</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Current Age
               </label>
               <input
@@ -462,11 +462,11 @@ export const CoastFICalculator = ({
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Current Net Worth
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-2.5 w-5 h-5 text-slate-400" />
+                <DollarSign className="absolute left-3 top-2.5 w-5 h-5 text-muted-foreground" />
                 <input
                   type="number"
                   value={inputs.currentNetWorth}
@@ -479,7 +479,7 @@ export const CoastFICalculator = ({
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Target Retirement Age
               </label>
               <input
@@ -493,11 +493,11 @@ export const CoastFICalculator = ({
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Target Annual Income in Retirement
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-2.5 w-5 h-5 text-slate-400" />
+                <DollarSign className="absolute left-3 top-2.5 w-5 h-5 text-muted-foreground" />
                 <input
                   type="number"
                   value={inputs.targetRetirementIncome}
@@ -514,7 +514,7 @@ export const CoastFICalculator = ({
         {/* Scenario Results */}
         <div className="bg-white rounded-xl border border-slate-200 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-slate-800">Scenario Analysis</h3>
+            <h3 className="font-semibold text-foreground">Scenario Analysis</h3>
             {calculationInProgress && (
               <div className="flex items-center space-x-2 text-blue-600">
                 <motion.div
@@ -537,7 +537,7 @@ export const CoastFICalculator = ({
                 className={`flex-1 px-3 py-2 text-sm rounded-lg transition-colors ${
                   activeScenario === scenario
                     ? 'bg-primary-600 text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    : 'bg-slate-100 text-muted-foreground hover:bg-slate-200'
                 }`}
               >
                 {scenarios[scenario].name}
@@ -551,7 +551,7 @@ export const CoastFICalculator = ({
           {/* Key Metrics */}
           <div className="space-y-4">
             <div className="bg-slate-50 rounded-lg p-4">
-              <div className="text-sm text-slate-600 mb-1">Required Coast Amount</div>
+              <div className="text-sm text-muted-foreground mb-1">Required Coast Amount</div>
               <div className="text-2xl font-bold text-primary-600">
                 {formatCurrency(animatedValues.requiredCoastAmount * 1000)}
               </div>
@@ -559,14 +559,14 @@ export const CoastFICalculator = ({
             
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-slate-50 rounded-lg p-3">
-                <div className="text-xs text-slate-600 mb-1">Years to Coast</div>
+                <div className="text-xs text-muted-foreground mb-1">Years to Coast</div>
                 <div className="text-lg font-bold text-blue-600">
                   {activeScenarioData.coastAchieved ? '0' : animatedValues.yearsToCoast.toFixed(1)}
                 </div>
               </div>
               
               <div className="bg-slate-50 rounded-lg p-3">
-                <div className="text-xs text-slate-600 mb-1">Monthly Need</div>
+                <div className="text-xs text-muted-foreground mb-1">Monthly Need</div>
                 <div className="text-lg font-bold text-green-600">
                   {formatCurrency(animatedValues.monthlyRequirement)}
                 </div>
@@ -574,11 +574,11 @@ export const CoastFICalculator = ({
             </div>
             
             <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-4">
-              <div className="text-sm text-slate-600 mb-1">Projected Final Net Worth</div>
+              <div className="text-sm text-muted-foreground mb-1">Projected Final Net Worth</div>
               <div className="text-2xl font-bold text-green-600">
                 {formatCurrency(animatedValues.finalNetWorth * 1000)}
               </div>
-              <div className="text-xs text-slate-500">
+              <div className="text-xs text-muted-foreground">
                 At age {inputs.targetRetirementAge}
               </div>
             </div>
@@ -595,10 +595,10 @@ export const CoastFICalculator = ({
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
           >
-            <h3 className="font-semibold text-slate-800 mb-4">Advanced Settings</h3>
+            <h3 className="font-semibold text-foreground mb-4">Advanced Settings</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-foreground/90 mb-2">
                   Current Savings Rate (%)
                 </label>
                 <input
@@ -613,7 +613,7 @@ export const CoastFICalculator = ({
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-foreground/90 mb-2">
                   Expected Inflation (%)
                 </label>
                 <input
@@ -628,7 +628,7 @@ export const CoastFICalculator = ({
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-foreground/90 mb-2">
                   Expected Returns (%)
                 </label>
                 <input
@@ -656,7 +656,7 @@ export const CoastFICalculator = ({
             exit={{ opacity: 0, y: -20 }}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-slate-800">Coast FI Milestones</h3>
+              <h3 className="font-semibold text-foreground">Coast FI Milestones</h3>
               <button
                 onClick={() => setShowMilestones(!showMilestones)}
                 className="text-sm text-primary-600 hover:text-primary-700"
@@ -685,13 +685,13 @@ export const CoastFICalculator = ({
                       <div className="w-5 h-5 border-2 border-slate-300 rounded-full" />
                     )}
                     <h4 className={`font-semibold ${
-                      milestone.achieved ? 'text-green-800' : 'text-slate-700'
+                      milestone.achieved ? 'text-green-800' : 'text-foreground/90'
                     }`}>
                       {milestone.title}
                     </h4>
                   </div>
                   <p className={`text-sm ${
-                    milestone.achieved ? 'text-green-600' : 'text-slate-600'
+                    milestone.achieved ? 'text-green-600' : 'text-muted-foreground'
                   }`}>
                     {milestone.description}
                   </p>
@@ -705,14 +705,14 @@ export const CoastFICalculator = ({
       {/* Interactive Projection Chart */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-slate-800">Projection Timeline</h3>
+          <h3 className="text-lg font-semibold text-foreground">Projection Timeline</h3>
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setChartType('networth')}
               className={`px-4 py-2 text-sm rounded-lg transition-colors ${
                 chartType === 'networth'
                   ? 'bg-primary-600 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-100 text-muted-foreground hover:bg-slate-200'
               }`}
             >
               Net Worth
@@ -722,7 +722,7 @@ export const CoastFICalculator = ({
               className={`px-4 py-2 text-sm rounded-lg transition-colors ${
                 chartType === 'contributions'
                   ? 'bg-primary-600 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-100 text-muted-foreground hover:bg-slate-200'
               }`}
             >
               Contributions
@@ -732,7 +732,7 @@ export const CoastFICalculator = ({
               className={`px-4 py-2 text-sm rounded-lg transition-colors ${
                 chartType === 'real-value'
                   ? 'bg-primary-600 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-100 text-muted-foreground hover:bg-slate-200'
               }`}
             >
               Real Value

@@ -51,7 +51,7 @@ export function StrategyHealthCard({
       case 'poor':
         return <AlertCircle className="w-4 h-4 text-alert-600" />;
       default:
-        return <Activity className="w-4 h-4 text-slate-600" />;
+        return <Activity className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
@@ -63,8 +63,8 @@ export function StrategyHealthCard({
           <div className="flex items-center space-x-3">
             <Shield className={`w-8 h-8 ${getHealthColor(data.overall)}`} />
             <div>
-              <h3 className="text-lg font-semibold text-slate-800">Strategy Health</h3>
-              <p className="text-sm text-slate-600">Overall portfolio assessment</p>
+              <h3 className="text-lg font-semibold text-foreground">Strategy Health</h3>
+              <p className="text-sm text-muted-foreground">Overall portfolio assessment</p>
             </div>
           </div>
           <div className={`text-3xl font-bold ${getHealthColor(data.overall)}`}>
@@ -85,7 +85,7 @@ export function StrategyHealthCard({
 
       {/* Health Factors */}
       <div className="space-y-3">
-        <h4 className="font-semibold text-slate-800 flex items-center">
+        <h4 className="font-semibold text-foreground flex items-center">
           <TrendingUp className="w-5 h-5 mr-2 text-primary-600" />
           Health Factors
         </h4>
@@ -94,7 +94,7 @@ export function StrategyHealthCard({
           <div key={index} className="flex items-center justify-between p-4 bg-white rounded-lg border border-slate-200">
             <div className="flex items-center space-x-3">
               {getStatusIcon(factor.status)}
-              <span className="font-medium text-slate-700">{factor.name}</span>
+              <span className="font-medium text-foreground/90">{factor.name}</span>
             </div>
             
             <div className="flex items-center space-x-3">

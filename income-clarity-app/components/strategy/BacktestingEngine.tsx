@@ -99,15 +99,15 @@ export function BacktestingEngine({
     if (strategy.strategy === best.strategy) return 'text-prosperity-600';
     
     const metricInfo = metrics.find(m => m.key === metric);
-    if (!metricInfo) return 'text-slate-600';
+    if (!metricInfo) return 'text-muted-foreground';
     
     const val = strategy[metric] as number;
     const benchmark = results.find(r => r.strategy === 'SPY Benchmark')?.[metric] as number || 0;
     
     if (metricInfo.higherIsBetter) {
-      return val > benchmark ? 'text-primary-600' : 'text-slate-600';
+      return val > benchmark ? 'text-primary-600' : 'text-muted-foreground';
     } else {
-      return Math.abs(val) < Math.abs(benchmark) ? 'text-primary-600' : 'text-slate-600';
+      return Math.abs(val) < Math.abs(benchmark) ? 'text-primary-600' : 'text-muted-foreground';
     }
   };
 
@@ -124,16 +124,16 @@ export function BacktestingEngine({
       <div className="text-center">
         <div className="flex items-center justify-center mb-2">
           <Activity className="w-6 h-6 text-primary-600 mr-2" />
-          <h3 className="text-lg font-semibold text-slate-800">Strategy Backtesting</h3>
+          <h3 className="text-lg font-semibold text-foreground">Strategy Backtesting</h3>
         </div>
-        <p className="text-sm text-slate-600">Historical performance analysis of different investment strategies</p>
+        <p className="text-sm text-muted-foreground">Historical performance analysis of different investment strategies</p>
       </div>
 
       {/* Controls */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Time Period Selector */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
+          <label className="block text-sm font-medium text-foreground/90 mb-2">
             <Calendar className="w-4 h-4 inline mr-1" />
             Time Period
           </label>
@@ -150,7 +150,7 @@ export function BacktestingEngine({
 
         {/* Metric Selector */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
+          <label className="block text-sm font-medium text-foreground/90 mb-2">
             <BarChart3 className="w-4 h-4 inline mr-1" />
             Primary Metric
           </label>
@@ -169,21 +169,21 @@ export function BacktestingEngine({
       {/* Results Table */}
       <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-200">
-          <h4 className="font-semibold text-slate-800">Backtest Results ({timePeriod})</h4>
+          <h4 className="font-semibold text-foreground">Backtest Results ({timePeriod})</h4>
         </div>
         
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-slate-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Strategy
                 </th>
                 {metrics.map(metric => (
                   <th 
                     key={metric.key}
                     className={`px-6 py-3 text-right text-xs font-medium uppercase tracking-wider cursor-pointer hover:bg-slate-100 transition-colors ${
-                      selectedMetric === metric.key ? 'text-primary-600 bg-primary-50' : 'text-slate-500'
+                      selectedMetric === metric.key ? 'text-primary-600 bg-primary-50' : 'text-muted-foreground'
                     }`}
                     onClick={() => setSelectedMetric(metric.key)}
                   >
@@ -214,7 +214,7 @@ export function BacktestingEngine({
                           <div className={`text-sm font-medium ${
                             isBest ? 'text-prosperity-800' : 
                             isBenchmark ? 'text-primary-800' : 
-                            'text-slate-900'
+                            'text-foreground'
                           }`}>
                             {result.strategy}
                           </div>
@@ -259,7 +259,7 @@ export function BacktestingEngine({
       </div>
 
       {/* Disclaimer */}
-      <div className="text-xs text-slate-500 text-center p-3 bg-slate-50 rounded-lg">
+      <div className="text-xs text-muted-foreground text-center p-3 bg-slate-50 rounded-lg">
         Past performance does not guarantee future results. Backtesting assumes perfect execution and does not account for transaction costs, taxes, or market impact.
       </div>
     </div>

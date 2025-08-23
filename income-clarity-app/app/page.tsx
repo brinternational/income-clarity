@@ -90,7 +90,7 @@ export default function LandingPage() {
                 href={'/auth' + '/login'}
                 variant="ghost"
                 size="sm"
-                className="text-slate-300 hover:text-white"
+                className="text-muted-foreground hover:text-white"
               >
                 Login
               </Button>
@@ -128,7 +128,7 @@ export default function LandingPage() {
                 variant="ghost"
                 size="md"
                 fullWidth
-                className="text-slate-300 hover:text-white justify-start"
+                className="text-muted-foreground hover:text-white justify-start"
               >
                 Login
               </Button>
@@ -164,7 +164,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto"
+            className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto"
           >
             The only dividend tracker that shows your NET income after taxes,
             with daily SPY validation and location-aware tax optimization.
@@ -200,7 +200,7 @@ export default function LandingPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="mt-12 flex flex-wrap justify-center gap-6 text-slate-400 text-sm"
+            className="mt-12 flex flex-wrap justify-center gap-6 text-muted-foreground text-sm"
           >
             <span className="flex items-center">
               <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
@@ -252,7 +252,7 @@ export default function LandingPage() {
                     <CardTitle className="text-xl text-white">{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription className="text-slate-400">{feature.description}</CardDescription>
+                    <CardDescription className="text-muted-foreground">{feature.description}</CardDescription>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -283,7 +283,7 @@ export default function LandingPage() {
                   className="flex items-center space-x-3 border-white/10"
                 >
                   <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                  <span className="text-slate-300">{benefit}</span>
+                  <span className="text-muted-foreground">{benefit}</span>
                 </Card>
               </motion.div>
             ))}
@@ -300,7 +300,7 @@ export default function LandingPage() {
               Dividend Income?
             </span>
           </h2>
-          <p className="text-xl text-slate-300 mb-8">
+          <p className="text-xl text-muted-foreground mb-8">
             Join thousands of investors who are already living off their portfolios.
           </p>
           <Button 
@@ -317,7 +317,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="py-8 px-4 border-t border-white/10">
-        <div className="max-w-7xl mx-auto text-center text-slate-400">
+        <div className="max-w-7xl mx-auto text-center text-muted-foreground">
           <p>&copy; 2025 Income Clarity. All rights reserved.</p>
         </div>
       </footer>

@@ -123,7 +123,7 @@ function LoginPageContent() {
             <h2 className="mt-6 text-3xl font-bold tracking-tight text-white">
               Welcome back
             </h2>
-            <p className="mt-2 text-sm text-slate-400">
+            <p className="mt-2 text-sm text-muted-foreground">
               Sign in to your Income Clarity account
             </p>
           </div>
@@ -204,7 +204,7 @@ function LoginPageContent() {
                   <div className="w-full border-t border-slate-600" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="bg-slate-900 px-2 text-slate-400">or</span>
+                  <span className="bg-slate-900 px-2 text-muted-foreground">or</span>
                 </div>
               </div>
 
@@ -260,10 +260,10 @@ function LoginPageContent() {
               {/* Demo credentials info */}
               <Card variant="filled" size="sm" className="text-center bg-slate-800/50">
                 <CardContent className="p-4">
-                  <p className="text-xs text-slate-400 mb-2">
+                  <p className="text-xs text-muted-foreground mb-2">
                     <strong className="text-emerald-400">Demo Credentials</strong>
                   </p>
-                  <p className="text-xs text-slate-300">
+                  <p className="text-xs text-muted-foreground">
                     Email: test@example.com<br />
                     Password: password123
                   </p>
@@ -275,7 +275,7 @@ function LoginPageContent() {
 
               {/* Sign up link */}
               <div className="text-center">
-                <p className="text-sm text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   Don&apos;t have an account?{' '}
                   <Link 
                     href="/auth/signup" 
@@ -290,7 +290,7 @@ function LoginPageContent() {
               <div className="text-center">
                 <Link 
                   href="#" 
-                  className="text-sm text-slate-400 hover:text-slate-300 transition-colors"
+                  className="text-sm text-muted-foreground hover:text-muted-foreground transition-colors"
                   onClick={(e) => {
                     e.preventDefault();
                     alert('Forgot password functionality coming soon!');
@@ -306,7 +306,7 @@ function LoginPageContent() {
           <div className="text-center">
             <Link 
               href="/" 
-              className="text-sm text-slate-400 hover:text-slate-300 transition-colors"
+              className="text-sm text-muted-foreground hover:text-muted-foreground transition-colors"
             >
               ← Back to home
             </Link>
@@ -323,7 +323,7 @@ export default function LoginPage() {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin text-emerald-500 mx-auto" />
-          <p className="mt-2 text-slate-400">Loading...</p>
+          <p className="mt-2 text-muted-foreground">Loading...</p>
         </div>
       </div>
     }>

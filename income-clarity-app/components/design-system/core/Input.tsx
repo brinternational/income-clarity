@@ -254,12 +254,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             className={inputClasses}
             disabled={disabled}
             aria-label={ariaLabel}
-            aria-describedby={cn(
-              helperTextId,
-              errorId,
-              successId,
-              ariaDescribedBy
-            ).trim() || undefined}
+            aria-describedby={[helperTextId, errorId, successId, ariaDescribedBy]
+              .filter(Boolean)
+              .join(' ') || undefined}
             aria-invalid={currentState === 'error'}
             aria-required={required}
             onFocus={(e) => {

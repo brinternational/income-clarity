@@ -39,8 +39,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const baseClasses = `
       w-full px-4 py-3 border rounded-lg transition-all duration-200
       focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-400/50 focus:outline-none
-      disabled:bg-white/5 disabled:text-slate-500 disabled:cursor-not-allowed
-      placeholder:text-slate-400 text-white
+      disabled:bg-white/5 disabled:text-muted-foreground disabled:cursor-not-allowed
+      placeholder:text-muted-foreground text-white
     `;
     
     const variantClasses = {
@@ -75,7 +75,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <label 
             htmlFor={inputId}
             className={`block text-sm font-medium mb-2 ${
-              error ? 'text-red-400' : 'text-slate-300'
+              error ? 'text-red-400' : 'text-muted-foreground'
             }`}
           >
             {label}
@@ -88,7 +88,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <div className="relative">
           {leftIcon && (
             <div 
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
               aria-hidden="true"
             >
               {leftIcon}
@@ -119,7 +119,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             <button
               type="button"
               onClick={onPasswordToggle}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors touch-target"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-muted-foreground transition-colors touch-target"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
               tabIndex={0}
             >
@@ -133,7 +133,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         
           {rightIcon && !showPasswordToggle && (
             <div 
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
               aria-hidden="true"
             >
               {rightIcon}
@@ -155,7 +155,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {helperText && (
           <p 
             id={helperId}
-            className="mt-1 text-sm text-slate-400"
+            className="mt-1 text-sm text-muted-foreground"
           >
             {helperText}
           </p>

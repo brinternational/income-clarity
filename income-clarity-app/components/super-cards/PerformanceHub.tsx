@@ -48,6 +48,11 @@ interface PerformanceHubProps {
     };
   };
   className?: string;
+  // Progressive Disclosure Level 2 Props
+  heroView?: boolean;
+  level?: string;
+  focusedAnalytics?: boolean;
+  engagementLevel?: string;
 }
 
 type TabType = 'spy' | 'overview' | 'holdings' | 'analysis';
@@ -104,7 +109,12 @@ const PerformanceHubComponent = ({
   outperformance = 0,  // Will be calculated from real data
   isLoading = false,
   timePeriodData,
-  className = ''
+  className = '',
+  // Progressive Disclosure Level 2 Props
+  heroView = false,
+  level,
+  focusedAnalytics = false,
+  engagementLevel
 }: PerformanceHubProps) => {
   // If data prop is provided (from unified view), use it to override defaults
   const effectivePortfolioReturn = data?.spyComparison?.portfolioReturn ?? portfolioReturn;
@@ -301,6 +311,10 @@ const PerformanceHubComponent = ({
 
   const currentTabIndex = TABS.findIndex(tab => tab.id === activeTab);
 
+  // Level 2 Progressive Disclosure: Hero View Configuration
+  const heroViewTabs = heroView ? ['spy', 'overview'] : TABS.map(t => t.id); // Focus on key tabs for Level 2
+  const filteredTabs = heroView ? TABS.filter(tab => heroViewTabs.includes(tab.id)) : TABS;
+
   // Enhanced loading and error states
   if (isLoading || (displayData.loading && !data)) {
     return (
@@ -359,8 +373,12 @@ const PerformanceHubComponent = ({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Hero Metric Section - Prominent Display */}
-      <div className="text-center mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-br from-primary-50 via-primary-25 to-white rounded-xl sm:rounded-2xl border border-primary-200">
+      {/* Level 2 Hero View: Enhanced Hero Metric Section */}
+      <div className={`text-center mb-6 sm:mb-8 p-4 sm:p-6 ${
+        heroView 
+          ? 'bg-gradient-to-br from-blue-50 via-blue-25 to-white rounded-xl sm:rounded-2xl border border-blue-200 shadow-lg' 
+          : 'bg-gradient-to-br from-primary-50 via-primary-25 to-white rounded-xl sm:rounded-2xl border border-primary-200'
+      }`}>
         <div className="flex items-center justify-center mb-3">
           <motion.div 
             className={`p-3 sm:p-4 rounded-xl ${
@@ -393,7 +411,7 @@ const PerformanceHubComponent = ({
         </motion.div>
         
         <motion.div 
-          className="text-slate-800 dark:text-slate-200 font-medium text-sm sm:text-base"
+          className="text-foreground font-medium text-sm sm:text-base"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
@@ -412,16 +430,29 @@ const PerformanceHubComponent = ({
             <span>Strong Alpha Generation</span>
           </motion.div>
         )}
+        
+        {/* Level 2 Hero View: Enhanced Context */}
+        {heroView && (
+          <motion.div 
+            className="mt-4 inline-flex items-center space-x-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium border border-blue-200"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.8, type: "spring" }}
+          >
+            <Target className="w-4 h-4" />
+            <span>Level 2: Enhanced Analytics for Engaged Users</span>
+          </motion.div>
+        )}
       </div>
 
       {/* Global Time Period Selector */}
       <div className="mb-6 bg-slate-50 rounded-xl p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
-            <Clock className="w-4 h-4 text-slate-600" />
-            <span className="text-sm font-medium text-slate-900 dark:text-slate-100">Time Period</span>
+            <Clock className="w-4 h-4 text-muted-foreground" />
+            <span className="text-sm font-medium text-foreground">Time Period</span>
           </div>
-          <div className="text-xs text-slate-700 dark:text-slate-300">
+          <div className="text-xs text-foreground/90">
             Global setting for all tabs
           </div>
         </div>
@@ -434,7 +465,7 @@ const PerformanceHubComponent = ({
               className={`flex-shrink-0 px-3 py-2 text-xs font-medium rounded-md transition-all duration-200 touch-friendly focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${
                 selectedTimePeriod === period
                   ? 'bg-primary-600 text-white shadow-sm'
-                  : 'text-slate-900 dark:text-slate-100 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+                  : 'text-foreground hover:text-foreground/90 dark:hover:text-muted-foreground hover:bg-slate-100 dark:hover:bg-slate-700'
               }`}
               onClick={() => setSelectedTimePeriod(period)}
             >
@@ -448,7 +479,7 @@ const PerformanceHubComponent = ({
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-900 dark:text-slate-100">
+            <h3 className="text-lg sm:text-xl font-display font-semibold text-foreground">
               Performance Hub
             </h3>
             
@@ -478,7 +509,7 @@ const PerformanceHubComponent = ({
             <button
               onClick={() => fetchPerformanceData(selectedTimePeriod as TimeRange)}
               disabled={displayData.loading}
-              className="p-2 text-slate-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 text-muted-foreground hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Refresh data"
             >
               <svg className={`w-5 h-5 ${displayData.loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -489,13 +520,13 @@ const PerformanceHubComponent = ({
             {/* Mobile swipe indicators */}
             <div className="flex items-center space-x-2 sm:hidden">
               {currentTabIndex > 0 && (
-                <ChevronLeft className="w-5 h-5 text-slate-400" />
+                <ChevronLeft className="w-5 h-5 text-muted-foreground" />
               )}
-              <span className="text-xs text-slate-500 font-medium">
+              <span className="text-xs text-muted-foreground font-medium">
                 {currentTabIndex + 1} / {TABS.length}
               </span>
               {currentTabIndex < TABS.length - 1 && (
-                <ChevronRight className="w-5 h-5 text-slate-400" />
+                <ChevronRight className="w-5 h-5 text-muted-foreground" />
               )}
             </div>
           </div>
@@ -503,11 +534,11 @@ const PerformanceHubComponent = ({
         
         {/* Tab Bar */}
         <div 
-          className="flex bg-slate-50 rounded-lg sm:rounded-xl p-1 gap-1 relative overflow-hidden"
+          className={`flex ${heroView ? 'bg-blue-50' : 'bg-slate-50'} rounded-lg sm:rounded-xl p-1 gap-1 relative overflow-hidden`}
           role="tablist" 
           aria-label="Performance hub navigation"
         >
-          {TABS.map((tab, index) => {
+          {filteredTabs.map((tab, index) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
             
@@ -521,7 +552,7 @@ const PerformanceHubComponent = ({
                 className={`flex-1 relative px-3 py-3 sm:py-4 text-center transition-all duration-300 rounded-md sm:rounded-lg touch-friendly focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${
                   isActive
                     ? 'text-white shadow-lg'
-                    : 'text-slate-900 dark:text-slate-100 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-700/50'
+                    : 'text-foreground hover:text-foreground/90 dark:hover:text-muted-foreground hover:bg-white/50 dark:hover:bg-slate-700/50'
                 }`}
                 onClick={() => setActiveTab(tab.id)}
                 whileHover={{ scale: 1.02 }}
@@ -542,7 +573,7 @@ const PerformanceHubComponent = ({
                     {tab.label}
                   </div>
                   <div className={`text-xs ${
-                    isActive ? 'text-primary-100' : 'text-slate-700 dark:text-slate-300'
+                    isActive ? 'text-primary-100' : 'text-foreground/90'
                   } hidden sm:block`}>
                     {tab.description}
                   </div>
@@ -592,28 +623,28 @@ const PerformanceHubComponent = ({
                   <div className="text-2xl font-bold text-primary-800 dark:text-primary-600 mb-1">
                     {animatedValues.portfolio.toFixed(1)}%
                   </div>
-                  <div className="text-xs text-slate-800 dark:text-slate-600">Portfolio Return</div>
+                  <div className="text-xs text-foreground dark:text-muted-foreground">Portfolio Return</div>
                 </div>
                 
                 <div className="text-center p-4 bg-gradient-to-br from-prosperity-50 to-prosperity-25 rounded-lg border border-prosperity-100">
                   <div className="text-2xl font-bold text-prosperity-800 dark:text-prosperity-600 mb-1">
                     {performanceInsights?.outperformingCount || 0}
                   </div>
-                  <div className="text-xs text-slate-800 dark:text-slate-600">Strong Holdings</div>
+                  <div className="text-xs text-foreground dark:text-muted-foreground">Strong Holdings</div>
                 </div>
                 
                 <div className="text-center p-4 bg-gradient-to-br from-wealth-50 to-wealth-25 rounded-lg border border-wealth-100">
                   <div className="text-2xl font-bold text-wealth-800 dark:text-wealth-600 mb-1">
                     {performanceInsights?.totalHoldings || 0}
                   </div>
-                  <div className="text-xs text-slate-800 dark:text-slate-600">Total Holdings</div>
+                  <div className="text-xs text-foreground dark:text-muted-foreground">Total Holdings</div>
                 </div>
               </div>
 
               {/* Performance Insights */}
               {performanceInsights && (
                 <div className="bg-gradient-to-br from-slate-50 to-white rounded-xl p-6 border border-slate-100">
-                  <h4 className="font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center">
+                  <h4 className="font-semibold text-foreground mb-4 flex items-center">
                     <Zap className="w-5 h-5 text-primary-600 mr-2" />
                     Performance Insights
                   </h4>
@@ -667,7 +698,7 @@ const PerformanceHubComponent = ({
       </AnimatePresence>
 
       {/* Mobile swipe hint */}
-      <div className="mt-6 text-center text-xs text-slate-500 sm:hidden">
+      <div className="mt-6 text-center text-xs text-muted-foreground sm:hidden">
         👈 Swipe left or right to switch tabs
       </div>
     </motion.div>

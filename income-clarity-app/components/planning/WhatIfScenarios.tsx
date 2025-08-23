@@ -920,8 +920,8 @@ export const WhatIfScenarios = ({
               <Activity className="w-6 h-6 text-blue-600" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-slate-800">What-If Scenarios</h2>
-              <p className="text-slate-600">Model different life changes and market conditions</p>
+              <h2 className="text-2xl font-bold text-foreground">What-If Scenarios</h2>
+              <p className="text-muted-foreground">Model different life changes and market conditions</p>
             </div>
           </div>
           
@@ -941,7 +941,7 @@ export const WhatIfScenarios = ({
               className={`p-2 rounded-lg border transition-colors ${
                 showComparison 
                   ? 'bg-blue-600 text-white border-blue-600' 
-                  : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                  : 'bg-white text-muted-foreground border-slate-200 hover:bg-slate-50'
               }`}
               title="Show Comparison"
             >
@@ -953,21 +953,21 @@ export const WhatIfScenarios = ({
               title="Save Scenario"
               disabled={!scenarioResults}
             >
-              <Save className="w-5 h-5 text-slate-600" />
+              <Save className="w-5 h-5 text-muted-foreground" />
             </button>
           </div>
         </div>
 
         {/* Predefined Scenarios */}
         <div className="mb-4">
-          <h3 className="text-sm font-semibold text-slate-700 mb-2">Quick Scenarios:</h3>
+          <h3 className="text-sm font-semibold text-foreground/90 mb-2">Quick Scenarios:</h3>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={resetToBaseline}
               className={`px-3 py-2 text-sm rounded-lg transition-colors ${
                 selectedPredefined === null
                   ? 'bg-primary-600 text-white'
-                  : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                  : 'bg-white text-muted-foreground hover:bg-slate-50 border border-slate-200'
               }`}
             >
               Baseline
@@ -979,7 +979,7 @@ export const WhatIfScenarios = ({
                 className={`px-3 py-2 text-sm rounded-lg transition-colors ${
                   selectedPredefined === scenario.name
                     ? 'bg-primary-600 text-white'
-                    : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                    : 'bg-white text-muted-foreground hover:bg-slate-50 border border-slate-200'
                 }`}
                 title={scenario.description}
               >
@@ -1046,10 +1046,10 @@ export const WhatIfScenarios = ({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Basic Inputs */}
         <div className="bg-white rounded-xl border border-slate-200 p-6">
-          <h3 className="font-semibold text-slate-800 mb-4">Basic Adjustments</h3>
+          <h3 className="font-semibold text-foreground mb-4">Basic Adjustments</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Income Change (%)
               </label>
               <div className="flex items-center space-x-2">
@@ -1089,7 +1089,7 @@ export const WhatIfScenarios = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Expenses Change (%)
               </label>
               <div className="flex items-center space-x-2">
@@ -1129,7 +1129,7 @@ export const WhatIfScenarios = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-foreground/90 mb-2">
                 Savings Rate Change (%)
               </label>
               <div className="flex items-center space-x-2">
@@ -1170,7 +1170,7 @@ export const WhatIfScenarios = ({
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-foreground/90 mb-2">
                   Investment Returns (%)
                 </label>
                 <input
@@ -1188,7 +1188,7 @@ export const WhatIfScenarios = ({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-foreground/90 mb-2">
                   Inflation Rate (%)
                 </label>
                 <input
@@ -1210,12 +1210,12 @@ export const WhatIfScenarios = ({
 
         {/* Life Events */}
         <div className="bg-white rounded-xl border border-slate-200 p-6">
-          <h3 className="font-semibold text-slate-800 mb-4">Life Events</h3>
+          <h3 className="font-semibold text-foreground mb-4">Life Events</h3>
           <div className="space-y-6">
             {/* Career Change */}
             <div className="border border-slate-200 rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="font-medium text-slate-700">Career Change</h4>
+                <h4 className="font-medium text-foreground/90">Career Change</h4>
                 <label className="flex items-center">
                   <input
                     type="checkbox"
@@ -1242,7 +1242,7 @@ export const WhatIfScenarios = ({
               {currentScenario.careerChange.enabled && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-xs font-medium text-slate-600 mb-1">
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">
                       Income Change (%)
                     </label>
                     <input
@@ -1262,7 +1262,7 @@ export const WhatIfScenarios = ({
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-xs font-medium text-slate-600 mb-1">
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">
                         Years to Transition
                       </label>
                       <input
@@ -1281,7 +1281,7 @@ export const WhatIfScenarios = ({
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-slate-600 mb-1">
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">
                         Transition Costs
                       </label>
                       <input
@@ -1307,7 +1307,7 @@ export const WhatIfScenarios = ({
             {/* Major Purchase */}
             <div className="border border-slate-200 rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="font-medium text-slate-700">Major Purchase</h4>
+                <h4 className="font-medium text-foreground/90">Major Purchase</h4>
                 <label className="flex items-center">
                   <input
                     type="checkbox"
@@ -1334,7 +1334,7 @@ export const WhatIfScenarios = ({
               {currentScenario.majorPurchase.enabled && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-xs font-medium text-slate-600 mb-1">
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">
                       Amount
                     </label>
                     <input
@@ -1354,7 +1354,7 @@ export const WhatIfScenarios = ({
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-xs font-medium text-slate-600 mb-1">
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">
                         Years from Now
                       </label>
                       <input
@@ -1373,7 +1373,7 @@ export const WhatIfScenarios = ({
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-slate-600 mb-1">
+                      <label className="block text-xs font-medium text-muted-foreground mb-1">
                         Funding Source
                       </label>
                       <select
@@ -1400,7 +1400,7 @@ export const WhatIfScenarios = ({
             {/* Market Crash */}
             <div className="border border-slate-200 rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="font-medium text-slate-700">Market Crash</h4>
+                <h4 className="font-medium text-foreground/90">Market Crash</h4>
                 <label className="flex items-center">
                   <input
                     type="checkbox"
@@ -1427,7 +1427,7 @@ export const WhatIfScenarios = ({
               {currentScenario.marketCrash.enabled && (
                 <div className="grid grid-cols-3 gap-2">
                   <div>
-                    <label className="block text-xs font-medium text-slate-600 mb-1">
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">
                       Severity (%)
                     </label>
                     <input
@@ -1446,7 +1446,7 @@ export const WhatIfScenarios = ({
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-slate-600 mb-1">
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">
                       Recovery Time
                     </label>
                     <input
@@ -1465,7 +1465,7 @@ export const WhatIfScenarios = ({
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-slate-600 mb-1">
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">
                       Year of Crash
                     </label>
                     <input
@@ -1493,7 +1493,7 @@ export const WhatIfScenarios = ({
       {/* Key Insights */}
       {scenarioResults && (
         <div className="bg-white rounded-xl border border-slate-200 p-6">
-          <h3 className="font-semibold text-slate-800 mb-4 flex items-center">
+          <h3 className="font-semibold text-foreground mb-4 flex items-center">
             <Info className="w-5 h-5 text-blue-600 mr-2" />
             Key Insights
           </h3>
@@ -1517,15 +1517,15 @@ export const WhatIfScenarios = ({
       {/* Chart Placeholder */}
       <div className="bg-white rounded-xl border border-slate-200 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-slate-800">Scenario Projection</h3>
+          <h3 className="font-semibold text-foreground">Scenario Projection</h3>
           <div className="flex items-center space-x-2">
             <button className="px-3 py-1 text-sm bg-primary-600 text-white rounded-lg">
               Net Worth
             </button>
-            <button className="px-3 py-1 text-sm bg-slate-100 text-slate-600 rounded-lg">
+            <button className="px-3 py-1 text-sm bg-slate-100 text-muted-foreground rounded-lg">
               Income vs Expenses
             </button>
-            <button className="px-3 py-1 text-sm bg-slate-100 text-slate-600 rounded-lg">
+            <button className="px-3 py-1 text-sm bg-slate-100 text-muted-foreground rounded-lg">
               Savings Rate
             </button>
           </div>
@@ -1534,20 +1534,20 @@ export const WhatIfScenarios = ({
         {/* Chart placeholder */}
         <div className="h-64 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg flex items-center justify-center border-2 border-dashed border-slate-300">
           <div className="text-center">
-            <BarChart3 className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-            <h4 className="font-semibold text-slate-600 mb-2">Interactive Projection Chart</h4>
-            <p className="text-sm text-slate-500">
+            <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+            <h4 className="font-semibold text-muted-foreground mb-2">Interactive Projection Chart</h4>
+            <p className="text-sm text-muted-foreground">
               Visualize how your scenario plays out over {currentScenario.timeHorizon} years
             </p>
             <div className="mt-4 flex items-center justify-center space-x-4 text-sm">
               <div className="flex items-center space-x-2">
                 <div className="w-4 h-4 bg-blue-500 rounded"></div>
-                <span className="text-slate-500">Scenario</span>
+                <span className="text-muted-foreground">Scenario</span>
               </div>
               {showComparison && (
                 <div className="flex items-center space-x-2">
                   <div className="w-4 h-4 bg-gray-400 rounded"></div>
-                  <span className="text-slate-500">Baseline</span>
+                  <span className="text-muted-foreground">Baseline</span>
                 </div>
               )}
             </div>
@@ -1558,18 +1558,18 @@ export const WhatIfScenarios = ({
       {/* Saved Scenarios */}
       {savedScenarios.length > 0 && (
         <div className="bg-white rounded-xl border border-slate-200 p-6">
-          <h3 className="font-semibold text-slate-800 mb-4">Saved Scenarios</h3>
+          <h3 className="font-semibold text-foreground mb-4">Saved Scenarios</h3>
           <div className="space-y-3">
             {savedScenarios.map((scenario, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                 <div>
-                  <h4 className="font-medium text-slate-700">{scenario.name}</h4>
-                  <p className="text-xs text-slate-500">
+                  <h4 className="font-medium text-foreground/90">{scenario.name}</h4>
+                  <p className="text-xs text-muted-foreground">
                     Created {scenario.createdAt.toLocaleDateString()}
                   </p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm text-slate-600">
+                  <span className="text-sm text-muted-foreground">
                     {formatCurrency(scenario.results.finalNetWorth, true)}
                   </span>
                   <button

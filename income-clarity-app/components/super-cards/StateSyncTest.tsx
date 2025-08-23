@@ -147,10 +147,10 @@ export function StateSyncTest({ className = '' }: StateSyncTestProps) {
   return (
     <div className={`p-6 bg-white rounded-xl border border-slate-200 ${className}`}>
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-slate-800 mb-2">
+        <h3 className="text-lg font-semibold text-foreground mb-2">
           State Synchronization Test Dashboard
         </h3>
-        <p className="text-slate-600 text-sm">
+        <p className="text-muted-foreground text-sm">
           Test the Zustand store performance and synchronization across Super Cards
         </p>
       </div>
@@ -194,7 +194,7 @@ export function StateSyncTest({ className = '' }: StateSyncTestProps) {
           Clear Results
         </button>
 
-        <div className="flex items-center text-sm text-slate-600">
+        <div className="flex items-center text-sm text-muted-foreground">
           Render Count: <span className="ml-1 font-mono">{renderCount}</span>
         </div>
       </div>
@@ -202,7 +202,7 @@ export function StateSyncTest({ className = '' }: StateSyncTestProps) {
       {/* Test Results */}
       {testResults.length > 0 && (
         <div className="space-y-2">
-          <h4 className="font-semibold text-slate-800">Test Results:</h4>
+          <h4 className="font-semibold text-foreground">Test Results:</h4>
           
           {testResults.map((result, index) => (
             <motion.div
@@ -236,7 +236,7 @@ export function StateSyncTest({ className = '' }: StateSyncTestProps) {
           ))}
           
           <div className="mt-4 p-3 bg-slate-50 rounded-lg">
-            <div className="text-sm text-slate-600">
+            <div className="text-sm text-muted-foreground">
               <div>✅ Passed: {testResults.filter(r => r.success).length}</div>
               <div>❌ Failed: {testResults.filter(r => !r.success).length}</div>
               <div>⚡ Average Duration: {(testResults.filter(r => r.duration > 0).reduce((sum, r) => sum + r.duration, 0) / testResults.filter(r => r.duration > 0).length || 0).toFixed(2)}ms</div>

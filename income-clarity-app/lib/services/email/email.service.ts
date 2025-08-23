@@ -10,10 +10,7 @@ import { PrismaClient } from '@prisma/client';
 import { EmailTemplatesService, EmailTemplateData } from './email-templates.service';
 import { logger } from '@/lib/logger'
 
-// Initialize SendGrid client
-if (process.env.SENDGRID_API_KEY) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-}
+// SendGrid client will be initialized conditionally in checkConfiguration()
 const prisma = new PrismaClient();
 
 // Rate limiting configuration
@@ -104,6 +101,13 @@ export class EmailService {
   }
 
   private checkConfiguration(): boolean {
+    // Check if email service is explicitly disabled
+    const emailServiceEnabled = process.env.EMAIL_SERVICE_ENABLED;
+    if (emailServiceEnabled === 'false') {
+      logger.log('[EMAIL SERVICE] Email service explicitly disabled via EMAIL_SERVICE_ENABLED=false');
+      return false;
+    }
+    
     const apiKey = process.env.SENDGRID_API_KEY;
     const fromEmail = process.env.FROM_EMAIL;
     
@@ -127,6 +131,9 @@ export class EmailService {
       logger.warn('[EMAIL SERVICE] Invalid SendGrid API key format - expected to start with "SG."');
       return false;
     }
+    
+    // Initialize SendGrid API key only after validation passes
+    sgMail.setApiKey(apiKey);
     
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

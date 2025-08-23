@@ -52,7 +52,7 @@ export const IncomeViewToggle = ({
             className={`relative ${classes.button} font-semibold rounded-lg transition-all duration-300 ${
               viewMode === 'monthly'
                 ? 'text-white shadow-lg'
-                : 'text-slate-600 hover:text-slate-800 hover:bg-white/50'
+                : 'text-muted-foreground hover:text-foreground hover:bg-white/50'
             }`}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -76,7 +76,7 @@ export const IncomeViewToggle = ({
             className={`relative ${classes.button} font-semibold rounded-lg transition-all duration-300 ${
               viewMode === 'annual'
                 ? 'text-white shadow-lg'
-                : 'text-slate-600 hover:text-slate-800 hover:bg-white/50'
+                : 'text-muted-foreground hover:text-foreground hover:bg-white/50'
             }`}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}

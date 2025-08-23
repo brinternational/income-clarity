@@ -53,14 +53,14 @@ export const MobileCardLayout = ({
     <div className={`w-full ${className}`}>
       {title && (
         <div className="mb-4 text-center">
-          <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-200">
+          <h2 className="text-lg font-semibold text-foreground">
             {title}
           </h2>
         </div>
       )}
       
       <motion.div
-        className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"
+        className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-border overflow-hidden"
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         onDragEnd={(_, info) => {

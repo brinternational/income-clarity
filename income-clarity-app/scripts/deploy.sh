@@ -306,42 +306,114 @@ deploy_with_docker() {
     success "Docker deployment completed"
 }
 
-# Post-deployment verification
+# Create deployment manifest
+create_deployment_manifest() {
+    log "${BLUE}📋 Creating deployment manifest...${NC}"
+    
+    if [[ -f "scripts/deployment-manifest.sh" ]]; then
+        TARGET_URL="${DEPLOYMENT_URL:-https://incomeclarity.ddns.net}" scripts/deployment-manifest.sh generate 2>&1 | tee -a "${LOG_FILE}"
+        success "Deployment manifest created"
+    else
+        warning "Deployment manifest script not found, skipping manifest creation"
+    fi
+}
+
+# Post-deployment verification with comprehensive testing
 post_deployment_verification() {
-    log "${BLUE}✅ Running post-deployment verification...${NC}"
+    log "${BLUE}✅ Running comprehensive post-deployment verification...${NC}"
     
     # Wait for deployment to be ready
-    sleep 10
+    info "Waiting for deployment to stabilize..."
+    sleep 15
     
-    # Health check
-    if [[ -n "${DEPLOYMENT_URL:-}" ]]; then
-        info "Checking deployment health: ${DEPLOYMENT_URL}/api/health"
+    local target_url="${DEPLOYMENT_URL:-https://incomeclarity.ddns.net}"
+    
+    # Run comprehensive verification pipeline
+    if [[ -f "scripts/deployment-verifier.sh" ]]; then
+        info "Running deployment verification pipeline..."
         
-        local health_response=$(curl -s -w "%{http_code}" "${DEPLOYMENT_URL}/api/health" || echo "000")
+        # Set environment for verification
+        export PRODUCTION_URL="${target_url}"
         
-        if [[ "${health_response: -3}" == "200" ]]; then
-            success "Health check passed"
+        # Run full verification
+        if scripts/deployment-verifier.sh verify 2>&1 | tee -a "${LOG_FILE}"; then
+            success "Deployment verification passed"
         else
-            warning "Health check failed with status: ${health_response: -3}"
+            warning "Deployment verification encountered issues - check logs"
+        fi
+        
+        # Run smoke tests
+        if scripts/deployment-verifier.sh smoke-test "${target_url}" 2>&1 | tee -a "${LOG_FILE}"; then
+            success "Smoke tests passed"
+        else
+            warning "Smoke tests encountered issues - check logs"
+        fi
+        
+    else
+        warning "Deployment verifier not found, running basic verification..."
+        
+        # Fallback to basic verification
+        basic_verification "${target_url}"
+    fi
+    
+    # Run post-deployment test suite
+    if [[ -f "scripts/post-deploy-test.sh" ]]; then
+        info "Running post-deployment test suite..."
+        
+        if scripts/post-deploy-test.sh --url "${target_url}" 2>&1 | tee -a "${LOG_FILE}"; then
+            success "Post-deployment tests passed"
+        else
+            warning "Post-deployment tests encountered issues - manual review required"
         fi
     else
-        warning "DEPLOYMENT_URL not set, skipping health check"
+        warning "Post-deployment test suite not found"
     fi
     
-    # Basic functionality test
-    info "Testing basic application functionality..."
+    success "Comprehensive post-deployment verification completed"
+}
+
+# Basic verification fallback
+basic_verification() {
+    local url="${1}"
     
-    # Test static assets
-    if [[ -n "${DEPLOYMENT_URL:-}" ]]; then
-        local static_test=$(curl -s -w "%{http_code}" "${DEPLOYMENT_URL}/" || echo "000")
-        if [[ "${static_test: -3}" == "200" ]]; then
-            success "Static assets accessible"
-        else
-            warning "Static assets check failed"
+    info "Running basic verification for: ${url}"
+    
+    # Health check
+    info "Checking deployment health: ${url}/api/health"
+    local health_response=$(curl -s -w "%{http_code}" "${url}/api/health" || echo "000")
+    
+    if [[ "${health_response: -3}" == "200" ]]; then
+        success "Health check passed"
+    else
+        warning "Health check failed with status: ${health_response: -3}"
+    fi
+    
+    # Test homepage
+    info "Testing homepage accessibility..."
+    local homepage_response=$(curl -s -w "%{http_code}" "${url}/" || echo "000")
+    if [[ "${homepage_response: -3}" == "200" ]]; then
+        success "Homepage accessible"
+    else
+        warning "Homepage check failed with status: ${homepage_response: -3}"
+    fi
+    
+    # Test deployment status endpoint
+    info "Testing deployment status endpoint..."
+    local status_response=$(curl -s -w "%{http_code}" "${url}/api/deployment/status" || echo "000")
+    if [[ "${status_response: -3}" == "200" ]]; then
+        success "Deployment status endpoint accessible"
+        
+        # Show deployment info if available
+        local status_body=$(curl -s "${url}/api/deployment/status" 2>/dev/null || echo "{}")
+        if command -v jq >/dev/null 2>&1 && echo "${status_body}" | jq . >/dev/null 2>&1; then
+            local version=$(echo "${status_body}" | jq -r '.version // "unknown"')
+            local commit=$(echo "${status_body}" | jq -r '.commit // "unknown"')
+            info "  Deployed version: ${version}"
+            info "  Deployed commit: ${commit:0:8}"
         fi
+    else
+        warning "Deployment status endpoint not accessible (${status_response: -3})"
     fi
-    
-    success "Post-deployment verification completed"
 }
 
 # Cleanup
@@ -384,6 +456,7 @@ main() {
     show_banner
     pre_deployment_checks
     setup_environment
+    create_deployment_manifest
     install_dependencies
     run_tests
     create_backup

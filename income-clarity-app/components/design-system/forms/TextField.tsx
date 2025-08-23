@@ -22,6 +22,9 @@ export interface TextFieldProps extends InputProps {
   // Auto-formatting
   autoFormat?: boolean
   formatType?: 'currency' | 'percentage' | 'phone' | 'ssn' | 'date'
+  // Icon support (legacy props - converted to leftElement/rightElement)
+  leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
 }
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
@@ -38,6 +41,8 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     onBlur,
     label,
     errorMessage,
+    leftIcon,
+    rightIcon,
     ...props
   }, ref) => {
     const [internalError, setInternalError] = React.useState<string | null>(null)
@@ -154,6 +159,8 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
               onChange={handleChange}
               onBlur={handleBlur}
               errorMessage={displayError}
+              leftElement={leftIcon}
+              rightElement={rightIcon}
               {...props}
               label={undefined} // Remove label since we're handling it separately
             />
@@ -172,6 +179,8 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
         onBlur={handleBlur}
         label={label}
         errorMessage={displayError}
+        leftElement={leftIcon}
+        rightElement={rightIcon}
         {...props}
       />
     )
@@ -246,8 +255,13 @@ export const SSNField = forwardRef<HTMLInputElement, Omit<TextFieldProps, 'forma
 
 SSNField.displayName = 'SSNField'
 
-// Email field - Pre-configured for email addresses with validation
-export const EmailField = forwardRef<HTMLInputElement, Omit<TextFieldProps, 'validate'>>(
+// Email field with explicit icon support
+export interface EmailFieldProps extends Omit<TextFieldProps, 'validate'> {
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+}
+
+export const EmailField = forwardRef<HTMLInputElement, EmailFieldProps>(
   ({ ...props }, ref) => {
     const emailValidation = (value: string): string | null => {
       if (!value) return null
@@ -270,8 +284,13 @@ export const EmailField = forwardRef<HTMLInputElement, Omit<TextFieldProps, 'val
 
 EmailField.displayName = 'EmailField'
 
-// Password field - Pre-configured for passwords
-export const PasswordField = forwardRef<HTMLInputElement, Omit<TextFieldProps, 'showPasswordToggle'>>(
+// Password field with explicit icon support
+export interface PasswordFieldProps extends Omit<TextFieldProps, 'showPasswordToggle'> {
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+}
+
+export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
   ({ ...props }, ref) => (
     <TextField
       ref={ref}

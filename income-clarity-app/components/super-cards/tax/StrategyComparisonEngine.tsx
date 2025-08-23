@@ -313,12 +313,12 @@ export default function StrategyComparisonEngine({
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center space-x-2">
           <Calculator className="w-6 h-6 text-blue-600" />
-          <h2 className="text-2xl font-bold text-slate-900">
+          <h2 className="text-2xl font-bold text-foreground">
             Strategy Tax Comparison
           </h2>
         </div>
         
-        <div className="text-slate-600 max-w-2xl mx-auto">
+        <div className="text-muted-foreground max-w-2xl mx-auto">
           <p>
             Compare 4 investment strategies based on your tax location. 
             See which approach maximizes your <strong>after-tax income</strong> in {locationName}.
@@ -365,7 +365,7 @@ export default function StrategyComparisonEngine({
                   }`}>
                     ${Math.round(winner.netIncome).toLocaleString()}
                   </div>
-                  <div className="text-sm text-slate-600">Annual Take-Home</div>
+                  <div className="text-sm text-muted-foreground">Annual Take-Home</div>
                 </div>
                 
                 <div>
@@ -374,7 +374,7 @@ export default function StrategyComparisonEngine({
                   }`}>
                     {((1 - winner.effectiveTaxRate) * winner.grossYield * 100).toFixed(1)}%
                   </div>
-                  <div className="text-sm text-slate-600">After-Tax Yield</div>
+                  <div className="text-sm text-muted-foreground">After-Tax Yield</div>
                 </div>
                 
                 <div>
@@ -383,7 +383,7 @@ export default function StrategyComparisonEngine({
                   }`}>
                     {winner.dollarAdvantage}
                   </div>
-                  <div className="text-sm text-slate-600">vs Worst Strategy</div>
+                  <div className="text-sm text-muted-foreground">vs Worst Strategy</div>
                 </div>
               </div>
             </div>
@@ -448,10 +448,10 @@ export default function StrategyComparisonEngine({
             <div className="space-y-3 mb-4">
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
-                  <h3 className="text-lg font-bold text-slate-900">
+                  <h3 className="text-lg font-bold text-foreground">
                     {strategy.strategyName}
                   </h3>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-muted-foreground">
                     {strategy.description}
                   </p>
                 </div>
@@ -470,10 +470,10 @@ export default function StrategyComparisonEngine({
               {/* Key Metrics */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-3 bg-slate-50 rounded-lg">
-                  <div className="text-lg font-bold text-slate-900">
+                  <div className="text-lg font-bold text-foreground">
                     {(strategy.grossYield * 100).toFixed(1)}%
                   </div>
-                  <div className="text-xs text-slate-600">Gross Yield</div>
+                  <div className="text-xs text-muted-foreground">Gross Yield</div>
                 </div>
                 
                 <div className={`text-center p-3 rounded-lg ${
@@ -488,11 +488,11 @@ export default function StrategyComparisonEngine({
                       ? isPuertoRico
                         ? 'text-amber-700'
                         : 'text-green-700'
-                      : 'text-slate-900'
+                      : 'text-foreground'
                   }`}>
                     ${Math.round(strategy.netIncome).toLocaleString()}
                   </div>
-                  <div className="text-xs text-slate-600">After-Tax Income</div>
+                  <div className="text-xs text-muted-foreground">After-Tax Income</div>
                 </div>
               </div>
 
@@ -510,13 +510,13 @@ export default function StrategyComparisonEngine({
                       ? 'text-green-700'
                       : strategy.taxSavings && strategy.taxSavings < 0
                         ? 'text-red-700'
-                        : 'text-slate-600'
+                        : 'text-muted-foreground'
                   }`}>
                     {strategy.dollarAdvantage} per year
                   </span>
                 </div>
                 
-                <div className="text-xs text-slate-500">
+                <div className="text-xs text-muted-foreground">
                   {(strategy.effectiveTaxRate * 100).toFixed(1)}% effective tax
                 </div>
               </div>
@@ -525,9 +525,9 @@ export default function StrategyComparisonEngine({
             {/* Expand/Collapse Indicator */}
             <div className="flex items-center justify-center">
               {selectedStrategy === strategy.strategy ? (
-                <ChevronUp className="w-5 h-5 text-slate-400" />
+                <ChevronUp className="w-5 h-5 text-muted-foreground" />
               ) : (
-                <ChevronDown className="w-5 h-5 text-slate-400" />
+                <ChevronDown className="w-5 h-5 text-muted-foreground" />
               )}
             </div>
 
@@ -543,24 +543,24 @@ export default function StrategyComparisonEngine({
                   {/* Tax Breakdown */}
                   <div className="grid grid-cols-3 gap-3 text-sm">
                     <div className="text-center p-2 bg-slate-50 rounded">
-                      <div className="font-semibold text-slate-900">
+                      <div className="font-semibold text-foreground">
                         ${Math.round(strategy.federalTax).toLocaleString()}
                       </div>
-                      <div className="text-xs text-slate-600">Federal Tax</div>
+                      <div className="text-xs text-muted-foreground">Federal Tax</div>
                     </div>
                     
                     <div className="text-center p-2 bg-slate-50 rounded">
-                      <div className="font-semibold text-slate-900">
+                      <div className="font-semibold text-foreground">
                         ${Math.round(strategy.stateTax).toLocaleString()}
                       </div>
-                      <div className="text-xs text-slate-600">State Tax</div>
+                      <div className="text-xs text-muted-foreground">State Tax</div>
                     </div>
                     
                     <div className="text-center p-2 bg-slate-50 rounded">
-                      <div className="font-semibold text-slate-900">
+                      <div className="font-semibold text-foreground">
                         ${Math.round(strategy.totalTax).toLocaleString()}
                       </div>
-                      <div className="text-xs text-slate-600">Total Tax</div>
+                      <div className="text-xs text-muted-foreground">Total Tax</div>
                     </div>
                   </div>
 
@@ -573,7 +573,7 @@ export default function StrategyComparisonEngine({
                       </h4>
                       <ul className="space-y-1">
                         {strategy.pros.map((pro, i) => (
-                          <li key={i} className="text-sm text-slate-600 flex items-start">
+                          <li key={i} className="text-sm text-muted-foreground flex items-start">
                             <span className="text-green-500 mr-2">•</span>
                             {pro}
                           </li>
@@ -588,7 +588,7 @@ export default function StrategyComparisonEngine({
                       </h4>
                       <ul className="space-y-1">
                         {strategy.cons.map((con, i) => (
-                          <li key={i} className="text-sm text-slate-600 flex items-start">
+                          <li key={i} className="text-sm text-muted-foreground flex items-start">
                             <span className="text-red-500 mr-2">•</span>
                             {con}
                           </li>
@@ -646,7 +646,7 @@ export default function StrategyComparisonEngine({
             exit={{ opacity: 0, height: 0 }}
             className="p-6 bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl border border-slate-200"
           >
-            <h3 className="text-lg font-bold text-slate-900 mb-4 text-center">
+            <h3 className="text-lg font-bold text-foreground mb-4 text-center">
               10-Year Income Projection (3% Annual Growth)
             </h3>
             
@@ -654,7 +654,7 @@ export default function StrategyComparisonEngine({
               {strategyComparisons.map((strategy) => (
                 <div key={strategy.strategy} className="space-y-2">
                   <h4 className={`text-sm font-semibold ${
-                    strategy.isWinner ? 'text-green-700' : 'text-slate-700'
+                    strategy.isWinner ? 'text-green-700' : 'text-foreground/90'
                   }`}>
                     {strategy.strategyName}
                   </h4>
@@ -680,7 +680,7 @@ export default function StrategyComparisonEngine({
                     </div>
                     
                     <div className={`text-xs text-center p-2 rounded ${
-                      strategy.isWinner ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
+                      strategy.isWinner ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-muted-foreground'
                     }`}>
                       Total 10-Year: ${Math.round(
                         strategy.tenYearProjection.reduce((sum, year) => sum + year, 0)
@@ -699,7 +699,7 @@ export default function StrategyComparisonEngine({
         <div className="flex justify-center space-x-4">
           <button
             onClick={handleShare}
-            className="inline-flex items-center space-x-2 px-6 py-3 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+            className="inline-flex items-center space-x-2 px-6 py-3 bg-white border border-slate-300 text-foreground/90 rounded-lg hover:bg-slate-50 transition-colors"
           >
             <Share2 className="w-4 h-4" />
             <span>Share Results</span>
@@ -742,7 +742,7 @@ export default function StrategyComparisonEngine({
       </div>
 
       {/* Location Context */}
-      <div className="text-center text-sm text-slate-500">
+      <div className="text-center text-sm text-muted-foreground">
         <div className="flex items-center justify-center space-x-2">
           <MapPin className="w-4 h-4" />
           <span>

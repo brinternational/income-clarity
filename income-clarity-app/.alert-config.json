@@ -1,0 +1,38 @@
+{
+  "enabled": true,
+  "channels": {
+    "console": {
+      "enabled": true,
+      "level": "info"
+    },
+    "desktop": {
+      "enabled": false,
+      "level": "warning"
+    },
+    "browser": {
+      "enabled": true,
+      "level": "info"
+    },
+    "webhook": {
+      "enabled": false,
+      "url": "",
+      "level": "error"
+    },
+    "slack": {
+      "enabled": false,
+      "webhook_url": "",
+      "level": "warning"
+    },
+    "email": {
+      "enabled": false,
+      "smtp_server": "",
+      "level": "error"
+    }
+  },
+  "sounds": {
+    "enabled": true,
+    "success": "bell",
+    "warning": "bell",
+    "error": "bell"
+  }
+}

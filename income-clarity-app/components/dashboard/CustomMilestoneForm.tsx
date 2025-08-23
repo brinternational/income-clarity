@@ -128,17 +128,17 @@ export function CustomMilestoneForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Form Header */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-slate-800 mb-2">
+        <h3 className="text-lg font-semibold text-foreground mb-2">
           {isEditing ? 'Edit Custom Milestone' : 'Create Custom Milestone'}
         </h3>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-muted-foreground">
           Set a personal financial goal to track alongside your expense milestones.
         </p>
       </div>
 
       {/* Milestone Name */}
       <div>
-        <label htmlFor="milestone-name" className="block text-sm font-medium text-slate-700 mb-2">
+        <label htmlFor="milestone-name" className="block text-sm font-medium text-foreground/90 mb-2">
           Milestone Name *
         </label>
         <input
@@ -157,19 +157,19 @@ export function CustomMilestoneForm({
         {errors.name && (
           <p className="mt-1 text-sm text-red-600">{errors.name}</p>
         )}
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-muted-foreground">
           {formData.name.length}/50 characters
         </p>
       </div>
 
       {/* Target Amount */}
       <div>
-        <label htmlFor="milestone-amount" className="block text-sm font-medium text-slate-700 mb-2">
+        <label htmlFor="milestone-amount" className="block text-sm font-medium text-foreground/90 mb-2">
           Monthly Target Amount *
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <span className="text-slate-500 sm:text-sm">$</span>
+            <span className="text-muted-foreground sm:text-sm">$</span>
           </div>
           <input
             id="milestone-amount"
@@ -191,14 +191,14 @@ export function CustomMilestoneForm({
         {errors.amount && (
           <p className="mt-1 text-sm text-red-600">{errors.amount}</p>
         )}
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-muted-foreground">
           Amount needed per month to reach this milestone
         </p>
       </div>
 
       {/* Icon Selection */}
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-3">
+        <label className="block text-sm font-medium text-foreground/90 mb-3">
           Choose an Icon *
         </label>
         <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
@@ -221,10 +221,10 @@ export function CustomMilestoneForm({
               >
                 <div className="flex flex-col items-center space-y-2">
                   <IconComponent className={`w-6 h-6 transition-colors ${
-                    isSelected ? 'text-primary-600' : 'text-slate-600 group-hover:text-primary-500'
+                    isSelected ? 'text-primary-600' : 'text-muted-foreground group-hover:text-primary-500'
                   }`} />
                   <span className={`text-xs font-medium transition-colors ${
-                    isSelected ? 'text-primary-700' : 'text-slate-600 group-hover:text-primary-600'
+                    isSelected ? 'text-primary-700' : 'text-muted-foreground group-hover:text-primary-600'
                   }`}>
                     {iconData.label}
                   </span>
@@ -245,21 +245,21 @@ export function CustomMilestoneForm({
 
       {/* Preview Section */}
       <div className="bg-slate-50 rounded-lg p-4 border">
-        <h4 className="text-sm font-medium text-slate-700 mb-3">Preview</h4>
+        <h4 className="text-sm font-medium text-foreground/90 mb-3">Preview</h4>
         <div className="flex items-center justify-between p-3 bg-white rounded-lg border">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-primary-100 rounded-lg">
               <SelectedIcon className="w-5 h-5 text-primary-600" />
             </div>
             <div>
-              <div className="font-semibold text-slate-800">
+              <div className="font-semibold text-foreground">
                 {formData.name || 'Custom Milestone'}
               </div>
-              <div className="text-xs text-slate-500">Custom milestone</div>
+              <div className="text-xs text-muted-foreground">Custom milestone</div>
             </div>
           </div>
           <div className="text-right">
-            <div className="font-bold text-lg text-slate-800">
+            <div className="font-bold text-lg text-foreground">
               ${formData.amount ? formData.amount.toLocaleString() : '0'}/mo
             </div>
           </div>

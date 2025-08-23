@@ -46,6 +46,11 @@ interface IncomeIntelligenceHubProps {
   isLoading?: boolean;
   className?: string;
   initialViewMode?: IncomeViewMode;
+  // Progressive Disclosure Level 2 Props
+  heroView?: boolean;
+  level?: string;
+  focusedAnalytics?: boolean;
+  engagementLevel?: string;
 }
 
 type TabType = 'cashflow' | 'progression' | 'stability' | 'projections' | 'calendar' | 'tracker' | 'intelligence';
@@ -125,7 +130,12 @@ const IncomeIntelligenceHubComponent = ({
   clarityData,
   isLoading = false,
   className = '',
-  initialViewMode = 'monthly'
+  initialViewMode = 'monthly',
+  // Progressive Disclosure Level 2 Props
+  heroView = false,
+  level,
+  focusedAnalytics = false,
+  engagementLevel
 }: IncomeIntelligenceHubProps) => {
   const [activeTab, setActiveTab] = useState<TabType>('cashflow');
   const [isVisible, setIsVisible] = useState(false);
@@ -195,6 +205,10 @@ const IncomeIntelligenceHubComponent = ({
       setLoading(false);
     }
   }, [setLoading, setError]);
+
+  // Level 2 Progressive Disclosure: Hero View Configuration
+  const heroViewTabs = heroView ? ['cashflow', 'progression'] : TABS.map(t => t.id); // Focus on key tabs for Level 2
+  const filteredTabs = heroView ? TABS.filter(tab => heroViewTabs.includes(tab.id)) : TABS;
 
   const formatIncomeValue = (monthlyValue: number): { value: number; suffix: string; label: string } => {
     if (incomeViewMode === 'annual') {
@@ -421,25 +435,25 @@ const IncomeIntelligenceHubComponent = ({
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
               <Flame className="w-5 h-5 text-prosperity-600" />
-              <span className="font-semibold text-slate-900 dark:text-slate-100">Above Zero Streak</span>
+              <span className="font-semibold text-foreground">Above Zero Streak</span>
             </div>
             <div className="text-right">
               <div className="text-2xl font-bold text-prosperity-800 dark:text-prosperity-600">{aboveZeroStreak.current}</div>
-              <div className="text-xs text-slate-700 dark:text-slate-300">months</div>
+              <div className="text-xs text-foreground/90">months</div>
             </div>
           </div>
           <div className="grid grid-cols-3 gap-3 text-center">
             <div>
               <div className="text-lg font-bold text-primary-800 dark:text-primary-600">{aboveZeroStreak.current}</div>
-              <div className="text-xs text-slate-800 dark:text-slate-600">Current</div>
+              <div className="text-xs text-foreground dark:text-muted-foreground">Current</div>
             </div>
             <div>
               <div className="text-lg font-bold text-wealth-800 dark:text-wealth-600">{aboveZeroStreak.longest}</div>
-              <div className="text-xs text-slate-800 dark:text-slate-600">Record</div>
+              <div className="text-xs text-foreground dark:text-muted-foreground">Record</div>
             </div>
             <div>
               <div className="text-lg font-bold text-green-800 dark:text-green-600">{Math.round((aboveZeroStreak.totalMonths / 24) * 100)}%</div>
-              <div className="text-xs text-slate-800 dark:text-slate-600">Success Rate</div>
+              <div className="text-xs text-foreground dark:text-muted-foreground">Success Rate</div>
             </div>
           </div>
         </div>
@@ -457,7 +471,7 @@ const IncomeIntelligenceHubComponent = ({
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-900 dark:text-slate-100">
+            <h3 className="text-lg sm:text-xl font-display font-semibold text-foreground">
               Income Intelligence Hub
             </h3>
             
@@ -501,13 +515,13 @@ const IncomeIntelligenceHubComponent = ({
             {/* Mobile swipe indicators */}
             <div className="flex items-center space-x-2 sm:hidden">
               {currentTabIndex > 0 && (
-                <ChevronLeft className="w-5 h-5 text-slate-400" />
+                <ChevronLeft className="w-5 h-5 text-muted-foreground" />
               )}
-              <span className="text-xs text-slate-500 font-medium">
+              <span className="text-xs text-muted-foreground font-medium">
                 {currentTabIndex + 1} / {TABS.length}
               </span>
               {currentTabIndex < TABS.length - 1 && (
-                <ChevronRight className="w-5 h-5 text-slate-400" />
+                <ChevronRight className="w-5 h-5 text-muted-foreground" />
               )}
             </div>
           </div>
@@ -532,7 +546,7 @@ const IncomeIntelligenceHubComponent = ({
                 className={`flex-1 relative px-3 py-3 sm:py-4 text-center transition-all duration-300 rounded-md sm:rounded-lg touch-friendly focus:outline-none focus:ring-2 focus:ring-primary-500 ${
                   isActive
                     ? 'text-white shadow-lg'
-                    : 'text-slate-900 dark:text-slate-100 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-700/50'
+                    : 'text-foreground hover:text-foreground/90 dark:hover:text-muted-foreground hover:bg-white/50 dark:hover:bg-slate-700/50'
                 }`}
                 onClick={() => setActiveTab(tab.id)}
                 whileHover={{ scale: 1.02 }}
@@ -553,7 +567,7 @@ const IncomeIntelligenceHubComponent = ({
                     {tab.label}
                   </div>
                   <div className={`text-xs ${
-                    isActive ? 'text-primary-100' : 'text-slate-700 dark:text-slate-300'
+                    isActive ? 'text-primary-100' : 'text-foreground/90'
                   } hidden sm:block`}>
                     {tab.description}
                   </div>
@@ -581,10 +595,10 @@ const IncomeIntelligenceHubComponent = ({
               {/* Waterfall Animation */}
               <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-slate-200">
                 <div className="mb-4">
-                  <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                  <h4 className="text-lg font-semibold text-foreground mb-2">
                     Income Flow Visualization
                   </h4>
-                  <p className="text-sm text-slate-800 dark:text-slate-200">
+                  <p className="text-sm text-foreground">
                     Watch your income flow from gross dividends to available reinvestment
                   </p>
                 </div>
@@ -626,10 +640,10 @@ const IncomeIntelligenceHubComponent = ({
               {/* Income Analysis - Comprehensive income breakdown */}
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
                 <div className="mb-4">
-                  <h4 className="text-lg font-semibold text-slate-800 mb-2">
+                  <h4 className="text-lg font-semibold text-foreground mb-2">
                     Income Analysis Overview
                   </h4>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-muted-foreground">
                     Detailed breakdown of your dividend income, yields, and upcoming payments
                   </p>
                 </div>
@@ -686,7 +700,7 @@ const IncomeIntelligenceHubComponent = ({
       </AnimatePresence>
 
       {/* Mobile swipe hint */}
-      <div className="mt-6 text-center text-xs text-slate-500 sm:hidden">
+      <div className="mt-6 text-center text-xs text-muted-foreground sm:hidden">
         👈 Swipe left or right to switch tabs
       </div>
     </motion.div>

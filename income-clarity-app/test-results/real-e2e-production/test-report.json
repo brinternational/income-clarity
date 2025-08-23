@@ -1,0 +1,63 @@
+{
+  "url": "https://incomeclarity.ddns.net",
+  "timestamp": "2025-08-23T13:49:16.159Z",
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "crashed": 0,
+    "total": 5
+  },
+  "tests": [
+    {
+      "name": "Production Site Accessible",
+      "status": "FAILED",
+      "errors": 2,
+      "duration": 2794
+    },
+    {
+      "name": "User Login Journey",
+      "status": "PASSED",
+      "duration": 5869
+    },
+    {
+      "name": "Dashboard Functionality",
+      "status": "PASSED",
+      "duration": 3352
+    },
+    {
+      "name": "Interactive Elements",
+      "status": "PASSED",
+      "duration": 1402
+    },
+    {
+      "name": "Logout Journey",
+      "status": "PASSED",
+      "duration": 12
+    }
+  ],
+  "errors": [
+    {
+      "type": "console",
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "timestamp": "2025-08-23T13:49:04.563Z"
+    },
+    {
+      "type": "console",
+      "message": "WebSocket connection to 'wss://incomeclarity.ddns.net/_next/webpack-hmr' failed: Error during WebSocket handshake: Invalid status line",
+      "timestamp": "2025-08-23T13:49:04.574Z"
+    }
+  ],
+  "warnings": [],
+  "networkFailures": [
+    {
+      "url": "https://incomeclarity.ddns.net/auth/login?_rsc=vusbg",
+      "error": "net::ERR_ABORTED",
+      "timestamp": "2025-08-23T13:49:06.183Z"
+    },
+    {
+      "url": "https://incomeclarity.ddns.net/dashboard?_rsc=vmuo9",
+      "error": "net::ERR_ABORTED",
+      "timestamp": "2025-08-23T13:49:09.322Z"
+    }
+  ]
+}

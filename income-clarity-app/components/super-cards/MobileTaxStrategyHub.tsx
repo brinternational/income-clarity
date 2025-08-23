@@ -71,7 +71,7 @@ const MOBILE_TABS = [
     shortLabel: 'Set',
     description: 'Settings & location',
     icon: Settings,
-    color: 'text-slate-600',
+    color: 'text-muted-foreground',
     bgColor: 'bg-slate-50'
   }
 ];
@@ -279,8 +279,8 @@ const MobileTaxStrategyHubComponent = ({
                 <TrendingDown className="w-5 h-5 text-green-600" />
               </div>
               <div>
-                <h1 className="font-bold text-slate-800">Tax Strategy</h1>
-                <p className="text-xs text-slate-500">Optimization Hub</p>
+                <h1 className="font-bold text-foreground">Tax Strategy</h1>
+                <p className="text-xs text-muted-foreground">Optimization Hub</p>
               </div>
             </div>
             
@@ -289,7 +289,7 @@ const MobileTaxStrategyHubComponent = ({
                 onClick={() => setShowBottomSheet(true)}
                 className="p-2 rounded-full bg-white/10 backdrop-blur hover:bg-white/20 transition-colors"
               >
-                <Info className="w-4 h-4 text-slate-600" />
+                <Info className="w-4 h-4 text-muted-foreground" />
               </button>
               
               {onClose && (
@@ -297,7 +297,7 @@ const MobileTaxStrategyHubComponent = ({
                   onClick={onClose}
                   className="p-2 rounded-full bg-white/10 backdrop-blur hover:bg-white/20 transition-colors"
                 >
-                  <X className="w-4 h-4 text-slate-600" />
+                  <X className="w-4 h-4 text-muted-foreground" />
                 </button>
               )}
             </div>
@@ -317,7 +317,7 @@ const MobileTaxStrategyHubComponent = ({
               ${Math.round(animatedValues.heroMetric).toLocaleString()}
             </div>
             
-            <div className="text-sm text-slate-600 mb-2">
+            <div className="text-sm text-muted-foreground mb-2">
               Annual Tax Savings Potential
             </div>
 
@@ -333,7 +333,7 @@ const MobileTaxStrategyHubComponent = ({
                   <div className={`font-semibold text-sm ${locationInsights.color}`}>
                     {locationInsights.advantage}
                   </div>
-                  <div className="text-xs text-slate-600">
+                  <div className="text-xs text-muted-foreground">
                     {locationInsights.savings}
                   </div>
                 </div>
@@ -347,14 +347,14 @@ const MobileTaxStrategyHubComponent = ({
               <div className="text-xl font-bold text-red-600 mb-1">
                 ${Math.round(animatedValues.currentBill).toLocaleString()}
               </div>
-              <div className="text-xs text-slate-600">Current Bill</div>
+              <div className="text-xs text-muted-foreground">Current Bill</div>
             </div>
             
             <div className="text-center p-4 bg-green-50 rounded-xl border border-green-100">
               <div className="text-xl font-bold text-green-600 mb-1">
                 ${Math.round(animatedValues.optimizedBill).toLocaleString()}
               </div>
-              <div className="text-xs text-slate-600">Optimized Bill</div>
+              <div className="text-xs text-muted-foreground">Optimized Bill</div>
             </div>
           </div>
         </div>
@@ -373,7 +373,7 @@ const MobileTaxStrategyHubComponent = ({
                   className={`flex-1 relative px-2 py-3 text-center transition-all duration-200 rounded-xl ${
                     isActive
                       ? 'text-white shadow-md'
-                      : 'text-slate-600 hover:bg-slate-50'
+                      : 'text-muted-foreground hover:bg-slate-50'
                   }`}
                 >
                   {isActive && (
@@ -454,7 +454,7 @@ const MobileTaxStrategyHubComponent = ({
         )}
 
         {/* Swipe hints */}
-        <div className="text-center text-xs text-slate-400 py-2">
+        <div className="text-center text-xs text-muted-foreground py-2">
           Swipe tabs • Pull to refresh
         </div>
       </div>

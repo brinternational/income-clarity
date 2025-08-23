@@ -35,7 +35,7 @@ export function AuthGuard({
       <div className="min-h-screen flex items-center justify-center bg-slate-900">
         <div className="text-center">
           <LoadingSpinner size="lg" />
-          <p className="mt-4 text-slate-400">Verifying authentication...</p>
+          <p className="mt-4 text-muted-foreground">Verifying authentication...</p>
         </div>
       </div>
     );
@@ -46,7 +46,7 @@ export function AuthGuard({
     return fallback || (
       <div className="min-h-screen flex items-center justify-center bg-slate-900">
         <div className="text-center">
-          <p className="text-slate-400">Redirecting to login...</p>
+          <p className="text-muted-foreground">Redirecting to login...</p>
         </div>
       </div>
     );
@@ -87,7 +87,7 @@ export function RequireGuest({ children, redirectTo = '/dashboard', ...props }: 
   if (user) {
     return props.fallback || (
       <div className="min-h-screen flex items-center justify-center bg-slate-900">
-        <p className="text-slate-400">Redirecting...</p>
+        <p className="text-muted-foreground">Redirecting...</p>
       </div>
     );
   }

@@ -1,0 +1,116 @@
+{
+  "timestamp": "2025-08-21T18:30:37.390Z",
+  "summary": {
+    "wcagAAA": true,
+    "darkModeDefault": true,
+    "accessibilityFeatures": 6,
+    "themeChecks": 5
+  },
+  "contrastTests": [
+    {
+      "name": "Primary Text",
+      "ratio": "17.85",
+      "wcagAA": true,
+      "wcagAAA": true,
+      "foreground": "#ffffff",
+      "background": "#0f172a"
+    },
+    {
+      "name": "Secondary Text",
+      "ratio": "16.30",
+      "wcagAA": true,
+      "wcagAAA": true,
+      "foreground": "#f1f5f9",
+      "background": "#0f172a"
+    },
+    {
+      "name": "Muted Text",
+      "ratio": "12.02",
+      "wcagAA": true,
+      "wcagAAA": true,
+      "foreground": "#cbd5e1",
+      "background": "#0f172a"
+    },
+    {
+      "name": "Accent Text",
+      "ratio": "8.33",
+      "wcagAA": true,
+      "wcagAAA": true,
+      "foreground": "#38bdf8",
+      "background": "#0f172a"
+    },
+    {
+      "name": "Success Text",
+      "ratio": "7.83",
+      "wcagAA": true,
+      "wcagAAA": true,
+      "foreground": "#22c55e",
+      "background": "#0f172a"
+    },
+    {
+      "name": "Warning Text",
+      "ratio": "10.69",
+      "wcagAA": true,
+      "wcagAAA": true,
+      "foreground": "#fbbf24",
+      "background": "#0f172a"
+    },
+    {
+      "name": "Error Text",
+      "ratio": "9.41",
+      "wcagAA": true,
+      "wcagAAA": true,
+      "foreground": "#fca5a5",
+      "background": "#0f172a"
+    }
+  ],
+  "accessibilityFeatures": [
+    {
+      "name": "Focus Indicators",
+      "description": "High contrast focus outlines implemented"
+    },
+    {
+      "name": "Touch Targets",
+      "description": "Minimum 44px touch targets enforced"
+    },
+    {
+      "name": "Screen Reader Support",
+      "description": "ARIA labels and semantic HTML used"
+    },
+    {
+      "name": "Keyboard Navigation",
+      "description": "All interactive elements keyboard accessible"
+    },
+    {
+      "name": "Reduced Motion",
+      "description": "Respects prefers-reduced-motion setting"
+    },
+    {
+      "name": "Color Scheme",
+      "description": "Proper color-scheme meta tag set"
+    }
+  ],
+  "themeApplication": [
+    {
+      "name": "Default Dark Mode",
+      "description": "HTML element gets dark class by default"
+    },
+    {
+      "name": "Theme Persistence",
+      "description": "Theme saved to localStorage"
+    },
+    {
+      "name": "CSS Variables",
+      "description": "Theme colors applied as CSS custom properties"
+    },
+    {
+      "name": "Tailwind Integration",
+      "description": "Dark mode classes work with Tailwind CSS"
+    },
+    {
+      "name": "Component Coverage",
+      "description": "All components support dark mode"
+    }
+  ],
+  "recommendations": []
+}

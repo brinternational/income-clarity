@@ -277,7 +277,7 @@ const PortfolioStrategyHubComponent = ({
       case 'aggressive':
         return { label: 'Aggressive', color: 'text-red-600', bgColor: 'bg-red-50', icon: '🚀' };
       default:
-        return { label: 'Unknown', color: 'text-slate-600', bgColor: 'bg-slate-50', icon: '❓' };
+        return { label: 'Unknown', color: 'text-muted-foreground', bgColor: 'bg-slate-50', icon: '❓' };
     }
   }, [activeData.riskLevel]);
 
@@ -369,7 +369,7 @@ const PortfolioStrategyHubComponent = ({
         </motion.div>
         
         <motion.div 
-          className="text-slate-600 font-medium text-sm sm:text-base mb-2"
+          className="text-muted-foreground font-medium text-sm sm:text-base mb-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
@@ -398,7 +398,7 @@ const PortfolioStrategyHubComponent = ({
               <span className="text-lg">{riskLevelInfo.icon}</span>
               <div>
                 <div className={`font-semibold text-sm ${riskLevelInfo.color}`}>{riskLevelInfo.label}</div>
-                <div className="text-xs text-slate-500">Risk Profile</div>
+                <div className="text-xs text-muted-foreground">Risk Profile</div>
               </div>
             </div>
           </motion.div>
@@ -411,7 +411,7 @@ const PortfolioStrategyHubComponent = ({
           >
             <div className="text-center">
               <div className="text-xl font-bold text-primary-600">{Math.round(animatedValues.diversification)}%</div>
-              <div className="text-xs text-slate-500">Diversification</div>
+              <div className="text-xs text-muted-foreground">Diversification</div>
             </div>
           </motion.div>
         </div>
@@ -441,21 +441,21 @@ const PortfolioStrategyHubComponent = ({
           <div className="text-lg font-bold text-prosperity-600 mb-1">
             ${Math.round(animatedValues.portfolioValue / 1000)}K
           </div>
-          <div className="text-xs text-slate-600">Total Value</div>
+          <div className="text-xs text-muted-foreground">Total Value</div>
         </div>
         
         <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-25 rounded-lg border border-blue-100">
           <div className="text-lg font-bold text-blue-600 mb-1">
             {Math.round(animatedValues.riskScore)}
           </div>
-          <div className="text-xs text-slate-600">Risk Score</div>
+          <div className="text-xs text-muted-foreground">Risk Score</div>
         </div>
         
         <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-25 rounded-lg border border-green-100">
           <div className="text-lg font-bold text-green-600 mb-1">
             {activeData.rebalanceNeeded ? 'Action' : 'Good'}
           </div>
-          <div className="text-xs text-slate-600">Status</div>
+          <div className="text-xs text-muted-foreground">Status</div>
         </div>
       </div>
 
@@ -463,7 +463,7 @@ const PortfolioStrategyHubComponent = ({
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
+            <h3 className="text-lg sm:text-xl font-display font-semibold text-foreground">
               Portfolio Strategy Hub
             </h3>
             
@@ -506,13 +506,13 @@ const PortfolioStrategyHubComponent = ({
             {/* Mobile swipe indicators */}
             <div className="flex items-center space-x-2 sm:hidden">
               {currentTabIndex > 0 && (
-                <ChevronLeft className="w-5 h-5 text-slate-400" />
+                <ChevronLeft className="w-5 h-5 text-muted-foreground" />
               )}
-              <span className="text-xs text-slate-500 font-medium">
+              <span className="text-xs text-muted-foreground font-medium">
                 {currentTabIndex + 1} / {TABS.length}
               </span>
               {currentTabIndex < TABS.length - 1 && (
-                <ChevronRight className="w-5 h-5 text-slate-400" />
+                <ChevronRight className="w-5 h-5 text-muted-foreground" />
               )}
             </div>
           </div>
@@ -537,7 +537,7 @@ const PortfolioStrategyHubComponent = ({
                 className={`flex-1 relative px-3 py-3 sm:py-4 text-center transition-all duration-300 rounded-md sm:rounded-lg touch-friendly focus:outline-none focus:ring-2 focus:ring-primary-500 ${
                   isActive
                     ? 'text-white shadow-lg'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-white/50'
                 }`}
                 onClick={() => setActiveTab(tab.id)}
                 whileHover={{ scale: 1.02 }}
@@ -558,7 +558,7 @@ const PortfolioStrategyHubComponent = ({
                     {tab.label}
                   </div>
                   <div className={`text-xs ${
-                    isActive ? 'text-primary-100' : 'text-slate-500'
+                    isActive ? 'text-primary-100' : 'text-muted-foreground'
                   } hidden sm:block`}>
                     {tab.description}
                   </div>
@@ -592,10 +592,10 @@ const PortfolioStrategyHubComponent = ({
               {/* Asset Allocation Chart - Portfolio distribution */}
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
                 <div className="mb-4">
-                  <h4 className="text-lg font-semibold text-slate-800 mb-2">
+                  <h4 className="text-lg font-semibold text-foreground mb-2">
                     Asset Allocation Overview
                   </h4>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-muted-foreground">
                     Visual breakdown of your portfolio allocation with diversification insights
                   </p>
                 </div>
@@ -660,7 +660,7 @@ const PortfolioStrategyHubComponent = ({
       </AnimatePresence>
 
       {/* Mobile swipe hint */}
-      <div className="mt-6 text-center text-xs text-slate-500 sm:hidden">
+      <div className="mt-6 text-center text-xs text-muted-foreground sm:hidden">
         👈 Swipe left or right to switch tabs
       </div>
     </motion.div>

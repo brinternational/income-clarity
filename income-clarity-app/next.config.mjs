@@ -8,6 +8,8 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Allow RSC requests from production domain
+  allowedDevOrigins: ['https://incomeclarity.ddns.net'],
   // Experimental options for maximum dev speed
   experimental: {
     optimizePackageImports: ['react', 'react-dom', 'lucide-react'], // Optimize common imports

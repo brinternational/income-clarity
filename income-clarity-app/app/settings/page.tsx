@@ -51,6 +51,7 @@ import {
 } from '@/types/email-preferences';
 import { FastLinkConnect } from '@/components/yodlee/FastLinkConnect';
 import { ConnectedAccountsList } from '@/components/yodlee/ConnectedAccountsList';
+import PlanManagement from '@/components/settings/PlanManagement';
 
 interface NotificationSettings {
   dividendAlerts: boolean;
@@ -123,6 +124,9 @@ export default function SettingsPage() {
   const [resettingDemo, setResettingDemo] = useState(false);
   const [resetSuccess, setResetSuccess] = useState(false);
   const [resetError, setResetError] = useState<string | null>(null);
+  
+  // Plan management state
+  const [currentPlan, setCurrentPlan] = useState<'free' | 'premium'>('free');
 
   // Fetch current settings on mount and apply saved theme
   useEffect(() => {
@@ -136,6 +140,26 @@ export default function SettingsPage() {
     
     fetchSettings();
     fetchEmailPreferences();
+    fetchCurrentPlan();
+  }, []);
+
+  const fetchCurrentPlan = useCallback(async () => {
+    try {
+      const response = await fetch('/api/user/plan');
+      
+      if (!response.ok) {
+        logger.error('Failed to fetch current plan');
+        return;
+      }
+      
+      const data = await response.json();
+      
+      if (data.success && data.plan) {
+        setCurrentPlan(data.plan);
+      }
+    } catch (error) {
+      logger.error('Error fetching current plan:', error);
+    }
   }, []);
 
   const fetchSettings = useCallback(async () => {
@@ -276,6 +300,11 @@ export default function SettingsPage() {
     }));
   };
 
+  const handlePlanChange = useCallback((newPlan: 'free' | 'premium') => {
+    setCurrentPlan(newPlan);
+    logger.info(`Plan changed to: ${newPlan}`);
+  }, []);
+
   const saveEmailPreferences = async () => {
     try {
       setEmailLoading(true);
@@ -389,10 +418,69 @@ export default function SettingsPage() {
     }));
   };
 
-  const exportData = (type: 'portfolio' | 'transactions' | 'tax') => {
-    // Placeholder for export functionality
-    logger.log(`Exporting ${type} data...`);
-    alert(`${type.charAt(0).toUpperCase() + type.slice(1)} export will be available soon!`);
+  const exportData = async (type: 'portfolio' | 'transactions' | 'tax') => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      logger.log(`Exporting ${type} data...`);
+      
+      // Direct API call approach - more reliable than dynamic imports
+      const apiEndpoint = `/api/user/export/${type}`;
+      
+      const response = await fetch(apiEndpoint, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Export failed' }));
+        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      // Get the blob from response
+      const blob = await response.blob();
+      
+      // Create and trigger download
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      
+      // Get filename from response headers or generate one
+      const contentDisposition = response.headers.get('content-disposition');
+      let filename = `${type}_export.csv`;
+      
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+        if (filenameMatch) {
+          filename = filenameMatch[1].replace(/['"]/g, '');
+        }
+      }
+      
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up
+      URL.revokeObjectURL(url);
+      
+      // Show success message
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+      
+      logger.info(`${type} export completed successfully: ${filename}`);
+      
+    } catch (error: any) {
+      logger.error(`Error exporting ${type} data:`, error);
+      setError(`Failed to export ${type} data: ${error.message || 'Unknown error'}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // DEMO-008: Reset demo data function
@@ -485,8 +573,8 @@ export default function SettingsPage() {
               <Settings className="w-8 h-8 text-primary-600" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Settings</h1>
-              <p className="text-slate-600 dark:text-slate-400 mt-1">
+              <h1 className="text-3xl font-bold text-foreground">Settings</h1>
+              <p className="text-muted-foreground mt-1">
                 Customize your Income Clarity experience
               </p>
             </div>
@@ -544,7 +632,7 @@ export default function SettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Globe className="w-5 h-5 text-slate-600 mr-2" />
+              <Globe className="w-5 h-5 text-muted-foreground mr-2" />
               Appearance
             </CardTitle>
           </CardHeader>
@@ -552,7 +640,7 @@ export default function SettingsPage() {
             <div className="space-y-6">
               {/* Theme Selection */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
+                <label className="block text-sm font-medium text-foreground/90 mb-3">
                   Theme
                 </label>
                 <div className="flex space-x-3">
@@ -577,7 +665,7 @@ export default function SettingsPage() {
 
               {/* Currency */}
               <div>
-                <label htmlFor="currency" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label htmlFor="currency" className="block text-sm font-medium text-foreground/90 mb-2">
                   Currency
                 </label>
                 <Select
@@ -595,7 +683,7 @@ export default function SettingsPage() {
 
               {/* Language */}
               <div>
-                <label htmlFor="locale" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                <label htmlFor="locale" className="block text-sm font-medium text-foreground/90 mb-2">
                   Language
                 </label>
                 <Select
@@ -615,15 +703,37 @@ export default function SettingsPage() {
         </Card>
       </motion.div>
 
-      {/* Bank Connections Section - Moved higher for premium feature visibility */}
+      {/* Plan Management Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
-        className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6 ring-2 ring-purple-100 dark:ring-purple-900/20"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <DollarSign className="w-5 h-5 text-muted-foreground mr-2" />
+              Plan Management
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <PlanManagement 
+              currentPlan={currentPlan}
+              onPlanChange={handlePlanChange}
+            />
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Bank Connections Section - Moved higher for premium feature visibility */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-border p-6 ring-2 ring-purple-100 dark:ring-purple-900/20"
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 flex items-center">
+          <h2 className="text-xl font-semibold text-foreground flex items-center">
             <Database className="w-5 h-5 text-purple-600 mr-2" />
             Bank Connections
             <span className="ml-3 px-2 py-1 text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 rounded-full">
@@ -666,7 +776,7 @@ export default function SettingsPage() {
             }}
           />
           
-          <div className="text-xs text-slate-500 dark:text-slate-400 mt-4 space-y-1">
+          <div className="text-xs text-muted-foreground mt-4 space-y-1">
             <div className="flex items-center">
               <Shield className="w-3 h-3 mr-1" />
               <span>Bank connections are secured with industry-standard encryption</span>
@@ -680,12 +790,12 @@ export default function SettingsPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+        transition={{ delay: 0.25 }}
       >
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Bell className="w-5 h-5 text-slate-600 mr-2" />
+              <Bell className="w-5 h-5 text-muted-foreground mr-2" />
               Notifications
             </CardTitle>
           </CardHeader>
@@ -694,13 +804,13 @@ export default function SettingsPage() {
               {Object.entries(settings.notifications).map(([key, value]) => (
                 <div key={key} className="flex items-center justify-between">
                   <div>
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                    <label className="text-sm font-medium text-foreground/90">
                       {key === 'dividendAlerts' && 'Dividend Alerts'}
                       {key === 'milestoneAlerts' && 'Milestone Achievements'}
                       {key === 'weeklyReport' && 'Weekly Reports'}
                       {key === 'priceAlerts' && 'Price Alerts'}
                     </label>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-muted-foreground">
                       {key === 'dividendAlerts' && 'Get notified when dividends are paid'}
                       {key === 'milestoneAlerts' && 'Celebrate when you reach expense milestones'}
                       {key === 'weeklyReport' && 'Weekly portfolio performance summary'}
@@ -730,12 +840,12 @@ export default function SettingsPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
+        transition={{ delay: 0.3 }}
       >
         <Card>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 flex items-center">
-            <Mail className="w-5 h-5 text-slate-600 mr-2" />
+          <h2 className="text-xl font-semibold text-foreground flex items-center">
+            <Mail className="w-5 h-5 text-muted-foreground mr-2" />
             Email Notifications
           </h2>
           
@@ -770,7 +880,7 @@ export default function SettingsPage() {
         <div className="space-y-6">
           {/* Email Address Configuration */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-foreground/90 mb-2">
               Email Address
             </label>
             <div className="flex items-center space-x-3">
@@ -813,10 +923,10 @@ export default function SettingsPage() {
           {/* Master Toggle */}
           <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
             <div>
-              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+              <label className="text-sm font-medium text-foreground/90">
                 Enable Email Notifications
               </label>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-muted-foreground">
                 Master switch for all email notifications
               </p>
             </div>
@@ -837,7 +947,7 @@ export default function SettingsPage() {
           {/* Notification Frequency */}
           {emailPreferences.notificationsEnabled && (
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
+              <label className="block text-sm font-medium text-foreground/90 mb-3">
                 Notification Frequency
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -848,7 +958,7 @@ export default function SettingsPage() {
                     className={`p-3 rounded-lg border-2 transition-all text-left ${
                       emailPreferences.frequency === option.value
                         ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
-                        : 'border-slate-300 dark:border-slate-600 hover:border-slate-400 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+                        : 'border-border hover:border-slate-400 bg-white dark:bg-slate-700 text-foreground/90'
                     }`}
                   >
                     <div className="flex items-center space-x-2 mb-1">
@@ -867,17 +977,17 @@ export default function SettingsPage() {
           {/* Notification Categories */}
           {emailPreferences.notificationsEnabled && (
             <div>
-              <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-4">
+              <h3 className="text-sm font-medium text-foreground/90 mb-4">
                 Notification Categories
               </h3>
               <div className="space-y-3">
                 {Object.entries(EMAIL_CATEGORY_DESCRIPTIONS).map(([category, info]) => (
                   <div key={category} className="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-600 rounded-lg">
                     <div className="flex-1">
-                      <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <label className="text-sm font-medium text-foreground/90">
                         {info.title}
                       </label>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         {info.description}
                       </p>
                     </div>
@@ -888,7 +998,7 @@ export default function SettingsPage() {
                         <button
                           onClick={() => sendTestEmail(category as keyof EmailNotificationCategories)}
                           disabled={sendingTestEmail === category}
-                          className="px-3 py-1 text-xs border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded transition-colors disabled:opacity-50"
+                          className="px-3 py-1 text-xs border border-border text-muted-foreground hover:bg-slate-50 dark:hover:bg-slate-700 rounded transition-colors disabled:opacity-50"
                         >
                           {sendingTestEmail === category ? (
                             <Loader2 className="w-3 h-3 animate-spin" />
@@ -927,10 +1037,10 @@ export default function SettingsPage() {
 
           {/* Email Status Information */}
           <div className="bg-slate-50 dark:bg-slate-700 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+            <h4 className="text-sm font-medium text-foreground/90 mb-2">
               Email Status
             </h4>
-            <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
+            <div className="text-xs text-muted-foreground space-y-1">
               <p>• Email Address: {emailPreferences.email || 'Not configured'}</p>
               <p>• Verification Status: {emailVerified ? '✅ Verified' : '❌ Not verified'}</p>
               <p>• Notifications: {emailPreferences.notificationsEnabled ? '✅ Enabled' : '❌ Disabled'}</p>
@@ -947,64 +1057,97 @@ export default function SettingsPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6"
+        transition={{ delay: 0.35 }}
+        className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-border p-6"
       >
-        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-6 flex items-center">
-          <Shield className="w-5 h-5 text-slate-600 mr-2" />
+        <h2 className="text-xl font-semibold text-foreground mb-6 flex items-center">
+          <Shield className="w-5 h-5 text-muted-foreground mr-2" />
           Data & Privacy
         </h2>
 
         <div className="space-y-6">
           {/* Export Options */}
           <div>
-            <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Export Your Data</h3>
+            <h3 className="text-sm font-medium text-foreground/90 mb-3">Export Your Data</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <button
                 onClick={() => exportData('portfolio')}
-                className="flex items-center justify-between p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                disabled={loading}
+                className={`flex items-center justify-between p-3 border rounded-lg transition-colors ${
+                  loading 
+                    ? 'border-slate-200 bg-slate-50 cursor-not-allowed' 
+                    : 'border-border hover:bg-slate-50 dark:hover:bg-slate-700'
+                }`}
               >
                 <div className="flex items-center space-x-2">
-                  <Download className="w-4 h-4 text-slate-600" />
-                  <span className="text-sm text-slate-700 dark:text-slate-300">Portfolio CSV</span>
+                  {loading ? (
+                    <Loader2 className="w-4 h-4 text-muted-foreground animate-spin" />
+                  ) : (
+                    <Download className="w-4 h-4 text-muted-foreground" />
+                  )}
+                  <span className={`text-sm ${loading ? 'text-muted-foreground' : 'text-foreground/90'}`}>
+                    Portfolio CSV
+                  </span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
+                <ChevronRight className={`w-4 h-4 ${loading ? 'text-muted-foreground' : 'text-muted-foreground'}`} />
               </button>
               <button
                 onClick={() => exportData('transactions')}
-                className="flex items-center justify-between p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                disabled={loading}
+                className={`flex items-center justify-between p-3 border rounded-lg transition-colors ${
+                  loading 
+                    ? 'border-slate-200 bg-slate-50 cursor-not-allowed' 
+                    : 'border-border hover:bg-slate-50 dark:hover:bg-slate-700'
+                }`}
               >
                 <div className="flex items-center space-x-2">
-                  <Download className="w-4 h-4 text-slate-600" />
-                  <span className="text-sm text-slate-700 dark:text-slate-300">Transactions CSV</span>
+                  {loading ? (
+                    <Loader2 className="w-4 h-4 text-muted-foreground animate-spin" />
+                  ) : (
+                    <Download className="w-4 h-4 text-muted-foreground" />
+                  )}
+                  <span className={`text-sm ${loading ? 'text-muted-foreground' : 'text-foreground/90'}`}>
+                    Transactions CSV
+                  </span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
+                <ChevronRight className={`w-4 h-4 ${loading ? 'text-muted-foreground' : 'text-muted-foreground'}`} />
               </button>
               <button
                 onClick={() => exportData('tax')}
-                className="flex items-center justify-between p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                disabled={loading}
+                className={`flex items-center justify-between p-3 border rounded-lg transition-colors ${
+                  loading 
+                    ? 'border-slate-200 bg-slate-50 cursor-not-allowed' 
+                    : 'border-border hover:bg-slate-50 dark:hover:bg-slate-700'
+                }`}
               >
                 <div className="flex items-center space-x-2">
-                  <Download className="w-4 h-4 text-slate-600" />
-                  <span className="text-sm text-slate-700 dark:text-slate-300">Tax Report PDF</span>
+                  {loading ? (
+                    <Loader2 className="w-4 h-4 text-muted-foreground animate-spin" />
+                  ) : (
+                    <Download className="w-4 h-4 text-muted-foreground" />
+                  )}
+                  <span className={`text-sm ${loading ? 'text-muted-foreground' : 'text-foreground/90'}`}>
+                    Tax Report CSV
+                  </span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
+                <ChevronRight className={`w-4 h-4 ${loading ? 'text-muted-foreground' : 'text-muted-foreground'}`} />
               </button>
             </div>
           </div>
 
           {/* Privacy Settings */}
           <div>
-            <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Privacy Preferences</h3>
+            <h3 className="text-sm font-medium text-foreground/90 mb-3">Privacy Preferences</h3>
             <div className="space-y-3">
               {Object.entries(settings.privacy).map(([key, value]) => (
                 <div key={key} className="flex items-center justify-between">
                   <div>
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                    <label className="text-sm font-medium text-foreground/90">
                       {key === 'shareData' && 'Share Anonymous Usage Data'}
                       {key === 'analytics' && 'Analytics & Performance Tracking'}
                     </label>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-muted-foreground">
                       {key === 'shareData' && 'Help improve the app with anonymous usage statistics'}
                       {key === 'analytics' && 'Track performance metrics for optimization'}
                     </p>
@@ -1027,7 +1170,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Danger Zone */}
-          <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
+          <div className="border-t border-border pt-6">
             <h3 className="text-sm font-medium text-red-700 dark:text-red-400 mb-3">Danger Zone</h3>
             <button
               onClick={() => alert('Account deletion feature will be available soon. Please contact support if needed.')}
@@ -1045,41 +1188,41 @@ export default function SettingsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-6"
+        className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-border p-6"
       >
-        <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-6 flex items-center">
-          <Code className="w-5 h-5 text-slate-600 mr-2" />
+        <h2 className="text-xl font-semibold text-foreground mb-6 flex items-center">
+          <Code className="w-5 h-5 text-muted-foreground mr-2" />
           Advanced
         </h2>
 
         <div className="space-y-6">
           {/* API Access */}
           <div>
-            <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">API Access</h3>
+            <h3 className="text-sm font-medium text-foreground/90 mb-3">API Access</h3>
             <button
               onClick={() => alert('API key generation will be available soon!')}
-              className="flex items-center justify-between p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors w-full sm:w-auto"
+              className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors w-full sm:w-auto"
             >
               <div className="flex items-center space-x-2">
-                <Key className="w-4 h-4 text-slate-600" />
-                <span className="text-sm text-slate-700 dark:text-slate-300">Generate API Key</span>
+                <Key className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-foreground/90">Generate API Key</span>
               </div>
-              <ChevronRight className="w-4 h-4 text-slate-400" />
+              <ChevronRight className="w-4 h-4 text-muted-foreground" />
             </button>
           </div>
 
           {/* Feature Flags */}
           <div>
-            <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Developer Features</h3>
+            <h3 className="text-sm font-medium text-foreground/90 mb-3">Developer Features</h3>
             <div className="space-y-3">
               {Object.entries(settings.features).map(([key, value]) => (
                 <div key={key} className="flex items-center justify-between">
                   <div>
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                    <label className="text-sm font-medium text-foreground/90">
                       {key === 'developerMode' && 'Developer Mode'}
                       {key === 'debugLogging' && 'Debug Logging'}
                     </label>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-muted-foreground">
                       {key === 'developerMode' && 'Show advanced developer tools and features'}
                       {key === 'debugLogging' && 'Enable detailed logging for troubleshooting'}
                     </p>
@@ -1104,7 +1247,7 @@ export default function SettingsPage() {
           {/* Demo Reset Section - Only show in development */}
           {process.env.NODE_ENV === 'development' && (
             <div>
-              <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Demo Data Management</h3>
+              <h3 className="text-sm font-medium text-foreground/90 mb-3">Demo Data Management</h3>
               
               {/* Reset Error Message */}
               {resetError && (
@@ -1170,7 +1313,7 @@ export default function SettingsPage() {
                 </div>
               </div>
               
-              <div className="mt-3 text-xs text-slate-500 dark:text-slate-400">
+              <div className="mt-3 text-xs text-muted-foreground">
                 <p><strong>Note:</strong> This feature is only available in development mode for security.</p>
                 <p>User: test@example.com • Environment: {process.env.NODE_ENV}</p>
               </div>
@@ -1184,7 +1327,7 @@ export default function SettingsPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="text-center text-sm text-slate-500 dark:text-slate-400 py-4"
+        className="text-center text-sm text-muted-foreground py-4"
       >
         <p>Settings are automatically saved to your account</p>
       </motion.div>

@@ -257,10 +257,10 @@ const CashFlowProjectionCardComponent = ({ viewMode = 'monthly' }: CashFlowProje
       {/* Header */}
       <div className="flex items-start justify-between mb-6 sm:mb-8">
         <div className="flex-1 min-w-0">
-          <h3 className="text-base sm:text-lg lg:text-display-xs font-display font-semibold text-slate-800 mb-1">
+          <h3 className="text-base sm:text-lg lg:text-display-xs font-display font-semibold text-foreground mb-1">
             Cash Flow Projection
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Forecast your income vs expenses over time
           </p>
         </div>
@@ -272,8 +272,8 @@ const CashFlowProjectionCardComponent = ({ viewMode = 'monthly' }: CashFlowProje
       {/* Period Selector */}
       <div className="flex items-center justify-center mb-6 sm:mb-8">
         <div className="flex items-center space-x-1 p-1 bg-slate-100 rounded-lg">
-          <Calendar className="w-4 h-4 text-slate-600 ml-2" />
-          <span className="text-sm font-medium text-slate-600 px-2">Period:</span>
+          <Calendar className="w-4 h-4 text-muted-foreground ml-2" />
+          <span className="text-sm font-medium text-muted-foreground px-2">Period:</span>
           {periods.map((period) => (
             <button
               key={period.label}
@@ -281,7 +281,7 @@ const CashFlowProjectionCardComponent = ({ viewMode = 'monthly' }: CashFlowProje
               className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all duration-200 ${
                 period.active
                   ? 'bg-primary-500 text-white shadow-sm'
-                  : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-slate-50'
               }`}
               aria-pressed={period.active}
             >
@@ -359,7 +359,7 @@ const CashFlowProjectionCardComponent = ({ viewMode = 'monthly' }: CashFlowProje
           }`}>
             {totalProjectedFlow >= 0 ? '+' : '-'}${Math.round(animatedValues.totalFlow * formatIncomeValue(1).multiplier).toLocaleString()}
           </div>
-          <div className="text-xs sm:text-sm text-slate-600">Total Flow {formatIncomeValue(1).suffix}</div>
+          <div className="text-xs sm:text-sm text-muted-foreground">Total Flow {formatIncomeValue(1).suffix}</div>
         </div>
         
         <div className="text-center p-3 sm:p-4 bg-blue-50 rounded-lg border-2 border-blue-200">
@@ -368,22 +368,22 @@ const CashFlowProjectionCardComponent = ({ viewMode = 'monthly' }: CashFlowProje
           }`}>
             {avgMonthlyFlow >= 0 ? '+' : '-'}${Math.round(animatedValues.avgFlow * formatIncomeValue(1).multiplier).toLocaleString()}
           </div>
-          <div className="text-xs sm:text-sm text-slate-600">Avg {viewMode === 'annual' ? 'Annual' : 'Monthly'}</div>
+          <div className="text-xs sm:text-sm text-muted-foreground">Avg {viewMode === 'annual' ? 'Annual' : 'Monthly'}</div>
         </div>
         
         <div className="text-center p-3 sm:p-4 bg-purple-50 rounded-lg border-2 border-purple-200 col-span-2 sm:col-span-1">
           <div className="text-lg sm:text-xl font-bold text-purple-600">
             {Math.round(animatedValues.positive)}/{selectedPeriod}
           </div>
-          <div className="text-xs sm:text-sm text-slate-600">Positive Months</div>
+          <div className="text-xs sm:text-sm text-muted-foreground">Positive Months</div>
         </div>
       </div>
 
       {/* Cash Flow Chart */}
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="font-semibold text-slate-700">Monthly Cash Flow Projections</h4>
-          <div className="flex items-center space-x-4 text-xs text-slate-600">
+          <h4 className="font-semibold text-foreground/90">Monthly Cash Flow Projections</h4>
+          <div className="flex items-center space-x-4 text-xs text-muted-foreground">
             <div className="flex items-center space-x-1">
               <div className="w-3 h-2 bg-green-200 rounded opacity-40"></div>
               <span>Confidence Band</span>
@@ -406,7 +406,7 @@ const CashFlowProjectionCardComponent = ({ viewMode = 'monthly' }: CashFlowProje
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Month Label with Seasonal Indicators */}
-              <div className="w-16 text-xs font-medium text-slate-600">
+              <div className="w-16 text-xs font-medium text-muted-foreground">
                 <div className="flex items-center space-x-1">
                   <span>{projection.month}</span>
                   {projection.isDividendMonth && (
@@ -499,7 +499,7 @@ const CashFlowProjectionCardComponent = ({ viewMode = 'monthly' }: CashFlowProje
                 : 'Strong Cash Flow Outlook'
               }
             </h4>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-muted-foreground">
               {negativeMonths > selectedPeriod / 2 
                 ? 'You have multiple months with negative cash flow projected. Consider reducing expenses or increasing income.'
                 : negativeMonths > 0 

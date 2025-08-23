@@ -56,8 +56,8 @@ const SPYHistoricalTableComponent = ({
       {/* Period Selector */}
       <div>
         <div className="flex items-center space-x-2 mb-4">
-          <Clock className="w-4 h-4 text-slate-600" />
-          <h4 className="font-semibold text-slate-800">Historical Performance</h4>
+          <Clock className="w-4 h-4 text-muted-foreground" />
+          <h4 className="font-semibold text-foreground">Historical Performance</h4>
         </div>
         
         <div className="flex bg-slate-50 rounded-lg p-1 gap-1 overflow-x-auto">
@@ -68,7 +68,7 @@ const SPYHistoricalTableComponent = ({
               className={`flex-shrink-0 px-3 py-2 text-xs font-medium rounded-md transition-all duration-200 touch-friendly ${
                 selectedPeriod === period
                   ? 'bg-primary-600 text-white shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-white'
               }`}
             >
               {period}
@@ -90,8 +90,8 @@ const SPYHistoricalTableComponent = ({
           <div className="px-6 py-4 bg-gradient-to-r from-primary-50 to-primary-25 border-b border-slate-200">
             <div className="flex items-center justify-between">
               <div>
-                <h5 className="font-semibold text-slate-800">{periodLabels[selectedData.period]} Performance</h5>
-                <p className="text-xs text-slate-600 mt-1">
+                <h5 className="font-semibold text-foreground">{periodLabels[selectedData.period]} Performance</h5>
+                <p className="text-xs text-muted-foreground mt-1">
                   Detailed analysis and risk metrics
                 </p>
               </div>
@@ -116,7 +116,7 @@ const SPYHistoricalTableComponent = ({
               <div className="text-center p-4 bg-gradient-to-br from-primary-50 to-primary-25 rounded-lg border border-primary-100">
                 <div className="flex items-center justify-center mb-2">
                   <BarChart3 className="w-4 h-4 text-primary-600 mr-1" />
-                  <span className="text-xs text-slate-600">Portfolio</span>
+                  <span className="text-xs text-muted-foreground">Portfolio</span>
                 </div>
                 <div className="text-xl font-bold text-primary-600 mb-1">
                   {selectedData.portfolioReturn >= 0 ? '+' : ''}{(selectedData.portfolioReturn * 100).toFixed(1)}%
@@ -134,7 +134,7 @@ const SPYHistoricalTableComponent = ({
               <div className="text-center p-4 bg-gradient-to-br from-wealth-50 to-wealth-25 rounded-lg border border-wealth-100">
                 <div className="flex items-center justify-center mb-2">
                   <BarChart3 className="w-4 h-4 text-wealth-600 mr-1" />
-                  <span className="text-xs text-slate-600">SPY</span>
+                  <span className="text-xs text-muted-foreground">SPY</span>
                 </div>
                 <div className="text-xl font-bold text-wealth-600 mb-1">
                   {selectedData.spyReturn >= 0 ? '+' : ''}{(selectedData.spyReturn * 100).toFixed(1)}%
@@ -155,8 +155,8 @@ const SPYHistoricalTableComponent = ({
                   : 'from-alert-50 to-alert-25 border-alert-100'
               }`}>
                 <div className="flex items-center justify-center mb-2">
-                  <Target className="w-4 h-4 text-slate-600 mr-1" />
-                  <span className="text-xs text-slate-600">Alpha</span>
+                  <Target className="w-4 h-4 text-muted-foreground mr-1" />
+                  <span className="text-xs text-muted-foreground">Alpha</span>
                 </div>
                 <div className={`text-xl font-bold mb-1 ${
                   selectedData.outperformance > 0 ? 'text-prosperity-600' : 'text-alert-600'
@@ -176,7 +176,7 @@ const SPYHistoricalTableComponent = ({
               <div className="text-center p-4 bg-gradient-to-br from-secondary-50 to-secondary-25 rounded-lg border border-secondary-100">
                 <div className="flex items-center justify-center mb-2">
                   <Award className="w-4 h-4 text-secondary-600 mr-1" />
-                  <span className="text-xs text-slate-600">Win Rate</span>
+                  <span className="text-xs text-muted-foreground">Win Rate</span>
                 </div>
                 <div className="text-xl font-bold text-secondary-600 mb-1">
                   {(selectedData.winRate * 100).toFixed(0)}%
@@ -189,16 +189,16 @@ const SPYHistoricalTableComponent = ({
 
             {/* Risk Metrics */}
             <div>
-              <h6 className="font-semibold text-slate-800 mb-3 flex items-center">
-                <BarChart3 className="w-4 h-4 text-slate-600 mr-2" />
+              <h6 className="font-semibold text-foreground mb-3 flex items-center">
+                <BarChart3 className="w-4 h-4 text-muted-foreground mr-2" />
                 Risk Analysis
               </h6>
               
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* Volatility */}
                 <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                  <div className="text-xs text-slate-600 mb-1">Volatility</div>
-                  <div className="text-lg font-bold text-slate-800">
+                  <div className="text-xs text-muted-foreground mb-1">Volatility</div>
+                  <div className="text-lg font-bold text-foreground">
                     {(selectedData.volatility * 100).toFixed(1)}%
                   </div>
                   <div className={`text-xs font-medium ${
@@ -212,8 +212,8 @@ const SPYHistoricalTableComponent = ({
 
                 {/* Sharpe Ratio */}
                 <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                  <div className="text-xs text-slate-600 mb-1">Sharpe Ratio</div>
-                  <div className="text-lg font-bold text-slate-800">
+                  <div className="text-xs text-muted-foreground mb-1">Sharpe Ratio</div>
+                  <div className="text-lg font-bold text-foreground">
                     {selectedData.sharpeRatio.toFixed(2)}
                   </div>
                   <div className={`text-xs font-medium ${
@@ -227,8 +227,8 @@ const SPYHistoricalTableComponent = ({
 
                 {/* Max Drawdown */}
                 <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
-                  <div className="text-xs text-slate-600 mb-1">Max Drawdown</div>
-                  <div className="text-lg font-bold text-slate-800">
+                  <div className="text-xs text-muted-foreground mb-1">Max Drawdown</div>
+                  <div className="text-lg font-bold text-foreground">
                     {(selectedData.maxDrawdown * 100).toFixed(1)}%
                   </div>
                   <div className={`text-xs font-medium ${
@@ -248,19 +248,19 @@ const SPYHistoricalTableComponent = ({
       {/* All Periods Summary Table - Mobile Optimized */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
-          <h6 className="font-semibold text-slate-800">Performance Summary</h6>
-          <p className="text-xs text-slate-600 mt-1">All time periods comparison</p>
+          <h6 className="font-semibold text-foreground">Performance Summary</h6>
+          <p className="text-xs text-muted-foreground mt-1">All time periods comparison</p>
         </div>
         
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="bg-slate-25">
-                <th className="text-left p-3 text-xs font-medium text-slate-600 uppercase tracking-wide">Period</th>
-                <th className="text-right p-3 text-xs font-medium text-slate-600 uppercase tracking-wide">Portfolio</th>
-                <th className="text-right p-3 text-xs font-medium text-slate-600 uppercase tracking-wide">SPY</th>
-                <th className="text-right p-3 text-xs font-medium text-slate-600 uppercase tracking-wide">Alpha</th>
-                <th className="text-right p-3 text-xs font-medium text-slate-600 uppercase tracking-wide">Win Rate</th>
+                <th className="text-left p-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">Period</th>
+                <th className="text-right p-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">Portfolio</th>
+                <th className="text-right p-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">SPY</th>
+                <th className="text-right p-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">Alpha</th>
+                <th className="text-right p-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">Win Rate</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -280,7 +280,7 @@ const SPYHistoricalTableComponent = ({
                       <div className={`w-2 h-2 rounded-full ${
                         selectedPeriod === item.period ? 'bg-primary-500' : 'bg-slate-300'
                       }`} />
-                      <span className="text-sm font-medium text-slate-800">{item.period}</span>
+                      <span className="text-sm font-medium text-foreground">{item.period}</span>
                     </div>
                   </td>
                   <td className="p-3 text-right">

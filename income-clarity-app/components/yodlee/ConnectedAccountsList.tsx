@@ -125,8 +125,8 @@ export function ConnectedAccountsList() {
       <Card>
         <CardContent className="p-6">
           <div className="flex items-center justify-center">
-            <RefreshCw className="h-6 w-6 animate-spin text-slate-600 dark:text-slate-400" />
-            <span className="ml-2 text-slate-600 dark:text-slate-400">Loading accounts...</span>
+            <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
+            <span className="ml-2 text-muted-foreground">Loading accounts...</span>
           </div>
         </CardContent>
       </Card>
@@ -143,7 +143,7 @@ export function ConnectedAccountsList() {
         <div className="flex items-center justify-between">
           <div>
             <CardTitle>Connected Accounts</CardTitle>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               {accounts.length} account{accounts.length !== 1 ? 's' : ''} linked
             </p>
           </div>
@@ -165,12 +165,12 @@ export function ConnectedAccountsList() {
               className="flex items-center justify-between p-4 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
             >
               <div className="flex items-center space-x-4">
-                <div className="p-2 bg-slate-100 dark:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-400">
+                <div className="p-2 bg-slate-100 dark:bg-slate-700 rounded-lg text-muted-foreground">
                   {getAccountIcon(account.accountType)}
                 </div>
                 <div>
                   <div className="flex items-center space-x-2">
-                    <p className="font-medium text-slate-900 dark:text-slate-100">{account.accountName}</p>
+                    <p className="font-medium text-foreground">{account.accountName}</p>
                     {getAccountTypeBadge(account.accountType)}
                     {account.isActive ? (
                       <CheckCircle className="h-4 w-4 text-green-500" />
@@ -180,16 +180,16 @@ export function ConnectedAccountsList() {
                   </div>
                   <div className="flex items-center space-x-4 mt-1">
                     {account.institution && (
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <p className="text-sm text-muted-foreground">
                         {account.institution}
                       </p>
                     )}
                     {account.accountNumber && (
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <p className="text-sm text-muted-foreground">
                         ••••{account.accountNumber}
                       </p>
                     )}
-                    <p className="text-xs text-slate-500 dark:text-slate-500">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                       Updated {new Date(account.lastRefreshed).toLocaleDateString()}
                     </p>
                   </div>
@@ -198,10 +198,10 @@ export function ConnectedAccountsList() {
               
               <div className="flex items-center space-x-4">
                 <div className="text-right">
-                  <p className="font-semibold text-lg text-slate-900 dark:text-slate-100">
+                  <p className="font-semibold text-lg text-foreground">
                     ${account.balance.toLocaleString()}
                   </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-500">
+                  <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                     {account.currency}
                   </p>
                 </div>
@@ -239,8 +239,8 @@ export function ConnectedAccountsList() {
         {/* Summary */}
         <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-600">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-slate-600 dark:text-slate-400">Total Balance</p>
-            <p className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+            <p className="text-sm text-muted-foreground">Total Balance</p>
+            <p className="text-xl font-semibold text-foreground">
               ${accounts.reduce((sum, acc) => sum + acc.balance, 0).toLocaleString()}
             </p>
           </div>

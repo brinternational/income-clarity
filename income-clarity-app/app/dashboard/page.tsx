@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { AppShell } from '@/components/AppShell'
+import { SidebarAppShell } from '@/components/SidebarAppShell'
 import Link from 'next/link'
 import { 
   TrendingUp, 
@@ -82,8 +82,8 @@ export default function Dashboard() {
   }
 
   return (
-    <AppShell title="Income Clarity - Dashboard">
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <SidebarAppShell title="Income Clarity - Dashboard">
+      <div className="py-8">
         <Container maxWidth="7xl">
           {/* Header */}
           <Stack space="lg" className="mb-8">
@@ -353,6 +353,6 @@ export default function Dashboard() {
           </Grid>
         </Container>
       </div>
-    </AppShell>
+    </SidebarAppShell>
   )
 }

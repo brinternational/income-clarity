@@ -1,0 +1,79 @@
+{
+  "component_info": {
+    "name": "navigation",
+    "path": "/public/MasterV2/income-clarity/income-clarity-app/components/navigation",
+    "type": "ui_component_group",
+    "last_update": "2025-08-20T14:45:00.000Z",
+    "status": "planned",
+    "completion_percentage": 0
+  },
+  "active_todos": {
+    "current_task": {
+      "id": "SIDEBAR-001",
+      "title": "Base LeftSidebar Component",
+      "status": "pending",
+      "priority": "high",
+      "agent_assigned": null,
+      "estimated_tokens": "15k",
+      "dependencies": ["design_system_components"],
+      "files_to_modify": [
+        "components/navigation/LeftSidebar.tsx"
+      ],
+      "files_to_create": [
+        "components/navigation/LeftSidebar.tsx"
+      ]
+    },
+    "upcoming_tasks": [
+      {
+        "id": "SIDEBAR-002",
+        "title": "Navigation Items Implementation", 
+        "status": "pending",
+        "dependencies": ["SIDEBAR-001"]
+      },
+      {
+        "id": "SIDEBAR-003", 
+        "title": "Sub-components Creation",
+        "status": "pending",
+        "dependencies": ["SIDEBAR-001", "SIDEBAR-002"]
+      },
+      {
+        "id": "LAYOUT-001",
+        "title": "Main App Layout Integration",
+        "status": "pending", 
+        "dependencies": ["SIDEBAR-003"]
+      }
+    ],
+    "completed_tasks": []
+  },
+  "technical_context": {
+    "architecture": "left_sidebar_navigation",
+    "framework": "next_js_react",
+    "styling": "tailwind_css",
+    "animations": "framer_motion",
+    "state_management": "local_state_with_localstorage",
+    "responsive_strategy": "desktop_sidebar_mobile_drawer"
+  },
+  "current_work_status": {
+    "files_in_progress": [],
+    "blocked_by": [],
+    "ready_for_work": true,
+    "agent_can_start": true,
+    "requires_context": [
+      "/components/navigation/LEFT_SIDEBAR_IMPLEMENTATION_GUIDE.md",
+      "/components/navigation/SIDEBAR_COMPONENT_TEMPLATES.md",
+      "/components/navigation/CLAUDE.md"
+    ]
+  },
+  "quality_gates": {
+    "code_review_required": true,
+    "testing_required": true,
+    "accessibility_validation": true,
+    "performance_testing": true,
+    "responsive_testing": true
+  },
+  "session_persistence": {
+    "last_checkpoint": null,
+    "backup_frequency": "after_each_task",
+    "recovery_available": false
+  }
+}

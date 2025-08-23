@@ -22,6 +22,23 @@
 
 # Super Cards Context
 
+## 🚨 CRITICAL BUG - CONTRAST FAILURE (Aug 23, 2025)
+**Components in THIS directory have broken dark mode:**
+- **PerformanceBenchmark.tsx** (lines 226, 353) - Missing dark:from-slate-800 dark:to-slate-900
+- **StateSyncTest.tsx** - Missing dark variants on gradients
+
+**THE ACTUAL FIX NEEDED:**
+```tsx
+// BROKEN (current):
+className="from-primary-50 to-primary-25 text-primary-600"
+
+// FIXED (needed):
+className="from-primary-50 to-primary-25 dark:from-slate-800 dark:to-slate-900 text-primary-600 dark:text-white"
+```
+
+**DO NOT:** Use global CSS, nuclear CSS, or JavaScript fixes
+**DO:** Add dark: variants directly to className strings
+
 ## What This Folder Does
 Contains the 5 main intelligence hubs that make up the core Income Clarity dashboard. Each hub is a complex React component with mobile variants and shared state management.
 

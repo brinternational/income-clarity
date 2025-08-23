@@ -187,10 +187,10 @@ export function StateComparisonVisualization({
       <div className="mb-6">
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h3 className="text-xl font-display font-semibold text-slate-800 mb-2">
+            <h3 className="text-xl font-display font-semibold text-foreground mb-2">
               State Tax Comparison
             </h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-muted-foreground">
               Compare tax savings potential across all US states and territories
             </p>
           </div>
@@ -201,8 +201,8 @@ export function StateComparisonVisualization({
               onClick={() => setViewMode('list')}
               className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm transition-all ${
                 viewMode === 'list' 
-                  ? 'bg-white text-slate-900 shadow-sm' 
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white text-foreground shadow-sm' 
+                  : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               <List className="w-4 h-4" />
@@ -212,8 +212,8 @@ export function StateComparisonVisualization({
               onClick={() => setViewMode('map')}
               className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm transition-all ${
                 viewMode === 'map' 
-                  ? 'bg-white text-slate-900 shadow-sm' 
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white text-foreground shadow-sm' 
+                  : 'text-muted-foreground hover:text-foreground'
               }`}
               disabled // Map view coming in Phase 2
             >
@@ -265,7 +265,7 @@ export function StateComparisonVisualization({
         <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mb-4">
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search states..."
@@ -304,7 +304,7 @@ export function StateComparisonVisualization({
         {/* Active filters indicator */}
         {(searchQuery || filterBy !== 'all') && (
           <div className="flex items-center space-x-2">
-            <span className="text-sm text-slate-600">Filters active:</span>
+            <span className="text-sm text-muted-foreground">Filters active:</span>
             {searchQuery && (
               <span className="inline-flex items-center space-x-1 px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
                 <span>Search: "{searchQuery}"</span>
@@ -323,7 +323,7 @@ export function StateComparisonVisualization({
             )}
             <button
               onClick={clearFilters}
-              className="text-xs text-slate-500 hover:text-slate-700 underline"
+              className="text-xs text-muted-foreground hover:text-foreground/90 underline"
             >
               Clear all
             </button>
@@ -382,14 +382,14 @@ export function StateComparisonVisualization({
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   {/* State Flag/Icon */}
-                  <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-sm font-bold text-slate-600">
+                  <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-sm font-bold text-muted-foreground">
                     {state.stateCode}
                   </div>
                   
                   {/* State Info */}
                   <div>
                     <div className="flex items-center space-x-2 mb-1">
-                      <h4 className="font-semibold text-slate-900">
+                      <h4 className="font-semibold text-foreground">
                         {state.stateInfo.name}
                       </h4>
                       {state.isCurrentState && (
@@ -403,11 +403,11 @@ export function StateComparisonVisualization({
                         </span>
                       )}
                     </div>
-                    <div className="text-sm text-slate-600">
+                    <div className="text-sm text-muted-foreground">
                       {state.stateInfo.rate === 0 ? 'No state tax' : `${(state.stateInfo.rate * 100).toFixed(1)}% tax rate`}
                     </div>
                     {state.stateInfo.specialNotes && (
-                      <div className="text-xs text-slate-500 mt-1">
+                      <div className="text-xs text-muted-foreground mt-1">
                         {state.stateInfo.specialNotes}
                       </div>
                     )}
@@ -421,7 +421,7 @@ export function StateComparisonVisualization({
                       ? 'text-green-600' 
                       : state.savingsInfo.annualSavings < 0
                         ? 'text-red-600'
-                        : 'text-slate-600'
+                        : 'text-muted-foreground'
                   }`}>
                     {state.savingsInfo.annualSavings > 0 ? (
                       <TrendingDown className="w-4 h-4" />
@@ -433,10 +433,10 @@ export function StateComparisonVisualization({
                       ${Math.round(state.savingsInfo.annualSavings).toLocaleString()}
                     </span>
                   </div>
-                  <div className="text-xs text-slate-500">
+                  <div className="text-xs text-muted-foreground">
                     per year
                   </div>
-                  <div className="text-xs text-slate-500">
+                  <div className="text-xs text-muted-foreground">
                     (${Math.round(state.savingsInfo.monthlySavings).toLocaleString()}/month)
                   </div>
                 </div>
@@ -453,25 +453,25 @@ export function StateComparisonVisualization({
                   >
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
-                        <div className="text-slate-500 mb-1">Current Tax</div>
+                        <div className="text-muted-foreground mb-1">Current Tax</div>
                         <div className="font-semibold">
                           ${Math.round(state.savingsInfo.currentTax.total).toLocaleString()}
                         </div>
                       </div>
                       <div>
-                        <div className="text-slate-500 mb-1">{state.stateInfo.name} Tax</div>
+                        <div className="text-muted-foreground mb-1">{state.stateInfo.name} Tax</div>
                         <div className="font-semibold">
                           ${Math.round(state.savingsInfo.targetTax.total).toLocaleString()}
                         </div>
                       </div>
                       <div>
-                        <div className="text-slate-500 mb-1">Effective Rate</div>
+                        <div className="text-muted-foreground mb-1">Effective Rate</div>
                         <div className="font-semibold">
                           {(state.savingsInfo.targetTax.effectiveRate * 100).toFixed(1)}%
                         </div>
                       </div>
                       <div>
-                        <div className="text-slate-500 mb-1">10-Year Savings</div>
+                        <div className="text-muted-foreground mb-1">10-Year Savings</div>
                         <div className="font-semibold text-green-600">
                           ${Math.round(state.savingsInfo.annualSavings * 10).toLocaleString()}
                         </div>
@@ -499,7 +499,7 @@ export function StateComparisonVisualization({
       {/* No Results */}
       {sortedStates.length === 0 && (
         <div className="text-center py-8">
-          <div className="text-slate-400 mb-2">No states match your current filters</div>
+          <div className="text-muted-foreground mb-2">No states match your current filters</div>
           <button 
             onClick={clearFilters}
             className="text-primary-600 hover:text-primary-700 text-sm underline"

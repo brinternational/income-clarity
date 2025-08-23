@@ -30,8 +30,8 @@ export function ExpenseMilestones({ milestones = [], totalCoverage = 0 }: Expens
 
   if (!milestones || milestones.length === 0) {
     return (
-      <div className="text-center py-8 text-slate-500">
-        <Target className="w-12 h-12 mx-auto mb-4 text-slate-300" />
+      <div className="text-center py-8 text-muted-foreground">
+        <Target className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
         <p>No expense milestones configured</p>
       </div>
     );
@@ -42,7 +42,7 @@ export function ExpenseMilestones({ milestones = [], totalCoverage = 0 }: Expens
       {/* Overall Progress */}
       <div className="bg-gradient-to-br from-primary-50 to-primary-25 rounded-xl p-4 border border-primary-100">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-slate-700">Total Coverage</span>
+          <span className="text-sm font-medium text-foreground/90">Total Coverage</span>
           <span className="text-2xl font-bold text-primary-600">{safeTotalCoverage.toFixed(1)}%</span>
         </div>
         <div className="w-full bg-white/60 rounded-full h-2">
@@ -68,11 +68,11 @@ export function ExpenseMilestones({ milestones = [], totalCoverage = 0 }: Expens
               {milestone.covered ? (
                 <CheckCircle className="w-5 h-5 text-prosperity-600" />
               ) : (
-                <Target className="w-5 h-5 text-slate-400" />
+                <Target className="w-5 h-5 text-muted-foreground" />
               )}
               <div>
-                <div className="font-semibold text-slate-800">{milestone.name}</div>
-                <div className="text-xs text-slate-500">
+                <div className="font-semibold text-foreground">{milestone.name}</div>
+                <div className="text-xs text-muted-foreground">
                   ${milestone.amount.toLocaleString()}/month
                 </div>
               </div>
@@ -80,7 +80,7 @@ export function ExpenseMilestones({ milestones = [], totalCoverage = 0 }: Expens
             
             <div className="text-right">
               <div className={`font-bold text-sm ${
-                milestone.covered ? 'text-prosperity-600' : 'text-slate-600'
+                milestone.covered ? 'text-prosperity-600' : 'text-muted-foreground'
               }`}>
                 {safePercentage(milestone.percentage * 100).toFixed(0)}%
               </div>
@@ -98,13 +98,13 @@ export function ExpenseMilestones({ milestones = [], totalCoverage = 0 }: Expens
           <div className="text-2xl font-bold text-prosperity-600">
             {milestones.filter(m => m.covered).length}
           </div>
-          <div className="text-xs text-slate-600">Covered</div>
+          <div className="text-xs text-muted-foreground">Covered</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-slate-700">
+          <div className="text-2xl font-bold text-foreground/90">
             {milestones.length}
           </div>
-          <div className="text-xs text-slate-600">Total</div>
+          <div className="text-xs text-muted-foreground">Total</div>
         </div>
       </div>
     </div>

@@ -19,7 +19,7 @@ const TaxStrategyHub = lazy(() => import('./TaxStrategyHub').then(m => ({ defaul
 const PortfolioStrategyHub = lazy(() => import('./PortfolioStrategyHub').then(m => ({ default: m.PortfolioStrategyHub })))
 const FinancialPlanningHub = lazy(() => import('./FinancialPlanningHub').then(m => ({ default: m.FinancialPlanningHub })))
 
-import { useSuperCardStore } from '@/store/superCardStore'
+import { useGlobalActions } from '@/store/superCardStore'
 import { logger } from '@/lib/logger'
 
 // Loading component for each hub
@@ -100,23 +100,51 @@ interface FullContentDashboardProps {
 export function FullContentDashboard({ className = '' }: FullContentDashboardProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [showScrollTop, setShowScrollTop] = useState(false)
-  const { initialize, isLoading: storeLoading } = useSuperCardStore()
+  const { 
+    fetchIncomeHub, 
+    fetchPerformanceHub, 
+    fetchPortfolioHub, 
+    fetchTaxHub, 
+    fetchPlanningHub,
+    setLoading 
+  } = useGlobalActions()
 
   useEffect(() => {
     logger.info('FullContentDashboard: Initializing all super cards data')
     
     const initializeData = async () => {
       try {
-        await initialize()
+        setLoading(true)
+        
+        // Initialize hubs sequentially to avoid overwhelming the system
+        // Each hub will handle its own errors gracefully
+        logger.info('FullContentDashboard: Fetching Income Hub...')
+        await fetchIncomeHub().catch(err => logger.warn('Income hub fetch failed:', err))
+        
+        logger.info('FullContentDashboard: Fetching Performance Hub...')
+        await fetchPerformanceHub().catch(err => logger.warn('Performance hub fetch failed:', err))
+        
+        logger.info('FullContentDashboard: Fetching Portfolio Hub...')
+        await fetchPortfolioHub().catch(err => logger.warn('Portfolio hub fetch failed:', err))
+        
+        logger.info('FullContentDashboard: Fetching Tax Hub...')
+        await fetchTaxHub().catch(err => logger.warn('Tax hub fetch failed:', err))
+        
+        logger.info('FullContentDashboard: Fetching Planning Hub...')
+        await fetchPlanningHub().catch(err => logger.warn('Planning hub fetch failed:', err))
+        
         setIsLoading(false)
+        setLoading(false)
+        logger.info('FullContentDashboard: All hubs initialized successfully')
       } catch (error) {
         logger.error('FullContentDashboard: Failed to initialize', error)
         setIsLoading(false)
+        setLoading(false)
       }
     }
 
     initializeData()
-  }, [initialize])
+  }, [fetchIncomeHub, fetchPerformanceHub, fetchPortfolioHub, fetchTaxHub, fetchPlanningHub, setLoading])
 
   // Handle scroll to top button visibility
   useEffect(() => {
@@ -139,7 +167,7 @@ export function FullContentDashboard({ className = '' }: FullContentDashboardPro
     }
   }
 
-  if (isLoading || storeLoading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
         <div className="text-center">
@@ -149,8 +177,8 @@ export function FullContentDashboard({ className = '' }: FullContentDashboardPro
               <LayoutGrid className="h-12 w-12 animate-pulse" />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-slate-800 mt-6 mb-2">Loading Complete Dashboard</h2>
-          <p className="text-slate-600">Preparing all financial intelligence hubs...</p>
+          <h2 className="text-2xl font-bold text-foreground mt-6 mb-2">Loading Complete Dashboard</h2>
+          <p className="text-muted-foreground">Preparing all financial intelligence hubs...</p>
           <div className="flex justify-center space-x-2 mt-4">
             {Array.from({ length: 5 }, (_, i) => (
               <div 
@@ -180,10 +208,10 @@ export function FullContentDashboard({ className = '' }: FullContentDashboardPro
                 </div>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">
+                <h1 className="text-2xl font-bold text-foreground">
                   Full Content Dashboard
                 </h1>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-muted-foreground">
                   All 5 Intelligence Hubs • Complete View
                 </p>
               </div>
@@ -273,7 +301,14 @@ export function FullContentDashboard({ className = '' }: FullContentDashboardPro
                     <div className="bg-white rounded-xl p-6">
                       <Suspense fallback={<HubLoadingSkeleton />}>
                         <div className="min-h-[600px]">
-                          <HubComponent />
+                          <HubComponent 
+                            level="detailed"
+                            heroView={false}
+                            focusedAnalytics={false}
+                            engagementLevel="level-3"
+                            showAllTabs={true}
+                            isFullContentView={true}
+                          />
                         </div>
                       </Suspense>
                     </div>
@@ -301,14 +336,14 @@ export function FullContentDashboard({ className = '' }: FullContentDashboardPro
           <div className="inline-flex items-center space-x-4 px-8 py-4 rounded-2xl bg-gradient-to-r from-slate-100 to-slate-200 border border-slate-300 shadow-xl">
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
-              <span className="text-slate-800 font-semibold text-lg">
+              <span className="text-foreground font-semibold text-lg">
                 Complete Dashboard Active
               </span>
             </div>
             
             <div className="h-6 w-px bg-slate-400"></div>
             
-            <div className="text-slate-600">
+            <div className="text-muted-foreground">
               All 5 Financial Intelligence Hubs • Real-time Data • Full Content View
             </div>
           </div>

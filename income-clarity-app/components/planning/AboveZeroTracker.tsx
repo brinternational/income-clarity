@@ -171,10 +171,10 @@ export const AboveZeroTracker = ({
             exit={{ scale: 0 }}
           >
             <div className="text-6xl mb-4">{celebratingMilestone.icon}</div>
-            <h3 className="text-2xl font-bold text-slate-800 mb-2">
+            <h3 className="text-2xl font-bold text-foreground mb-2">
               {celebratingMilestone.title}!
             </h3>
-            <p className="text-slate-600 mb-6">{celebratingMilestone.description}</p>
+            <p className="text-muted-foreground mb-6">{celebratingMilestone.description}</p>
             <button
               onClick={() => setCelebratingMilestone(null)}
               className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors"
@@ -208,7 +208,7 @@ export const AboveZeroTracker = ({
             {Math.round(animatedValues.currentStreak)}
           </motion.div>
           
-          <div className="text-xl font-semibold text-slate-700 mb-2">
+          <div className="text-xl font-semibold text-foreground/90 mb-2">
             Month{currentStreak !== 1 ? 's' : ''} Above Zero
           </div>
           
@@ -224,7 +224,7 @@ export const AboveZeroTracker = ({
           }`}>
             {isAboveZero ? '+' : '-'}${Math.round(animatedValues.currentAmount).toLocaleString()}/month
           </div>
-          <div className="text-sm text-slate-600">
+          <div className="text-sm text-muted-foreground">
             {isAboveZero ? 'Available to reinvest' : 'Amount to optimize'}
           </div>
         </div>
@@ -235,21 +235,21 @@ export const AboveZeroTracker = ({
             <div className="text-2xl font-bold text-primary-600 mb-1">
               {Math.round(animatedValues.currentStreak)}
             </div>
-            <div className="text-xs text-slate-600">Current</div>
+            <div className="text-xs text-muted-foreground">Current</div>
           </div>
           
           <div className="text-center p-4 bg-white/60 rounded-xl">
             <div className="text-2xl font-bold text-wealth-600 mb-1">
               {Math.round(animatedValues.longestStreak)}
             </div>
-            <div className="text-xs text-slate-600">Record</div>
+            <div className="text-xs text-muted-foreground">Record</div>
           </div>
           
           <div className="text-center p-4 bg-white/60 rounded-xl">
             <div className="text-2xl font-bold text-green-600 mb-1">
               {Math.round(animatedValues.successRate)}%
             </div>
-            <div className="text-xs text-slate-600">Success</div>
+            <div className="text-xs text-muted-foreground">Success</div>
           </div>
         </div>
       </div>
@@ -258,7 +258,7 @@ export const AboveZeroTracker = ({
       <div className="bg-white rounded-xl border border-slate-200 p-6">
         <div className="flex items-center space-x-2 mb-4">
           <Award className="w-5 h-5 text-primary-600" />
-          <h3 className="font-semibold text-slate-800">Milestone Progress</h3>
+          <h3 className="font-semibold text-foreground">Milestone Progress</h3>
         </div>
         
         <div className="space-y-4">
@@ -278,11 +278,11 @@ export const AboveZeroTracker = ({
               
               <div className="flex-1">
                 <div className={`font-semibold ${
-                  milestone.unlocked ? 'text-green-800' : 'text-slate-600'
+                  milestone.unlocked ? 'text-green-800' : 'text-muted-foreground'
                 }`}>
                   {milestone.title}
                 </div>
-                <div className="text-xs text-slate-500">
+                <div className="text-xs text-muted-foreground">
                   {milestone.description}
                 </div>
               </div>
@@ -301,7 +301,7 @@ export const AboveZeroTracker = ({
 
       {/* Progress Insights */}
       <div className="bg-gradient-to-r from-blue-50 to-primary-50 rounded-xl p-6">
-        <h3 className="font-semibold text-slate-800 mb-4 flex items-center">
+        <h3 className="font-semibold text-foreground mb-4 flex items-center">
           <Target className="w-5 h-5 text-primary-600 mr-2" />
           Streak Insights
         </h3>

@@ -112,7 +112,7 @@ const TABS: TabConfig[] = [
     label: 'Settings',
     description: 'Location & preferences',
     icon: Settings,
-    color: 'text-slate-600',
+    color: 'text-muted-foreground',
     bgColor: 'bg-slate-50'
   }
 ];
@@ -359,7 +359,7 @@ const TaxStrategyHubComponent = ({
         </motion.div>
         
         <motion.div 
-          className="text-slate-600 font-medium text-sm sm:text-base mb-2"
+          className="text-muted-foreground font-medium text-sm sm:text-base mb-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
@@ -415,14 +415,14 @@ const TaxStrategyHubComponent = ({
           <div className="text-2xl font-bold text-red-600 mb-1">
             ${Math.round(animatedValues.currentBill).toLocaleString()}
           </div>
-          <div className="text-xs text-slate-600">Current Tax Bill</div>
+          <div className="text-xs text-muted-foreground">Current Tax Bill</div>
         </div>
         
         <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-25 rounded-lg border border-green-100">
           <div className="text-2xl font-bold text-green-600 mb-1">
             ${Math.round(animatedValues.optimizedBill).toLocaleString()}
           </div>
-          <div className="text-xs text-slate-600">Optimized Bill</div>
+          <div className="text-xs text-muted-foreground">Optimized Bill</div>
         </div>
       </div>
 
@@ -430,7 +430,7 @@ const TaxStrategyHubComponent = ({
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
+            <h3 className="text-lg sm:text-xl font-display font-semibold text-foreground">
               Tax Strategy Hub
             </h3>
             
@@ -467,13 +467,13 @@ const TaxStrategyHubComponent = ({
             {/* Mobile swipe indicators */}
             <div className="flex items-center space-x-2 sm:hidden">
               {currentTabIndex > 0 && (
-                <ChevronLeft className="w-5 h-5 text-slate-400" />
+                <ChevronLeft className="w-5 h-5 text-muted-foreground" />
               )}
-              <span className="text-xs text-slate-500 font-medium">
+              <span className="text-xs text-muted-foreground font-medium">
                 {currentTabIndex + 1} / {TABS.length}
               </span>
               {currentTabIndex < TABS.length - 1 && (
-                <ChevronRight className="w-5 h-5 text-slate-400" />
+                <ChevronRight className="w-5 h-5 text-muted-foreground" />
               )}
             </div>
           </div>
@@ -498,7 +498,7 @@ const TaxStrategyHubComponent = ({
                 className={`flex-1 relative px-3 py-3 sm:py-4 text-center transition-all duration-300 rounded-md sm:rounded-lg touch-friendly focus:outline-none focus:ring-2 focus:ring-primary-500 ${
                   isActive
                     ? 'text-white shadow-lg'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-white/50'
                 }`}
                 onClick={() => setActiveTab(tab.id)}
                 whileHover={{ scale: 1.02 }}
@@ -519,7 +519,7 @@ const TaxStrategyHubComponent = ({
                     {tab.label}
                   </div>
                   <div className={`text-xs ${
-                    isActive ? 'text-primary-100' : 'text-slate-500'
+                    isActive ? 'text-primary-100' : 'text-muted-foreground'
                   } hidden sm:block`}>
                     {tab.description}
                   </div>
@@ -553,7 +553,7 @@ const TaxStrategyHubComponent = ({
               
               {/* Tax Impact Waterfall */}
               <div className="mt-6">
-                <h4 className="text-lg font-semibold text-slate-800 mb-4">Tax Impact Analysis</h4>
+                <h4 className="text-lg font-semibold text-foreground mb-4">Tax Impact Analysis</h4>
                 <IncomeWaterfall 
                   timeframe="monthly"
                   location="Current Location"
@@ -563,7 +563,7 @@ const TaxStrategyHubComponent = ({
               
               {/* Legacy components for comparison */}
               <div className="mt-8 space-y-4">
-                <h4 className="text-lg font-semibold text-slate-800">Legacy Tax Analysis</h4>
+                <h4 className="text-lg font-semibold text-foreground">Legacy Tax Analysis</h4>
                 <div className="-mx-4 -my-2">
                   <TaxEfficiencyScore />
                 </div>
@@ -621,7 +621,7 @@ const TaxStrategyHubComponent = ({
       </AnimatePresence>
 
       {/* Mobile swipe hint */}
-      <div className="mt-6 text-center text-xs text-slate-500 sm:hidden">
+      <div className="mt-6 text-center text-xs text-muted-foreground sm:hidden">
         👈 Swipe left or right to switch tabs
       </div>
     </motion.div>

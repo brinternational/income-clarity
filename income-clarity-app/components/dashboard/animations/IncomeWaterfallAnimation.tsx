@@ -244,7 +244,7 @@ const IncomeWaterfallAnimation = ({
         className={`relative p-4 rounded-xl border-2 transition-all duration-500 ${
           isActive 
             ? `${stage.bgColor} ${stage.color} border-current shadow-lg ring-4 ring-opacity-30 ring-current` 
-            : 'bg-white border-slate-200 text-slate-600'
+            : 'bg-white border-slate-200 text-muted-foreground'
         } ${showMobileVersion ? 'p-3' : 'p-4'}`}
       >
         {/* Glow effect for active stage */}

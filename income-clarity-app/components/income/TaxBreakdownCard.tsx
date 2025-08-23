@@ -130,10 +130,10 @@ const TaxBreakdownCardComponent = () => {
       {/* Header */}
       <div className="flex items-start justify-between mb-6 sm:mb-8">
         <div className="flex-1 min-w-0">
-          <h3 className="text-base sm:text-lg lg:text-display-xs font-display font-semibold text-slate-800 mb-1">
+          <h3 className="text-base sm:text-lg lg:text-display-xs font-display font-semibold text-foreground mb-1">
             Tax Breakdown by Holding Type
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Understanding your dividend tax liability by investment type
           </p>
         </div>
@@ -145,10 +145,10 @@ const TaxBreakdownCardComponent = () => {
       {/* Total Tax Summary */}
       <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl border border-slate-100">
         <div className="text-center">
-          <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-700 mb-2">
+          <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground/90 mb-2">
             ${Math.round(animatedValues.total).toLocaleString()}
           </div>
-          <div className="text-sm sm:text-base text-slate-600 mb-2">Monthly Tax Liability</div>
+          <div className="text-sm sm:text-base text-muted-foreground mb-2">Monthly Tax Liability</div>
           <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
             taxData.effectiveRate < 20 ? 'bg-green-100 text-green-800' :
             taxData.effectiveRate < 30 ? 'bg-yellow-100 text-yellow-800' :
@@ -174,11 +174,11 @@ const TaxBreakdownCardComponent = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm sm:text-base font-medium text-slate-700">
+                    <span className="text-sm sm:text-base font-medium text-foreground/90">
                       {item.label}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500 mt-1 group-hover:text-slate-600 transition-colors leading-tight">
+                  <p className="text-xs text-muted-foreground mt-1 group-hover:text-muted-foreground transition-colors leading-tight">
                     {item.description}
                   </p>
                 </div>
@@ -207,8 +207,8 @@ const TaxBreakdownCardComponent = () => {
         <div className="flex items-start space-x-3">
           <Info className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
           <div>
-            <h4 className="font-semibold text-slate-700 mb-2">Tax Optimization Tip</h4>
-            <p className="text-sm text-slate-600">
+            <h4 className="font-semibold text-foreground/90 mb-2">Tax Optimization Tip</h4>
+            <p className="text-sm text-muted-foreground">
               {taxData.location === 'Puerto Rico' ? 
                 'As a Puerto Rico resident, you benefit from 0% tax on qualified dividends and capital gains!' :
                 'Consider tax-advantaged accounts or qualified dividend-focused ETFs to reduce your tax burden.'

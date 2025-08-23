@@ -1,0 +1,111 @@
+/* NUCLEAR CONTRAST FIX - FORCE READABLE TEXT NO MATTER WHAT */
+
+/* Force all text to be white on dark backgrounds */
+html.dark * {
+  color: #ffffff !important;
+}
+
+/* CRITICAL: Fix when ANY mode has dark slate backgrounds */
+/* Target the actual dark background colors being used */
+body[class*="bg-slate-900"] *,
+body[class*="bg-slate-800"] *,
+div[class*="bg-slate-900"] *,
+div[class*="bg-slate-800"] *,
+aside[class*="bg-slate-900"] *,
+aside[class*="bg-slate-800"] *,
+nav[class*="bg-slate-900"] *,
+nav[class*="bg-slate-800"] *,
+.bg-slate-900 *,
+.bg-slate-800 *,
+.bg-gray-900 *,
+.bg-gray-800 * {
+  color: #ffffff !important;
+}
+
+/* Force specific elements to have proper contrast */
+html.dark .text-foreground,
+html.dark .text-muted-foreground,
+html.dark span,
+html.dark p,
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6,
+html.dark a,
+html.dark button,
+html.dark nav,
+html.dark div,
+html.dark label {
+  color: #ffffff !important;
+}
+
+/* Force navigation text to be white */
+html.dark nav * {
+  color: #ffffff !important;
+}
+
+/* Force sidebar text to be white */
+html.dark aside *,
+html.dark [role="navigation"] * {
+  color: #ffffff !important;
+}
+
+/* Ensure backgrounds are dark */
+html.dark {
+  background-color: #0f172a !important;
+}
+
+html.dark body {
+  background-color: #0f172a !important;
+}
+
+/* Make cards slightly lighter for contrast */
+html.dark .bg-card,
+html.dark [class*="card"] {
+  background-color: #1e293b !important;
+}
+
+/* Ensure links are visible */
+html.dark a {
+  color: #60a5fa !important;
+}
+
+html.dark a:hover {
+  color: #93c5fd !important;
+}
+
+/* Buttons should have contrast */
+html.dark button {
+  color: #ffffff !important;
+  border-color: #475569 !important;
+}
+
+/* Input fields */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  color: #ffffff !important;
+  background-color: #1e293b !important;
+  border-color: #475569 !important;
+}
+
+/* Placeholders */
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Override any problematic classes */
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-slate-700,
+html.dark .text-slate-600 {
+  color: #ffffff !important;
+}
+
+/* Force white text on elements that may have inline styles */
+html.dark [style*="color"] {
+  color: #ffffff !important;
+}

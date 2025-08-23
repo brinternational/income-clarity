@@ -59,7 +59,7 @@ const SPYProjectionGraphComponent = ({
   if (!selectedProjection) {
     return (
       <div className="text-center py-8">
-        <div className="text-slate-400 text-sm">No projection data available</div>
+        <div className="text-muted-foreground text-sm">No projection data available</div>
       </div>
     );
   }
@@ -84,8 +84,8 @@ const SPYProjectionGraphComponent = ({
       {/* Period Selector */}
       <div>
         <div className="flex items-center space-x-2 mb-4">
-          <Calendar className="w-4 h-4 text-slate-600" />
-          <h4 className="font-semibold text-slate-800">Forward Projections</h4>
+          <Calendar className="w-4 h-4 text-muted-foreground" />
+          <h4 className="font-semibold text-foreground">Forward Projections</h4>
         </div>
         
         <div className="flex bg-slate-50 rounded-lg p-1 gap-1 overflow-x-auto">
@@ -106,7 +106,7 @@ const SPYProjectionGraphComponent = ({
                 className={`flex-shrink-0 px-3 py-2 text-xs font-medium rounded-md transition-all duration-200 touch-friendly ${
                   selectedPeriod === period
                     ? 'bg-primary-600 text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-white'
                 }`}
               >
                 {periodLabels[period]}
@@ -126,11 +126,11 @@ const SPYProjectionGraphComponent = ({
       >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h5 className="font-semibold text-slate-800 flex items-center">
+            <h5 className="font-semibold text-foreground flex items-center">
               <Target className="w-5 h-5 text-primary-600 mr-2" />
               {selectedProjection.timeframe} Outlook
             </h5>
-            <p className="text-xs text-slate-600 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Expected performance with confidence intervals
             </p>
           </div>
@@ -148,14 +148,14 @@ const SPYProjectionGraphComponent = ({
                 </div>
               )}
             </div>
-            <div className="text-xs text-slate-600">Success Probability</div>
+            <div className="text-xs text-muted-foreground">Success Probability</div>
           </div>
         </div>
 
         {/* Key Metrics Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="text-center p-3 bg-white/50 rounded-lg border border-white/60">
-            <div className="text-xs text-slate-600 mb-1">Expected Return</div>
+            <div className="text-xs text-muted-foreground mb-1">Expected Return</div>
             <div className={`text-lg font-bold ${
               selectedProjection.expectedReturn >= 0 ? 'text-prosperity-600' : 'text-alert-600'
             }`}>
@@ -164,21 +164,21 @@ const SPYProjectionGraphComponent = ({
           </div>
           
           <div className="text-center p-3 bg-white/50 rounded-lg border border-white/60">
-            <div className="text-xs text-slate-600 mb-1">Confidence Low</div>
+            <div className="text-xs text-muted-foreground mb-1">Confidence Low</div>
             <div className="text-lg font-bold text-primary-600">
               {(selectedProjection.confidenceInterval.low * 100).toFixed(1)}%
             </div>
           </div>
           
           <div className="text-center p-3 bg-white/50 rounded-lg border border-white/60">
-            <div className="text-xs text-slate-600 mb-1">Confidence High</div>
+            <div className="text-xs text-muted-foreground mb-1">Confidence High</div>
             <div className="text-lg font-bold text-wealth-600">
               {(selectedProjection.confidenceInterval.high * 100).toFixed(1)}%
             </div>
           </div>
           
           <div className="text-center p-3 bg-white/50 rounded-lg border border-white/60">
-            <div className="text-xs text-slate-600 mb-1">Milestones</div>
+            <div className="text-xs text-muted-foreground mb-1">Milestones</div>
             <div className="text-lg font-bold text-secondary-600">
               {selectedProjection.scenarios.length}
             </div>
@@ -189,11 +189,11 @@ const SPYProjectionGraphComponent = ({
       {/* Scenario Analysis Chart */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
-          <h6 className="font-semibold text-slate-800 flex items-center">
+          <h6 className="font-semibold text-foreground flex items-center">
             <Zap className="w-4 h-4 text-primary-600 mr-2" />
             Scenario Analysis
           </h6>
-          <p className="text-xs text-slate-600 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             Portfolio vs SPY projections across different market conditions
           </p>
         </div>
@@ -223,7 +223,7 @@ const SPYProjectionGraphComponent = ({
             <div className="relative h-full flex items-end justify-center space-x-8 p-4">
               {chartData.map((scenario, index) => (
                 <div key={scenario.name} className="flex flex-col items-center space-y-2">
-                  <div className="text-xs font-medium text-slate-600 text-center leading-tight">
+                  <div className="text-xs font-medium text-muted-foreground text-center leading-tight">
                     {scenario.name}
                   </div>
                   
@@ -270,11 +270,11 @@ const SPYProjectionGraphComponent = ({
             <div className="absolute top-4 left-4 flex items-center space-x-4">
               <div className="flex items-center space-x-1">
                 <div className="w-3 h-3 bg-primary-500 rounded-full"></div>
-                <span className="text-xs text-slate-600">Portfolio</span>
+                <span className="text-xs text-muted-foreground">Portfolio</span>
               </div>
               <div className="flex items-center space-x-1">
                 <div className="w-3 h-3 bg-wealth-500 rounded-full"></div>
-                <span className="text-xs text-slate-600">SPY</span>
+                <span className="text-xs text-muted-foreground">SPY</span>
               </div>
             </div>
           </div>
@@ -332,11 +332,11 @@ const SPYProjectionGraphComponent = ({
       {/* Milestones Timeline */}
       <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
-          <h6 className="font-semibold text-slate-800 flex items-center">
+          <h6 className="font-semibold text-foreground flex items-center">
             <Calendar className="w-4 h-4 text-secondary-600 mr-2" />
             Performance Milestones
           </h6>
-          <p className="text-xs text-slate-600 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             Expected checkpoints along the projection timeline
           </p>
         </div>
@@ -360,10 +360,10 @@ const SPYProjectionGraphComponent = ({
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-sm font-semibold text-slate-800">
+                      <div className="text-sm font-semibold text-foreground">
                         {milestone.name}
                       </div>
-                      <div className="text-xs text-slate-600">
+                      <div className="text-xs text-muted-foreground">
                         Probability: {(milestone.probability).toFixed(0)}%
                       </div>
                     </div>
@@ -399,7 +399,7 @@ const SPYProjectionGraphComponent = ({
                       )
                     ) : (
                       <div className="flex items-center space-x-1">
-                        <span className="text-slate-500">N/A</span>
+                        <span className="text-muted-foreground">N/A</span>
                       </div>
                     )}
                   </div>

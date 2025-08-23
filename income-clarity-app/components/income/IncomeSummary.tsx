@@ -193,7 +193,7 @@ const IncomeSummaryComponent = () => {
         
         {/* Financial Health Progress Bar */}
         <div className="flex items-center justify-between text-xs sm:text-sm">
-          <span className="font-medium text-slate-600 flex items-center space-x-2">
+          <span className="font-medium text-muted-foreground flex items-center space-x-2">
             <Globe className="w-4 h-4" />
             <span>Financial Independence Progress</span>
           </span>
@@ -217,10 +217,10 @@ const IncomeSummaryComponent = () => {
       {/* Income Analysis Header */}
       <div className="flex items-start justify-between mb-6 sm:mb-8">
         <div className="flex-1 min-w-0">
-          <h3 className="text-base sm:text-lg lg:text-display-xs font-display font-semibold text-slate-800 mb-1">
+          <h3 className="text-base sm:text-lg lg:text-display-xs font-display font-semibold text-foreground mb-1">
             Income Analysis Dashboard
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Your complete dividend income waterfall with tax-optimized calculations
           </p>
         </div>
@@ -246,7 +246,7 @@ const IncomeSummaryComponent = () => {
                     step.type === 'positive' ? 'bg-green-50 text-green-600' :
                     step.type === 'milestone' ? 'bg-blue-50 text-blue-600' :
                     step.type === 'negative' ? 'bg-red-50 text-red-600' :
-                    'bg-slate-50 text-slate-600'
+                    'bg-slate-50 text-muted-foreground'
                   }`}>
                     <step.icon className="w-3 h-3 sm:w-4 sm:h-4" />
                   </div>
@@ -254,7 +254,7 @@ const IncomeSummaryComponent = () => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center space-x-2">
                     <span className={`text-sm sm:text-base font-medium ${
-                      step.type === 'milestone' ? 'text-slate-800 sm:text-lg' : 'text-slate-700'
+                      step.type === 'milestone' ? 'text-foreground sm:text-lg' : 'text-foreground/90'
                     }`}>
                       {step.label}
                     </span>
@@ -262,7 +262,7 @@ const IncomeSummaryComponent = () => {
                       <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full animate-pulse" />
                     )}
                   </div>
-                  <p className="text-xs text-slate-500 mt-1 group-hover:text-slate-600 transition-colors leading-tight">
+                  <p className="text-xs text-muted-foreground mt-1 group-hover:text-muted-foreground transition-colors leading-tight">
                     {step.description}
                   </p>
                 </div>
@@ -273,7 +273,7 @@ const IncomeSummaryComponent = () => {
                   step.type === 'positive' ? 'text-green-600' :
                   step.type === 'negative' ? 'text-red-600' :
                   step.type === 'milestone' ? 'text-blue-600' :
-                  'text-slate-800'
+                  'text-foreground'
                 }`}>
                   {step.type === 'negative' ? '-' : ''}${step.value.toLocaleString()}
                 </div>
@@ -294,25 +294,25 @@ const IncomeSummaryComponent = () => {
       {/* Annual Projections */}
       {clarityData.grossMonthly > 0 && (
         <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-gradient-to-r from-slate-50 to-blue-50 rounded-lg sm:rounded-xl border border-slate-100">
-          <h4 className="font-semibold text-slate-700 mb-4">Annual Projections</h4>
+          <h4 className="font-semibold text-foreground/90 mb-4">Annual Projections</h4>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center text-sm">
             <div>
               <div className="font-bold text-green-600 text-lg sm:text-xl">
                 ${(clarityData.grossMonthly * 12).toLocaleString()}
               </div>
-              <div className="text-slate-600">Gross Income</div>
+              <div className="text-muted-foreground">Gross Income</div>
             </div>
             <div>
               <div className="font-bold text-red-600 text-lg sm:text-xl">
                 ${(clarityData.taxOwed * 12).toLocaleString()}
               </div>
-              <div className="text-slate-600">Tax Liability</div>
+              <div className="text-muted-foreground">Tax Liability</div>
             </div>
             <div>
               <div className="font-bold text-blue-600 text-lg sm:text-xl">
                 ${(clarityData.netMonthly * 12).toLocaleString()}
               </div>
-              <div className="text-slate-600">After-Tax Income</div>
+              <div className="text-muted-foreground">After-Tax Income</div>
             </div>
             <div>
               <div className={`font-bold text-lg sm:text-xl ${
@@ -320,7 +320,7 @@ const IncomeSummaryComponent = () => {
               }`}>
                 {clarityData.aboveZeroLine ? '+' : '-'}${(Math.abs(clarityData.availableToReinvest) * 12).toLocaleString()}
               </div>
-              <div className="text-slate-600">
+              <div className="text-muted-foreground">
                 {clarityData.aboveZeroLine ? 'Reinvestment' : 'Shortfall'}
               </div>
             </div>

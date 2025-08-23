@@ -74,7 +74,7 @@ const MOBILE_TABS = [
     shortLabel: 'Set',
     description: 'Custom goals',
     icon: Settings,
-    color: 'text-slate-600',
+    color: 'text-muted-foreground',
     bgColor: 'bg-slate-50'
   }
 ];
@@ -297,10 +297,10 @@ const MobileFinancialPlanningHubComponent = ({
             exit={{ scale: 0 }}
           >
             <div className="text-5xl mb-3">🎉</div>
-            <h3 className="text-xl font-bold text-slate-800 mb-2">
+            <h3 className="text-xl font-bold text-foreground mb-2">
               FIRE Milestone!
             </h3>
-            <p className="text-sm text-slate-600 mb-4">
+            <p className="text-sm text-muted-foreground mb-4">
               You've reached {activeData.fireProgress.toFixed(1)}% toward financial independence!
             </p>
             <button
@@ -339,8 +339,8 @@ const MobileFinancialPlanningHubComponent = ({
                 <span className="text-xl">{fireStageInsights.emoji}</span>
               </div>
               <div>
-                <h1 className="font-bold text-slate-800">FIRE Planning</h1>
-                <p className="text-xs text-slate-500">{fireStageInsights.shortStage}</p>
+                <h1 className="font-bold text-foreground">FIRE Planning</h1>
+                <p className="text-xs text-muted-foreground">{fireStageInsights.shortStage}</p>
               </div>
             </div>
             
@@ -349,7 +349,7 @@ const MobileFinancialPlanningHubComponent = ({
                 onClick={() => setShowBottomSheet(true)}
                 className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors"
               >
-                <Info className="w-4 h-4 text-slate-600" />
+                <Info className="w-4 h-4 text-muted-foreground" />
               </button>
               
               {onClose && (
@@ -357,7 +357,7 @@ const MobileFinancialPlanningHubComponent = ({
                   onClick={onClose}
                   className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors"
                 >
-                  <X className="w-4 h-4 text-slate-600" />
+                  <X className="w-4 h-4 text-muted-foreground" />
                 </button>
               )}
             </div>
@@ -377,7 +377,7 @@ const MobileFinancialPlanningHubComponent = ({
               {animatedValues.heroMetric.toFixed(1)}%
             </div>
             
-            <div className="text-sm text-slate-600 mb-2">
+            <div className="text-sm text-muted-foreground mb-2">
               Progress to FIRE
             </div>
 
@@ -385,7 +385,7 @@ const MobileFinancialPlanningHubComponent = ({
               {fireStageInsights.stage}
             </div>
 
-            <div className="text-sm text-slate-600 mb-4">
+            <div className="text-sm text-muted-foreground mb-4">
               {fireStageInsights.message}
             </div>
 
@@ -402,28 +402,28 @@ const MobileFinancialPlanningHubComponent = ({
               <div className="text-lg font-bold text-prosperity-600 mb-1">
                 ${Math.round(animatedValues.netWorth)}K
               </div>
-              <div className="text-xs text-slate-600">Net Worth</div>
+              <div className="text-xs text-muted-foreground">Net Worth</div>
             </div>
             
             <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
               <div className="text-lg font-bold text-blue-600 mb-1">
                 {Math.round(animatedValues.savingsRate)}%
               </div>
-              <div className="text-xs text-slate-600">Savings Rate</div>
+              <div className="text-xs text-muted-foreground">Savings Rate</div>
             </div>
             
             <div className="text-center p-4 bg-green-50 rounded-xl border border-green-100">
               <div className="text-lg font-bold text-green-600 mb-1">
                 ${Math.round(animatedValues.monthlyInvestment).toLocaleString()}
               </div>
-              <div className="text-xs text-slate-600">Monthly Invest</div>
+              <div className="text-xs text-muted-foreground">Monthly Invest</div>
             </div>
             
             <div className="text-center p-4 bg-orange-50 rounded-xl border border-orange-100">
               <div className="text-lg font-bold text-orange-600 mb-1">
                 {Math.round(animatedValues.aboveZeroStreak)}
               </div>
-              <div className="text-xs text-slate-600">Streak Months</div>
+              <div className="text-xs text-muted-foreground">Streak Months</div>
             </div>
           </div>
         </div>
@@ -442,7 +442,7 @@ const MobileFinancialPlanningHubComponent = ({
                   className={`flex-1 relative px-2 py-3 text-center transition-all duration-200 rounded-xl ${
                     isActive
                       ? 'text-white shadow-md'
-                      : 'text-slate-600 hover:bg-slate-50'
+                      : 'text-muted-foreground hover:bg-slate-50'
                   }`}
                 >
                   {isActive && (
@@ -506,8 +506,8 @@ const MobileFinancialPlanningHubComponent = ({
               {activeTab === 'goals' && (
                 <div className="text-center py-8">
                   <div className="text-4xl mb-3">🎯</div>
-                  <h3 className="text-lg font-bold text-slate-800 mb-2">Custom Goals</h3>
-                  <p className="text-sm text-slate-600 mb-4">
+                  <h3 className="text-lg font-bold text-foreground mb-2">Custom Goals</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
                     Set custom financial goals beyond FIRE milestones
                   </p>
                   <div className="bg-primary-50 rounded-xl p-4 text-left">
@@ -543,7 +543,7 @@ const MobileFinancialPlanningHubComponent = ({
         </div>
 
         {/* Swipe hints */}
-        <div className="text-center text-xs text-slate-400 py-2">
+        <div className="text-center text-xs text-muted-foreground py-2">
           Swipe tabs • Pull to refresh
         </div>
       </div>

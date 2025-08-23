@@ -15,6 +15,7 @@ import { useSuperCardStore } from '@/store/superCardStore'
 // Import the new dashboard components
 import { SinglePageDashboard } from '@/components/super-cards/SinglePageDashboard'
 import { FullContentDashboard } from '@/components/super-cards/FullContentDashboard'
+import { MomentumDashboard } from '@/components/super-cards/MomentumDashboard'
 
 // Import Design System components
 import { Button } from '@/components/design-system/core/Button'
@@ -113,23 +114,41 @@ function SuperCardsDashboard() {
   // URL parameters for navigation integration
   const searchParams = useSearchParams()
   
-  // Get card from URL on initial render
-  const initialCard = searchParams.get('card')
+  // Progressive Disclosure URL parameters - Support BOTH parameter schemes
   
-  // Progressive Disclosure URL parameters
-  const level = searchParams.get('level') // momentum, hero-view, detailed
+  // Current implementation parameters
+  const levelParam = searchParams.get('level') // momentum, hero-view, detailed
   const hubParam = searchParams.get('hub') // performance, income-tax, portfolio, planning
   
-  // Map hub URL names to component IDs
+  // User expected parameters (compatibility layer)
+  const viewParam = searchParams.get('view') // momentum, hero-view, detailed
+  const cardParam = searchParams.get('card') // income, performance, tax, portfolio, planning
+  
+  // Determine which parameter scheme to use
+  const level = levelParam || viewParam // Prefer current implementation, fallback to user expected
+  const sourceHub = hubParam || cardParam // Prefer current implementation, fallback to user expected
+  
+  // Legacy card selection for individual card view (non-Progressive Disclosure)
+  const initialCard = !level && !viewParam ? searchParams.get('card') : null
+  
+  // Map hub URL names to component IDs (support both naming conventions)
   const hubMapping: { [key: string]: string } = {
+    // Current implementation naming
     'performance': 'performance',
     'income-tax': 'income',
+    'tax-strategy': 'tax',
+    'portfolio-strategy': 'portfolio',
+    'financial-planning': 'planning',
     'portfolio': 'portfolio',
-    'planning': 'planning'
+    'planning': 'planning',
+    
+    // User expected naming (card parameter values)
+    'income': 'income',
+    'tax': 'tax'
   }
   
   // Get mapped hub ID
-  const mappedHub = hubParam ? hubMapping[hubParam] || hubParam : null
+  const mappedHub = sourceHub ? hubMapping[sourceHub] || sourceHub : null
   
   // Progressive Disclosure implementation active
   
@@ -172,7 +191,38 @@ function SuperCardsDashboard() {
     window.location.reload()
   }, [])
 
-  // Progressive Disclosure: Hero-view implementation
+  // Progressive Disclosure: Level 1 (momentum) - 80% of users
+  // DEFAULT BEHAVIOR: If no level specified, default to momentum for 80% of users
+  if (level === 'momentum' || (!level && !useSinglePage && !useFullContent && !selectedCard)) {
+    return (
+      <SuperCardsAppShell
+        selectedCard={null}
+        onCardSelect={handleCardSelect}
+        showBackButton={false}
+      >
+        <div className="momentum-dashboard" data-level="momentum">
+          <MomentumDashboard />
+        </div>
+      </SuperCardsAppShell>
+    )
+  }
+
+  // Progressive Disclosure: Level 3 (detailed) - 5% of users
+  if (level === 'detailed') {
+    return (
+      <SuperCardsAppShell
+        selectedCard={null}
+        onCardSelect={handleCardSelect}
+        showBackButton={false}
+      >
+        <div className="detailed-dashboard" data-level="detailed">
+          <FullContentDashboard />
+        </div>
+      </SuperCardsAppShell>
+    )
+  }
+
+  // Progressive Disclosure: Level 2 (hero-view) - 15% of users
   if (level === 'hero-view' && mappedHub) {
     const heroCard = SUPER_CARDS.find(c => c.id === mappedHub)
     if (heroCard) {
@@ -186,7 +236,7 @@ function SuperCardsDashboard() {
           cardTitle={heroCard.title}
           cardDescription={heroCard.description}
         >
-          <div className="hero-view" data-level="hero-view" data-hub={hubParam}>
+          <div className="hero-view" data-level="hero-view" data-hub={sourceHub} data-scheme={hubParam ? 'level-hub' : 'view-card'}>
             {/* Back to Dashboard Button */}
             <div className="back-to-dashboard mb-6">
               <Button 
@@ -215,10 +265,10 @@ function SuperCardsDashboard() {
                   </div>
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold text-slate-800">
+                  <h1 className="text-4xl font-bold text-foreground">
                     {heroCard.title}
                   </h1>
-                  <p className="text-lg text-slate-600 mt-2">
+                  <p className="text-lg text-muted-foreground mt-2">
                     {heroCard.description}
                   </p>
                 </div>
@@ -230,7 +280,12 @@ function SuperCardsDashboard() {
             
             {/* Hero Card Component */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <HeroCardComponent />
+              <HeroCardComponent 
+                heroView={true}
+                level="hero-view"
+                focusedAnalytics={true}
+                engagementLevel="level-2"
+              />
             </div>
           </div>
         </SuperCardsAppShell>
@@ -247,7 +302,10 @@ function SuperCardsDashboard() {
             <div className="min-h-screen flex items-center justify-center">
               <div className="text-center">
                 <p className="text-red-600 text-lg mb-4">
-                  Hub "{hubParam}" not found for hero view
+                  Hub "{sourceHub}" not found for hero view
+                </p>
+                <p className="text-muted-foreground text-sm mb-4">
+                  Parameter scheme: {hubParam ? 'level + hub' : 'view + card'} | Hub value: "{sourceHub}"
                 </p>
                 <Button 
                   onClick={handleBackToMomentum}
@@ -263,6 +321,38 @@ function SuperCardsDashboard() {
         </SuperCardsAppShell>
       )
     }
+  }
+
+  // Progressive Disclosure: Handle invalid level parameter
+  if (level && !['momentum', 'hero-view', 'detailed'].includes(level)) {
+    return (
+      <SuperCardsAppShell
+        selectedCard={null}
+        onCardSelect={handleCardSelect}
+        showBackButton={false}
+      >
+        <div className="invalid-level" data-level={level}>
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <p className="text-red-600 text-lg mb-4">
+                Invalid disclosure level: "{level}"
+              </p>
+              <p className="text-muted-foreground mb-6">
+                Valid levels: momentum, hero-view, detailed
+              </p>
+              <Button 
+                onClick={handleBackToMomentum}
+                variant="primary"
+                size="md"
+                className="back-to-dashboard"
+              >
+                Back to Dashboard
+              </Button>
+            </div>
+          </div>
+        </div>
+      </SuperCardsAppShell>
+    )
   }
 
   // If full content layout is requested (all cards expanded)
@@ -375,7 +465,7 @@ function SuperCardsDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl text-slate-200 max-w-3xl mx-auto leading-relaxed"
+              className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
             >
               Your comprehensive financial intelligence dashboard with advanced analytics and insights
             </motion.p>
@@ -455,7 +545,7 @@ function SuperCardsDashboard() {
                         </div>
                       </div>
                       <div>
-                        <CardTitle className="text-2xl group-hover:text-slate-700 transition-colors duration-300">
+                        <CardTitle className="text-2xl group-hover:text-foreground/90 transition-colors duration-300">
                           {card.title}
                         </CardTitle>
                         <CardDescription className="text-base font-medium">
@@ -467,7 +557,7 @@ function SuperCardsDashboard() {
                     {/* Animated arrow */}
                     <div className="opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300">
                       <div className="p-2 rounded-full bg-slate-100 group-hover:bg-slate-200">
-                        <ChevronRight className="h-5 w-5 text-slate-600" />
+                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
                       </div>
                     </div>
                   </div>
@@ -475,10 +565,10 @@ function SuperCardsDashboard() {
 
                 <CardContent className="flex-1 space-y-4">
                   <div className="p-4 rounded-xl bg-gradient-to-r from-slate-50 to-slate-100 border border-slate-200/50">
-                    <div className="text-sm text-slate-700 font-medium mb-2">
+                    <div className="text-sm text-foreground/90 font-medium mb-2">
                       Explore advanced analytics and insights
                     </div>
-                    <div className="text-xs text-slate-500">
+                    <div className="text-xs text-muted-foreground">
                       Real-time data • Interactive visualizations • Export capabilities
                     </div>
                   </div>

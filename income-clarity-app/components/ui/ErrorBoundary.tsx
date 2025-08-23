@@ -182,26 +182,26 @@ const StrategyCardErrorFallback: React.FC<FallbackProps> = ({
         {/* Technical Details (Debug Mode) */}
         {showTechnicalDetails && showDetails && error && (
           <div className="mt-4 p-4 bg-slate-100 rounded-lg border">
-            <h4 className="font-medium text-slate-700 mb-2">Technical Details</h4>
+            <h4 className="font-medium text-foreground/90 mb-2">Technical Details</h4>
             <div className="space-y-2">
               <div>
-                <strong className="text-sm text-slate-600">Error:</strong>
-                <pre className="text-xs text-slate-600 bg-white p-2 rounded border mt-1 overflow-auto max-h-32">
+                <strong className="text-sm text-muted-foreground">Error:</strong>
+                <pre className="text-xs text-muted-foreground bg-white p-2 rounded border mt-1 overflow-auto max-h-32">
                   {error.message}
                 </pre>
               </div>
               {error.stack && (
                 <div>
-                  <strong className="text-sm text-slate-600">Stack:</strong>
-                  <pre className="text-xs text-slate-600 bg-white p-2 rounded border mt-1 overflow-auto max-h-32">
+                  <strong className="text-sm text-muted-foreground">Stack:</strong>
+                  <pre className="text-xs text-muted-foreground bg-white p-2 rounded border mt-1 overflow-auto max-h-32">
                     {error.stack}
                   </pre>
                 </div>
               )}
               {errorInfo?.componentStack && (
                 <div>
-                  <strong className="text-sm text-slate-600">Component Stack:</strong>
-                  <pre className="text-xs text-slate-600 bg-white p-2 rounded border mt-1 overflow-auto max-h-32">
+                  <strong className="text-sm text-muted-foreground">Component Stack:</strong>
+                  <pre className="text-xs text-muted-foreground bg-white p-2 rounded border mt-1 overflow-auto max-h-32">
                     {errorInfo.componentStack}
                   </pre>
                 </div>

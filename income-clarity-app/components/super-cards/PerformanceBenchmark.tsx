@@ -31,7 +31,7 @@ const MockContextComponent = React.memo(() => {
   })
   
   return (
-    <div className="text-xs text-slate-500">
+    <div className="text-xs text-muted-foreground">
       Context renders: {renderCount}
     </div>
   )
@@ -48,7 +48,7 @@ const ZustandComponent = React.memo(() => {
   })
   
   return (
-    <div className="text-xs text-slate-500">
+    <div className="text-xs text-muted-foreground">
       Zustand renders: {renderCount}
     </div>
   )
@@ -64,7 +64,7 @@ const SelectiveComponent = React.memo(() => {
   })
   
   return (
-    <div className="text-xs text-slate-500">
+    <div className="text-xs text-muted-foreground">
       Selective renders: {renderCount} (${portfolioValue.toLocaleString()})
     </div>
   )
@@ -213,10 +213,10 @@ export function PerformanceBenchmark({ className = '' }: PerformanceBenchmarkPro
   return (
     <div className={`p-6 bg-white rounded-xl border border-slate-200 ${className}`}>
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-slate-800 mb-2">
+        <h3 className="text-lg font-semibold text-foreground mb-2">
           Performance Benchmark Dashboard
         </h3>
-        <p className="text-slate-600 text-sm">
+        <p className="text-muted-foreground text-sm">
           Compare Zustand performance vs traditional Context API patterns
         </p>
       </div>
@@ -229,7 +229,7 @@ export function PerformanceBenchmark({ className = '' }: PerformanceBenchmarkPro
         </div>
 
         <div className="p-4 bg-gradient-to-br from-slate-50 to-slate-25 rounded-lg">
-          <h4 className="font-semibold text-slate-700 mb-2">Context Comparison</h4>
+          <h4 className="font-semibold text-foreground/90 mb-2">Context Comparison</h4>
           <MockContextComponent />
         </div>
 
@@ -259,7 +259,7 @@ export function PerformanceBenchmark({ className = '' }: PerformanceBenchmarkPro
         </div>
 
         {isBenchmarking && currentTest && (
-          <div className="text-sm text-slate-600">
+          <div className="text-sm text-muted-foreground">
             Running: {currentTest}
           </div>
         )}
@@ -296,7 +296,7 @@ export function PerformanceBenchmark({ className = '' }: PerformanceBenchmarkPro
       {/* Detailed Results */}
       {benchmarkResults.length > 0 && (
         <div className="space-y-3">
-          <h4 className="font-semibold text-slate-800">Detailed Results:</h4>
+          <h4 className="font-semibold text-foreground">Detailed Results:</h4>
           
           {benchmarkResults.map((result, index) => (
             <motion.div
@@ -306,7 +306,7 @@ export function PerformanceBenchmark({ className = '' }: PerformanceBenchmarkPro
               className="p-4 border border-slate-200 rounded-lg bg-gradient-to-r from-white to-slate-50"
             >
               <div className="flex items-center justify-between mb-2">
-                <h5 className="font-medium text-slate-800">{result.scenario}</h5>
+                <h5 className="font-medium text-foreground">{result.scenario}</h5>
                 <div className={`px-2 py-1 rounded text-sm font-medium ${
                   result.improvement >= 50 
                     ? 'bg-green-100 text-green-800'
@@ -320,28 +320,28 @@ export function PerformanceBenchmark({ className = '' }: PerformanceBenchmarkPro
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div>
-                  <span className="text-slate-500">Zustand Renders:</span>
+                  <span className="text-muted-foreground">Zustand Renders:</span>
                   <div className="font-mono font-semibold text-primary-600">
                     {result.zustandRenders}
                   </div>
                 </div>
                 
                 <div>
-                  <span className="text-slate-500">Context Renders:</span>
-                  <div className="font-mono font-semibold text-slate-600">
+                  <span className="text-muted-foreground">Context Renders:</span>
+                  <div className="font-mono font-semibold text-muted-foreground">
                     {result.contextRenders}
                   </div>
                 </div>
                 
                 <div>
-                  <span className="text-slate-500">Duration:</span>
-                  <div className="font-mono font-semibold text-slate-800">
+                  <span className="text-muted-foreground">Duration:</span>
+                  <div className="font-mono font-semibold text-foreground">
                     {result.duration.toFixed(2)}ms
                   </div>
                 </div>
                 
                 <div>
-                  <span className="text-slate-500">Renders Saved:</span>
+                  <span className="text-muted-foreground">Renders Saved:</span>
                   <div className="font-mono font-semibold text-prosperity-600">
                     {result.contextRenders - result.zustandRenders}
                   </div>

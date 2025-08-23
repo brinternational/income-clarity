@@ -117,7 +117,7 @@ export function UpdateNotification({ onUpdate, onDismiss }: UpdateNotificationPr
   return (
     <div className="fixed bottom-4 left-4 right-4 md:left-auto md:bottom-6 md:right-6 md:w-96 z-50">
       <div 
-        className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-4 transform transition-all duration-300 animate-slide-up"
+        className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-border p-4 transform transition-all duration-300 animate-slide-up"
         style={{
           backgroundColor: 'var(--color-primary)',
           borderColor: 'var(--color-border)',

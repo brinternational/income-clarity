@@ -1,0 +1,147 @@
+#!/bin/bash
+
+# Graceful Server Management Wrapper
+# Provides easy access to server management operations
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MGMT_SCRIPT="$SCRIPT_DIR/graceful-server-management.js"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Function to print colored output
+print_status() {
+    echo -e "${BLUE}[SERVER-MGMT]${NC} $1"
+}
+
+print_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+}
+
+print_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+}
+
+# Show banner
+show_banner() {
+    echo -e "${BLUE}"
+    echo "╔══════════════════════════════════════════════════════════════╗"
+    echo "║                 GRACEFUL SERVER MANAGEMENT                   ║"
+    echo "║                                                              ║"
+    echo "║  🛡️  PROTECTED: Claude Code CLI, SSH, VSCode                ║"
+    echo "║  🎯  MANAGED: Income Clarity Server (Port 3000)             ║"
+    echo "║  ⚡  SAFE: Graceful shutdown with health monitoring          ║"
+    echo "╚══════════════════════════════════════════════════════════════╝"
+    echo -e "${NC}"
+}
+
+# Check if management script exists
+check_prerequisites() {
+    if [[ ! -f "$MGMT_SCRIPT" ]]; then
+        print_error "Management script not found: $MGMT_SCRIPT"
+        exit 1
+    fi
+    
+    if [[ ! -x "$MGMT_SCRIPT" ]]; then
+        print_warning "Making management script executable..."
+        chmod +x "$MGMT_SCRIPT"
+    fi
+}
+
+# Execute management command
+execute_command() {
+    local cmd="$1"
+    print_status "Executing: $cmd"
+    
+    # Run the management script
+    if node "$MGMT_SCRIPT" "$cmd"; then
+        print_success "Command completed successfully"
+        return 0
+    else
+        print_error "Command failed"
+        return 1
+    fi
+}
+
+# Main function
+main() {
+    show_banner
+    check_prerequisites
+    
+    local command="${1:-help}"
+    
+    case "$command" in
+        "start")
+            print_status "Starting Income Clarity server..."
+            execute_command "start"
+            ;;
+        "stop")
+            print_status "Stopping Income Clarity server gracefully..."
+            execute_command "stop"
+            ;;
+        "restart")
+            print_status "Restarting Income Clarity server gracefully..."
+            execute_command "restart"
+            ;;
+        "status")
+            print_status "Checking system status..."
+            execute_command "status"
+            ;;
+        "emergency")
+            print_warning "Initiating emergency recovery..."
+            execute_command "emergency"
+            ;;
+        "discover")
+            print_status "Discovering services..."
+            execute_command "discover"
+            ;;
+        "test")
+            print_status "Testing server management system..."
+            print_status "Step 1: Service Discovery"
+            execute_command "discover"
+            echo ""
+            print_status "Step 2: System Status"
+            execute_command "status"
+            ;;
+        "help"|"-h"|"--help")
+            echo -e "${GREEN}Graceful Server Management Commands:${NC}"
+            echo ""
+            echo -e "  ${YELLOW}start${NC}     - Start Income Clarity server"
+            echo -e "  ${YELLOW}stop${NC}      - Stop Income Clarity server gracefully"
+            echo -e "  ${YELLOW}restart${NC}   - Graceful restart of Income Clarity server"
+            echo -e "  ${YELLOW}status${NC}    - Show system status and service health"
+            echo -e "  ${YELLOW}emergency${NC} - Emergency recovery (clear port + start)"
+            echo -e "  ${YELLOW}discover${NC}  - Discover and categorize all services"
+            echo -e "  ${YELLOW}test${NC}      - Test the management system"
+            echo -e "  ${YELLOW}help${NC}      - Show this help message"
+            echo ""
+            echo -e "${BLUE}Examples:${NC}"
+            echo -e "  ./server-mgmt restart    # Gracefully restart server"
+            echo -e "  ./server-mgmt status     # Check system health"
+            echo -e "  ./server-mgmt emergency  # Emergency recovery"
+            echo ""
+            echo -e "${RED}CRITICAL PROTECTIONS:${NC}"
+            echo -e "  • Claude Code CLI processes are NEVER touched"
+            echo -e "  • Ports 22 (SSH) and 8080 are NEVER killed"
+            echo -e "  • Only Income Clarity server on port 3000 is managed"
+            echo -e "  • Graceful shutdown with 10-second grace period"
+            echo -e "  • Health validation after restart"
+            ;;
+        *)
+            print_error "Unknown command: $command"
+            echo "Use './server-mgmt help' for usage information"
+            exit 1
+            ;;
+    esac
+}
+
+# Run main function with all arguments
+main "$@"

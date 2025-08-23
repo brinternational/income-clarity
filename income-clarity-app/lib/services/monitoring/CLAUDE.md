@@ -20,10 +20,48 @@
 
 ---
 
-# Rate Limit Monitor Service
+# MONITORING SERVICE
 
-## Service Overview
+## Purpose
+Comprehensive monitoring, metrics collection, error reporting, and alerting system for Income Clarity application.
+
+## Structure
+```
+monitoring/
+├── CLAUDE.md
+├── rate-limit-monitor.service.ts    # Rate limit monitoring
+├── metrics.service.ts               # System metrics collection
+├── monitoring.service.ts            # Core monitoring service
+├── error-reporter.service.ts        # Error tracking and reporting
+├── alerts/
+│   ├── alert-manager.ts            # Alert management system
+│   └── alert-rules.ts              # Alert rule definitions
+└── recovery/
+    ├── circuit-breaker.ts          # Circuit breaker pattern
+    └── retry-strategy.ts           # Retry logic and strategies
+```
+
+## Services
+
+### RateLimitMonitorService
 Production-grade monitoring system providing real-time rate limit tracking, API health monitoring, performance metrics collection, automated alerting on thresholds, historical data analysis, and dashboard data aggregation with circuit breaker monitoring.
+
+### MetricsService  
+System performance and business metrics collection service.
+
+### MonitoringService
+Core monitoring orchestration and health checking service.
+
+### ErrorReporterService
+Centralized error tracking, reporting, and analysis service.
+
+### Alert Management
+- **AlertManager**: Handles alert lifecycle and notifications
+- **AlertRules**: Configurable alert conditions and thresholds
+
+### Recovery Systems
+- **CircuitBreaker**: Prevents cascade failures
+- **RetryStrategy**: Intelligent retry logic for failed operations
 
 ## Current Implementation
 

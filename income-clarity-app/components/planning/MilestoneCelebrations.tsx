@@ -990,7 +990,7 @@ export const MilestoneCelebrations = ({
   const getDifficultyColor = (difficulty: Achievement['difficulty']) => {
     switch (difficulty) {
       case 'bronze': return 'text-amber-600 bg-amber-50 border-amber-200';
-      case 'silver': return 'text-slate-600 bg-slate-50 border-slate-200';
+      case 'silver': return 'text-muted-foreground bg-slate-50 border-slate-200';
       case 'gold': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
       case 'platinum': return 'text-purple-600 bg-purple-50 border-purple-200';
       case 'legendary': return 'text-pink-600 bg-pink-50 border-pink-200';
@@ -1147,8 +1147,8 @@ export const MilestoneCelebrations = ({
               <Crown className="w-6 h-6 text-purple-600" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-slate-800">Level {Math.round(animatedValues.level)}</h2>
-              <p className="text-slate-600">Wealth Building Champion</p>
+              <h2 className="text-2xl font-bold text-foreground">Level {Math.round(animatedValues.level)}</h2>
+              <p className="text-muted-foreground">Wealth Building Champion</p>
             </div>
           </div>
           
@@ -1156,17 +1156,17 @@ export const MilestoneCelebrations = ({
             <div className="text-2xl font-bold text-purple-600">
               {Math.round(animatedValues.totalPoints).toLocaleString()}
             </div>
-            <div className="text-sm text-slate-600">Total Points</div>
+            <div className="text-sm text-muted-foreground">Total Points</div>
           </div>
         </div>
 
         {/* Level Progress Bar */}
         <div className="mb-4">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-slate-700">
+            <span className="text-sm font-medium text-foreground/90">
               Level {userProgress.level} Progress
             </span>
-            <span className="text-sm text-slate-600">
+            <span className="text-sm text-muted-foreground">
               {levelProgress.pointsNeededForLevel - levelProgress.progressInLevel} points to next level
             </span>
           </div>
@@ -1192,21 +1192,21 @@ export const MilestoneCelebrations = ({
             <div className="text-lg font-bold text-green-600 mb-1">
               {Math.round(animatedValues.unlockedCount)}
             </div>
-            <div className="text-xs text-slate-600">Unlocked</div>
+            <div className="text-xs text-muted-foreground">Unlocked</div>
           </div>
           
           <div className="text-center p-3 bg-white/60 rounded-lg">
             <div className="text-lg font-bold text-orange-600 mb-1">
               {achievements.length - Math.round(animatedValues.unlockedCount)}
             </div>
-            <div className="text-xs text-slate-600">Remaining</div>
+            <div className="text-xs text-muted-foreground">Remaining</div>
           </div>
           
           <div className="text-center p-3 bg-white/60 rounded-lg">
             <div className="text-lg font-bold text-blue-600 mb-1">
               {((Math.round(animatedValues.unlockedCount) / achievements.length) * 100).toFixed(0)}%
             </div>
-            <div className="text-xs text-slate-600">Complete</div>
+            <div className="text-xs text-muted-foreground">Complete</div>
           </div>
         </div>
       </div>
@@ -1219,7 +1219,7 @@ export const MilestoneCelebrations = ({
             className={`px-3 py-2 text-sm rounded-lg transition-colors ${
               filter === 'all' 
                 ? 'bg-primary-600 text-white' 
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                : 'bg-slate-100 text-muted-foreground hover:bg-slate-200'
             }`}
           >
             All
@@ -1229,7 +1229,7 @@ export const MilestoneCelebrations = ({
             className={`px-3 py-2 text-sm rounded-lg transition-colors ${
               filter === 'unlocked' 
                 ? 'bg-primary-600 text-white' 
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                : 'bg-slate-100 text-muted-foreground hover:bg-slate-200'
             }`}
           >
             Unlocked
@@ -1239,7 +1239,7 @@ export const MilestoneCelebrations = ({
             className={`px-3 py-2 text-sm rounded-lg transition-colors ${
               filter === 'locked' 
                 ? 'bg-primary-600 text-white' 
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                : 'bg-slate-100 text-muted-foreground hover:bg-slate-200'
             }`}
           >
             Locked
@@ -1249,7 +1249,7 @@ export const MilestoneCelebrations = ({
             className={`px-3 py-2 text-sm rounded-lg transition-colors ${
               filter === 'recent' 
                 ? 'bg-primary-600 text-white' 
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                : 'bg-slate-100 text-muted-foreground hover:bg-slate-200'
             }`}
           >
             Recent
@@ -1257,7 +1257,7 @@ export const MilestoneCelebrations = ({
         </div>
 
         <div className="flex items-center space-x-2">
-          <span className="text-sm text-slate-600">Sort by:</span>
+          <span className="text-sm text-muted-foreground">Sort by:</span>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
@@ -1315,7 +1315,7 @@ export const MilestoneCelebrations = ({
                   {achievement.isUnlocked ? (
                     <Unlock className="w-5 h-5 text-green-600" />
                   ) : (
-                    <Lock className="w-5 h-5 text-slate-400" />
+                    <Lock className="w-5 h-5 text-muted-foreground" />
                   )}
                 </div>
 
@@ -1336,12 +1336,12 @@ export const MilestoneCelebrations = ({
                 {/* Achievement Info */}
                 <div className="text-center mb-4">
                   <h3 className={`font-bold text-lg mb-2 ${
-                    achievement.isUnlocked ? 'text-slate-800' : 'text-slate-600'
+                    achievement.isUnlocked ? 'text-foreground' : 'text-muted-foreground'
                   }`}>
                     {achievement.title}
                   </h3>
                   <p className={`text-sm mb-3 ${
-                    achievement.isUnlocked ? 'text-slate-600' : 'text-slate-500'
+                    achievement.isUnlocked ? 'text-muted-foreground' : 'text-muted-foreground'
                   }`}>
                     {achievement.description}
                   </p>
@@ -1350,8 +1350,8 @@ export const MilestoneCelebrations = ({
                 {/* Progress Bar */}
                 <div className="mb-4">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs font-medium text-slate-600">Progress</span>
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs font-medium text-muted-foreground">Progress</span>
+                    <span className="text-xs text-muted-foreground">
                       {achievement.progress} / {achievement.maxProgress}
                     </span>
                   </div>
@@ -1380,7 +1380,7 @@ export const MilestoneCelebrations = ({
                   </div>
                   
                   {achievement.unlockedAt && (
-                    <div className="text-xs text-slate-500">
+                    <div className="text-xs text-muted-foreground">
                       {formatDate(achievement.unlockedAt)}
                     </div>
                   )}
@@ -1411,9 +1411,9 @@ export const MilestoneCelebrations = ({
 
       {filteredAchievements.length === 0 && (
         <div className="text-center py-12">
-          <Trophy className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-slate-600 mb-2">No Achievements Found</h3>
-          <p className="text-slate-500">
+          <Trophy className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-muted-foreground mb-2">No Achievements Found</h3>
+          <p className="text-muted-foreground">
             {filter === 'all' ? 'Keep building wealth to unlock achievements!' : 
              filter === 'unlocked' ? 'No achievements unlocked yet' :
              filter === 'recent' ? 'No recent achievements' : 
@@ -1441,10 +1441,10 @@ export const MilestoneCelebrations = ({
             >
               <div className="text-center mb-6">
                 <div className="text-8xl mb-4">{selectedAchievement.icon}</div>
-                <h3 className="text-2xl font-bold text-slate-800 mb-2">
+                <h3 className="text-2xl font-bold text-foreground mb-2">
                   {selectedAchievement.title}
                 </h3>
-                <p className="text-slate-600 mb-4">
+                <p className="text-muted-foreground mb-4">
                   {selectedAchievement.description}
                 </p>
                 
@@ -1455,10 +1455,10 @@ export const MilestoneCelebrations = ({
 
               {/* Requirements */}
               <div className="mb-6">
-                <h4 className="font-semibold text-slate-700 mb-2">Requirements:</h4>
+                <h4 className="font-semibold text-foreground/90 mb-2">Requirements:</h4>
                 <ul className="space-y-1">
                   {selectedAchievement.requirements.map((req, index) => (
-                    <li key={index} className="flex items-center space-x-2 text-sm text-slate-600">
+                    <li key={index} className="flex items-center space-x-2 text-sm text-muted-foreground">
                       <div className="w-1.5 h-1.5 bg-primary-600 rounded-full" />
                       <span>{req}</span>
                     </li>
@@ -1469,8 +1469,8 @@ export const MilestoneCelebrations = ({
               {/* Reward */}
               {selectedAchievement.reward && (
                 <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
-                  <h4 className="font-semibold text-slate-700 mb-1">Reward:</h4>
-                  <p className="text-sm text-slate-600">
+                  <h4 className="font-semibold text-foreground/90 mb-1">Reward:</h4>
+                  <p className="text-sm text-muted-foreground">
                     {selectedAchievement.reward.value}
                   </p>
                 </div>

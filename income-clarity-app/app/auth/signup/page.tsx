@@ -187,7 +187,7 @@ function SignupPageContent() {
             <h2 className="mt-6 text-3xl font-bold tracking-tight text-white">
               Create your account
             </h2>
-            <p className="mt-2 text-sm text-slate-400">
+            <p className="mt-2 text-sm text-muted-foreground">
               Start tracking your dividend income today
             </p>
           </div>
@@ -267,7 +267,7 @@ function SignupPageContent() {
                 {formData.password && (
                   <div className="mt-2">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-slate-400">Password strength:</span>
+                      <span className="text-muted-foreground">Password strength:</span>
                       <span className={passwordStrength.color}>{passwordStrength.label}</span>
                     </div>
                     <div className="mt-1 flex space-x-1">
@@ -326,7 +326,7 @@ function SignupPageContent() {
 
               {/* Terms and Privacy */}
               <div className="text-center">
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-muted-foreground">
                   By creating an account, you agree to our{' '}
                   <Link href="#" className="text-emerald-400 hover:text-emerald-300">
                     Terms of Service
@@ -340,7 +340,7 @@ function SignupPageContent() {
 
               {/* Sign in link */}
               <div className="text-center">
-                <p className="text-sm text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   Already have an account?{' '}
                   <Link 
                     href="/auth/login" 
@@ -357,7 +357,7 @@ function SignupPageContent() {
           <div className="text-center">
             <Link 
               href="/" 
-              className="text-sm text-slate-400 hover:text-slate-300 transition-colors"
+              className="text-sm text-muted-foreground hover:text-muted-foreground transition-colors"
             >
               ← Back to home
             </Link>
@@ -374,7 +374,7 @@ export default function SignupPage() {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin text-emerald-500 mx-auto" />
-          <p className="mt-2 text-slate-400">Loading...</p>
+          <p className="mt-2 text-muted-foreground">Loading...</p>
         </div>
       </div>
     }>

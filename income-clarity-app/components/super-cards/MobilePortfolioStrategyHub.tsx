@@ -206,7 +206,7 @@ const MobilePortfolioStrategyHubComponent = ({
         return { 
           label: 'Unknown', 
           short: 'Unknown',
-          color: 'text-slate-600', 
+          color: 'text-muted-foreground', 
           bgColor: 'bg-slate-50', 
           icon: '❓',
           description: 'Not set'
@@ -302,8 +302,8 @@ const MobilePortfolioStrategyHubComponent = ({
                 <Activity className={`w-5 h-5 ${healthInsights.color}`} />
               </div>
               <div>
-                <h1 className="font-bold text-slate-800">Portfolio Strategy</h1>
-                <p className="text-xs text-slate-500">Health & Optimization</p>
+                <h1 className="font-bold text-foreground">Portfolio Strategy</h1>
+                <p className="text-xs text-muted-foreground">Health & Optimization</p>
               </div>
             </div>
             
@@ -312,7 +312,7 @@ const MobilePortfolioStrategyHubComponent = ({
                 onClick={() => setShowBottomSheet(true)}
                 className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors"
               >
-                <Info className="w-4 h-4 text-slate-600" />
+                <Info className="w-4 h-4 text-muted-foreground" />
               </button>
               
               {onClose && (
@@ -320,7 +320,7 @@ const MobilePortfolioStrategyHubComponent = ({
                   onClick={onClose}
                   className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors"
                 >
-                  <X className="w-4 h-4 text-slate-600" />
+                  <X className="w-4 h-4 text-muted-foreground" />
                 </button>
               )}
             </div>
@@ -341,7 +341,7 @@ const MobilePortfolioStrategyHubComponent = ({
               <span className="text-2xl ml-1">/100</span>
             </div>
             
-            <div className="text-sm text-slate-600 mb-2">
+            <div className="text-sm text-muted-foreground mb-2">
               Portfolio Health Score
             </div>
 
@@ -349,7 +349,7 @@ const MobilePortfolioStrategyHubComponent = ({
               Grade {healthInsights.grade} - {healthInsights.status}
             </div>
 
-            <div className="text-sm text-slate-600">
+            <div className="text-sm text-muted-foreground">
               {healthInsights.message}
             </div>
           </div>
@@ -360,7 +360,7 @@ const MobilePortfolioStrategyHubComponent = ({
               <div className="text-lg font-bold text-prosperity-600 mb-1">
                 ${Math.round(animatedValues.portfolioValue / 1000)}K
               </div>
-              <div className="text-xs text-slate-600">Portfolio Value</div>
+              <div className="text-xs text-muted-foreground">Portfolio Value</div>
             </div>
             
             <div className={`text-center p-4 rounded-xl shadow-sm border ${riskLevelInfo.bgColor}`}>
@@ -370,14 +370,14 @@ const MobilePortfolioStrategyHubComponent = ({
                   {riskLevelInfo.short}
                 </div>
               </div>
-              <div className="text-xs text-slate-600">Risk Level</div>
+              <div className="text-xs text-muted-foreground">Risk Level</div>
             </div>
             
             <div className="text-center p-4 bg-primary-50 rounded-xl shadow-sm border border-primary-100">
               <div className="text-lg font-bold text-primary-600 mb-1">
                 {Math.round(animatedValues.diversification)}%
               </div>
-              <div className="text-xs text-slate-600">Diversified</div>
+              <div className="text-xs text-muted-foreground">Diversified</div>
             </div>
           </div>
 
@@ -415,7 +415,7 @@ const MobilePortfolioStrategyHubComponent = ({
                   className={`flex-1 relative px-2 py-3 text-center transition-all duration-200 rounded-xl ${
                     isActive
                       ? 'text-white shadow-md'
-                      : 'text-slate-600 hover:bg-slate-50'
+                      : 'text-muted-foreground hover:bg-slate-50'
                   }`}
                 >
                   {isActive && (
@@ -488,7 +488,7 @@ const MobilePortfolioStrategyHubComponent = ({
             </motion.button>
             
             <motion.button
-              className="flex items-center justify-center space-x-2 p-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-medium"
+              className="flex items-center justify-center space-x-2 p-3 bg-white border border-slate-200 text-foreground/90 rounded-xl font-medium"
               whileTap={{ scale: 0.98 }}
             >
               <BarChart3 className="w-4 h-4" />
@@ -498,7 +498,7 @@ const MobilePortfolioStrategyHubComponent = ({
         </div>
 
         {/* Swipe hints */}
-        <div className="text-center text-xs text-slate-400 py-2">
+        <div className="text-center text-xs text-muted-foreground py-2">
           Swipe tabs • Pull to refresh
         </div>
       </div>

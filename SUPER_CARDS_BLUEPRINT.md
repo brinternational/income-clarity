@@ -1,230 +1,143 @@
-# SUPER CARDS BLUEPRINT v4.0 - PRODUCTION READY
-*Status: 100% COMPLETE - Freemium SaaS Platform Operational*
-*Last Updated: 2025-08-17*
+# SUPER CARDS BLUEPRINT - Current Implementation
+*Status: Core Platform Operational*
+*Last Updated: 2025-08-20*
 
-## 🎉 PLATFORM STATUS: FULLY OPERATIONAL
+## 🎯 CURRENT PLATFORM STATUS
 
-**Income Clarity is now a complete production-ready freemium SaaS platform!**
+**Production Site**: https://incomeclarity.ddns.net  
+**Core Platform**: ✅ Operational with authentication, dashboard, and basic features  
+**Active Development**: Progressive Disclosure architecture and advanced features
 
-### ✅ Complete Features (100%)
-- **Super Cards**: All 5 hubs + unified view working
-- **Yodlee Integration**: Bank sync with FastLink ready (credentials configured)
-- **Freemium Tiers**: FREE/PREMIUM/ENTERPRISE active
-- **Premium UI**: All components wired to pages
-- **Background Jobs**: BullMQ + Redis operational
-- **User Journey**: Complete flow validated
-- **Error Handling**: Graceful degradation for all services
-- **Infrastructure**: All issues resolved, portfolio calculations accurate ($118.4K+)
-- **Design System**: Unified UI components (100% complete) - A+ verified consistency across all pages
-- **Manual Entry**: Complete portfolio management (Add Holdings, Record Purchases/Dividends, Transaction History)
-- **E2E Testing**: 98% test coverage with Playwright, CI/CD ready, all selectors fixed, 80%+ tests passing
-- **Real Data**: 100% real data integration - no more mock/placeholder data!
-- **API Protection**: Enterprise-grade rate limiting, caching, circuit breakers (zero 429 errors)
-- **Redis Resilience**: App works perfectly without Redis (memory fallback for cache/rate limiting)
+## 🏗️ SUPER CARDS ARCHITECTURE
 
-## 🎨 NEW: UNIFIED DESIGN SYSTEM
+### Core Components Structure
+```
+/components/super-cards/
+├── PerformanceHub.tsx           # Portfolio vs SPY performance
+├── IncomeHub.tsx               # Income analysis and tax planning
+├── TaxStrategyHub.tsx          # Tax optimization strategies
+├── PortfolioStrategyHub.tsx    # Asset allocation analysis
+├── FinancialPlanningHub.tsx    # FIRE and goal planning
+└── tabs/                       # Detailed view components
+    ├── PerformanceTab.tsx
+    ├── IncomeWaterfallTab.tsx
+    ├── TaxOptimizationTab.tsx
+    ├── AllocationTab.tsx
+    └── PlanningTab.tsx
+```
 
-### Component Library Structure
+### Progressive Disclosure Architecture (Planned)
+```
+Level 1: Momentum Dashboard (80% users)
+├── 4-card summary layout
+├── Key metrics at-a-glance  
+├── <300ms load time target
+
+Level 2: Hero Views (15% users)  
+├── Individual hub focus
+├── Enhanced data visualization
+├── Interactive elements
+
+Level 3: Detailed Views (5% users)
+├── Tab-based advanced analysis
+├── Professional tools and calculators
+├── Export and sharing capabilities
+```
+
+## 🎨 DESIGN SYSTEM
+
+### Component Library
 ```
 /components/design-system/
 ├── core/           # Button, Input, Card, Badge, Alert
-├── forms/          # TextField, Select, Checkbox, Radio
+├── forms/          # TextField, Select, Checkbox, Radio  
 ├── layout/         # Container, Grid, Stack, Section
 ├── feedback/       # Toast, Modal, Spinner, Progress
-├── navigation/     # (In progress)
-├── data-display/   # (In progress)
-└── theme/          # Colors, typography, spacing, shadows
+└── theme/          # Colors, typography, spacing
 ```
 
-### Migration Status
-- ✅ **Phase 1 Complete**: Settings page fully migrated
-- ✅ **Phase 2 Complete**: Dashboard, Homepage, Profile, Onboarding fully migrated
-- ✅ **Phase 3 Complete**: All app pages migrated, Tailwind config fixed
-- ✅ **Critical Fix**: Added missing color tokens to Tailwind config
-- 🎯 **Result**: 100% visual consistency, teal/emerald branding, A+ UX verification
+### Current State
+- ✅ **Core Components**: Basic design system implemented
+- ✅ **Theme System**: Support for light/dark modes
+- ⏳ **Accessibility**: WCAG compliance in progress
+- ⏳ **Dark Mode Default**: Planned improvement for readability
 
-### Design Principles
-- **Consistency**: Same components used everywhere
-- **Accessibility**: WCAG 2.1 AA compliant
-- **Performance**: Optimized bundle size
-- **Dark Mode**: Full theme support
-- **TypeScript**: Complete type safety
+## 🔧 INFRASTRUCTURE
 
-## 🏗️ SYSTEM ARCHITECTURE - ONE SERVER
-
-### Deployment Model
-- **ONE SERVER**: Direct deployment to https://incomeclarity.ddns.net
-- **Process Manager**: PM2 ensures uptime
-- **Web Server**: Nginx handles SSL and proxying
-- **Database**: SQLite (will migrate to PostgreSQL later)
-- **No staging/dev servers** (solo developer, pre-launch)
+### Server Architecture
+- **Production URL**: https://incomeclarity.ddns.net
+- **Server**: Node.js custom server on port 3000
+- **Database**: SQLite (dev), planned PostgreSQL migration
+- **Process Management**: Standard Node.js processes
 
 ### Frontend Routes
 ```
-/                          → Landing (public)
-/dashboard/super-cards     → Main dashboard (5 cards)
-/dashboard/unified         → All cards on one screen
-/onboarding               → 4-step flow (includes premium)
-/profile                  → User + subscription management
-/settings                 → Bank connections (#2 position)
-/pricing                  → Tier comparison
-/settings/billing         → Subscription management
+/                          → Landing page
+/auth/login               → User authentication
+/dashboard/super-cards    → Main dashboard
+/dashboard/super-cards?level=hero-view&hub={hub}    → Hero views (planned)
+/dashboard/super-cards?level=detailed&hub={hub}    → Detailed views (planned)
+/profile                  → User management
+/settings                 → Application settings
 ```
 
-### API Endpoints
-```
-# Super Cards
-GET /api/super-cards/[hub]-hub
+## 🎯 STRATEGIC FEATURES
 
-# Yodlee
-POST /api/yodlee/fastlink-token
-GET  /api/yodlee/accounts
-POST /api/yodlee/refresh
+### Core Financial Engine
+- **Portfolio Analysis**: Performance tracking and comparison
+- **Income Intelligence**: Tax-aware income analysis  
+- **Tax Strategy**: Multi-state optimization planning
+- **Asset Allocation**: Portfolio strategy recommendations
+- **Financial Planning**: FIRE progress and goal tracking
 
-# Subscription
-POST /api/subscription/upgrade
-GET  /api/subscription/status
-POST /api/subscription/cancel
+### Data Integration
+- **Authentication**: User session management
+- **Real Financial Data**: Portfolio holdings and transactions
+- **Performance Calculations**: Returns, comparisons, and analytics
+- **Tax Calculations**: Federal and state tax modeling
 
-# Sync
-POST /api/sync/trigger
-GET  /api/sync/status
-GET  /api/admin/queue
-```
+## 📋 ACTIVE DEVELOPMENT AREAS
 
-### Database Schema (Prisma)
-```
-User → UserSubscription (1:1)
-     → YodleeConnection (1:1) 
-        → SyncedAccount (1:N)
-           → Holdings/Transactions
-     → SyncLog (1:N)
-     → Portfolios (1:N)
-```
+### High Priority
+1. **Progressive Disclosure Implementation**: 3-level user engagement model
+2. **Dark Mode & Accessibility**: Improved readability and WCAG compliance
+3. **E2E Testing**: Production-grade testing with real user flows
+4. **Server Management**: Graceful deployment and session preservation
 
-## 📊 SUPER CARDS - 100% COMPLETE
+### Infrastructure Improvements  
+1. **Environment Management**: Clear dev vs production workflows
+2. **Deployment Verification**: UI change validation system
+3. **Performance Optimization**: Response time and loading improvements
+4. **Error Handling**: Comprehensive error detection and recovery
 
-### 1. Performance Hub ✅
-- Holdings performance tracking
-- Sector allocation analysis  
-- Time-period comparisons
-- SPY benchmark validation
+## 🔍 TECHNICAL DEBT & IMPROVEMENTS
 
-### 2. Income Intelligence Hub ✅
-- Income waterfall visualization
-- Dividend calendar & projections
-- Yield analysis & growth tracking
-- Tax-aware calculations
+### Known Issues
+- Progressive Disclosure URLs not fully functional
+- Dark mode accessibility needs improvement
+- E2E testing gives false positives
+- Server management causes session disconnections
 
-### 3. Tax Strategy Hub ✅
-- Multi-state optimization
-- PR advantage calculator
-- Tax loss harvesting
-- Quarterly estimates
+### Planned Enhancements
+- Left sidebar navigation for improved UX
+- Real-time deployment monitoring
+- Advanced financial calculators
+- Enhanced data visualization
 
-### 4. Portfolio Strategy Hub ✅
-- Asset allocation & rebalancing
-- Risk assessment metrics
-- Dividend health scoring
-- Composition analysis
+## 📊 SUCCESS METRICS
 
-### 5. Financial Planning Hub ✅
-- FIRE progress tracking
-- Milestone monitoring
-- Income projection modeling
-- Retirement readiness
+### Current Performance
+- **Authentication**: ✅ Working (test@example.com/password123)
+- **Dashboard Loading**: ✅ Basic functionality operational
+- **Core Features**: ✅ Super Cards display and basic functionality
+- **Production Deployment**: ✅ Live on https://incomeclarity.ddns.net
 
-## 🔄 SYNC ORCHESTRATION
-
-### Rate Limits
-- **LOGIN**: 4 hours (user-initiated)
-- **MANUAL**: 1 hour (button click)
-- **SCHEDULED**: Daily at 2 AM
-- **WEBHOOK**: Real-time (Yodlee push)
-
-### Data Flow
-```
-Yodlee API → Sync Service → Data Mapper → Reconciliation → Database → Super Cards
-```
-
-## 📁 KEY FILES
-
-### Core Services
-```
-/lib/services/
-├── subscription/subscription.service.ts
-├── sync/sync-orchestrator.service.ts  
-├── yodlee/yodlee-client.service.ts
-├── reconciliation/data-reconciliation.service.ts
-└── super-cards-database.service.ts
-```
-
-### UI Components
-```
-/components/
-├── premium/
-│   ├── PremiumDashboardWidget.tsx
-│   ├── FeatureGate.tsx
-│   └── UpgradePrompt.tsx
-└── super-cards/
-    └── [5 hub components]
-```
-
-### Scripts
-```
-/scripts/
-├── test-yodlee-user-journey.js   # Complete integration test
-├── onboard-premium-user.js       # Upgrade to premium
-├── test-subscription-system.js   # Tier system test
-└── trigger-yodlee-sync.js       # Manual sync trigger
-```
-
-## 🚀 QUICK START
-
-### Test Premium Journey
-```bash
-# 1. Start server
-NODE_ENV=production node custom-server.js
-
-# 2. Test journey
-node scripts/test-yodlee-user-journey.js
-
-# 3. Connect bank (UI)
-Login → Settings → Bank Connections → Connect
-```
-
-### Test Credentials
-```
-Email: test@example.com
-Password: password123
-
-Yodlee Sandbox:
-Provider: Dag Site
-Username: YodTest.site16441.2  
-Password: site16441.2
-```
-
-## 📈 METRICS
-
-- **Completion**: 100% - Production ready
-- **Premium Integration**: Complete
-- **Test Coverage**: Comprehensive
-- **Documentation**: Complete with CLAUDE.md files
-- **Performance**: <100ms API responses
-
-## ✅ PRODUCTION CHECKLIST
-
-- [x] Database schema with tiers
-- [x] Subscription management  
-- [x] Yodlee authentication
-- [x] Bank account linking
-- [x] Data synchronization
-- [x] Background jobs
-- [x] Premium UI integration
-- [x] Feature gating
-- [x] Error handling
-- [x] Monitoring & logging
+### Target Improvements
+- Progressive Disclosure: 80/15/5 engagement model
+- Performance: <300ms dashboard load, <600ms transitions  
+- Accessibility: WCAG 2.1 AA compliance
+- Testing: Zero false positives in E2E testing
 
 ---
 
-**STATUS: READY FOR PRODUCTION DEPLOYMENT** 🎉
+*This blueprint reflects the current state and active development priorities for the Income Clarity Super Cards platform.*

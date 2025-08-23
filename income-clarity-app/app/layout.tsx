@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "./nuclear-contrast-fix.css";
 import "../styles/themes.css";
 import "../styles/sidebar.css";
 import { ThemeProvider as ShadcnThemeProvider } from "@/components/providers/theme-provider";
@@ -146,6 +147,9 @@ export default function RootLayout({
         {/* CRITICAL HOTFIX: Button interaction fix for production */}
         <link rel="stylesheet" href="/button-fix.css" />
         
+        {/* Removed nuclear CSS - components now have proper dark mode variants */}
+        
+        
         {/* Production debugging - remove after fix confirmed */}
         {process.env.NODE_ENV === 'production' && (
           <script
@@ -178,7 +182,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ShadcnThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

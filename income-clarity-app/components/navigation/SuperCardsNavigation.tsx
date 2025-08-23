@@ -156,7 +156,7 @@ export function SuperCardsNavigation({
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-white dark:bg-slate-900 shadow-sm border-b border-slate-200 dark:border-slate-700">
+      <nav className="sticky top-0 z-50 bg-white dark:bg-slate-900 shadow-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             
@@ -165,7 +165,7 @@ export function SuperCardsNavigation({
               {showBackButton && (
                 <button
                   onClick={handleBack}
-                  className="flex items-center space-x-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className="flex items-center space-x-2 text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors p-2 rounded-lg hover:bg-secondary"
                   aria-label="Back to Super Cards grid"
                 >
                   <ArrowLeft className="h-5 w-5" />
@@ -174,7 +174,7 @@ export function SuperCardsNavigation({
               )}
 
               <div className="flex items-center space-x-3">
-                <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                <h1 className="text-xl font-semibold text-foreground">
                   {cardTitle || 'Super Cards'}
                 </h1>
               </div>
@@ -184,7 +184,7 @@ export function SuperCardsNavigation({
             <div className="hidden md:flex items-center space-x-4">
               <button
                 onClick={handleNavigateToDashboard}
-                className="flex items-center space-x-2 px-3 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="flex items-center space-x-2 px-3 py-2 text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
               >
                 <Home className="h-4 w-4" />
                 <span>Dashboard</span>
@@ -192,7 +192,7 @@ export function SuperCardsNavigation({
 
               <button
                 onClick={handleNavigateToAnalytics}
-                className="flex items-center space-x-2 px-3 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="flex items-center space-x-2 px-3 py-2 text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
               >
                 <BarChart3 className="h-4 w-4" />
                 <span>Analytics</span>
@@ -200,7 +200,7 @@ export function SuperCardsNavigation({
 
               <button
                 onClick={handleNavigateToTransactions}
-                className="flex items-center space-x-2 px-3 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="flex items-center space-x-2 px-3 py-2 text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
               >
                 <Receipt className="h-4 w-4" />
                 <span>Transactions</span>
@@ -236,7 +236,7 @@ export function SuperCardsNavigation({
 
               <button
                 onClick={handleNavigateToSettings}
-                className="flex items-center space-x-2 px-3 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="flex items-center space-x-2 px-3 py-2 text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
               >
                 <Settings className="h-4 w-4" />
                 <span>Settings</span>
@@ -248,7 +248,7 @@ export function SuperCardsNavigation({
                   <button
                     data-testid="user-menu"
                     onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                    className="flex items-center space-x-2 px-3 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                    className="flex items-center space-x-2 px-3 py-2 text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
                   >
                     <User className="h-4 w-4" />
                     <span>{user?.email || profile?.full_name || 'Profile'}</span>
@@ -257,11 +257,11 @@ export function SuperCardsNavigation({
 
                   {/* Profile Dropdown Menu */}
                   {showProfileDropdown && (
-                    <div className="absolute right-0 top-full mt-2 w-48 rounded-lg shadow-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 z-50">
+                    <div className="absolute right-0 top-full mt-2 w-48 rounded-lg shadow-lg bg-white dark:bg-slate-800 border border-border z-50">
                       <div className="py-1">
                         <button
                           onClick={handleNavigateToProfile}
-                          className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center space-x-2"
+                          className="w-full px-4 py-2 text-left text-sm text-foreground/90 hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center space-x-2"
                         >
                           <User className="h-4 w-4" />
                           <span>View Profile</span>
@@ -281,7 +281,7 @@ export function SuperCardsNavigation({
                             </button>
                             <button
                               onClick={handleNavigateToBilling}
-                              className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center space-x-2"
+                              className="w-full px-4 py-2 text-left text-sm text-foreground/90 hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center space-x-2"
                             >
                               <CreditCard className="h-4 w-4" />
                               <span>Billing</span>
@@ -302,7 +302,7 @@ export function SuperCardsNavigation({
                         
                         <button
                           onClick={handleNavigateToOnboarding}
-                          className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center space-x-2"
+                          className="w-full px-4 py-2 text-left text-sm text-foreground/90 hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center space-x-2"
                         >
                           <HelpCircle className="h-4 w-4" />
                           <span>Setup Guide</span>
@@ -323,7 +323,7 @@ export function SuperCardsNavigation({
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => router.push(NAVIGATION_CONFIG.login)}
-                    className="px-3 py-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                    className="px-3 py-2 text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
                   >
                     Login
                   </button>
@@ -340,7 +340,7 @@ export function SuperCardsNavigation({
             {/* Mobile menu button */}
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
-              className="md:hidden p-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="md:hidden p-2 text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
             >
               {showMobileMenu ? (
                 <X className="h-5 w-5" />
@@ -353,11 +353,11 @@ export function SuperCardsNavigation({
 
         {/* Mobile Navigation Menu */}
         {showMobileMenu && (
-          <div className="md:hidden bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700">
+          <div className="md:hidden bg-white dark:bg-slate-900 border-t border-border">
             <div className="px-4 py-2 space-y-1">
               <button
                 onClick={handleNavigateToDashboard}
-                className="w-full flex items-center space-x-2 px-3 py-2 text-left text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="w-full flex items-center space-x-2 px-3 py-2 text-left text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
               >
                 <Home className="h-4 w-4" />
                 <span>Dashboard</span>
@@ -365,7 +365,7 @@ export function SuperCardsNavigation({
 
               <button
                 onClick={handleNavigateToAnalytics}
-                className="w-full flex items-center space-x-2 px-3 py-2 text-left text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="w-full flex items-center space-x-2 px-3 py-2 text-left text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
               >
                 <BarChart3 className="h-4 w-4" />
                 <span>Analytics</span>
@@ -373,17 +373,45 @@ export function SuperCardsNavigation({
 
               <button
                 onClick={handleNavigateToTransactions}
-                className="w-full flex items-center space-x-2 px-3 py-2 text-left text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="w-full flex items-center space-x-2 px-3 py-2 text-left text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
               >
                 <Receipt className="h-4 w-4" />
                 <span>Transactions</span>
               </button>
 
+              {/* Premium users - Bank Connections (Mobile) */}
+              {isPremium && (
+                <button
+                  onClick={handleNavigateToBankConnections}
+                  className="w-full flex items-center space-x-2 px-3 py-2 text-left text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 transition-colors rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                >
+                  <Crown className="h-4 w-4" />
+                  <span>Bank Sync</span>
+                  <span className="ml-auto px-2 py-0.5 text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 rounded-full">
+                    Premium
+                  </span>
+                </button>
+              )}
+
+              {/* Free users - Upgrade prompt (Mobile) */}
+              {isFreeTier && (
+                <button
+                  onClick={handleNavigateToPricing}
+                  className="w-full flex items-center space-x-2 px-3 py-2 text-left text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                >
+                  <Crown className="h-4 w-4" />
+                  <span>Upgrade</span>
+                  <span className="ml-auto px-2 py-0.5 text-xs bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 dark:bg-gradient-to-r dark:from-blue-900/30 dark:to-purple-900/30 dark:text-blue-300 rounded-full">
+                    Premium
+                  </span>
+                </button>
+              )}
+
               {isAuthAvailable && user ? (
                 <>
                   <button
                     onClick={handleNavigateToSettings}
-                    className="w-full flex items-center space-x-2 px-3 py-2 text-left text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                    className="w-full flex items-center space-x-2 px-3 py-2 text-left text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
                   >
                     <Settings className="h-4 w-4" />
                     <span>Settings</span>
@@ -391,7 +419,7 @@ export function SuperCardsNavigation({
 
                   <button
                     onClick={handleNavigateToProfile}
-                    className="w-full flex items-center space-x-2 px-3 py-2 text-left text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                    className="w-full flex items-center space-x-2 px-3 py-2 text-left text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
                   >
                     <User className="h-4 w-4" />
                     <span>Profile</span>
@@ -399,13 +427,13 @@ export function SuperCardsNavigation({
 
                   <button
                     onClick={handleNavigateToOnboarding}
-                    className="w-full flex items-center space-x-2 px-3 py-2 text-left text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                    className="w-full flex items-center space-x-2 px-3 py-2 text-left text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
                   >
                     <HelpCircle className="h-4 w-4" />
                     <span>Setup Guide</span>
                   </button>
 
-                  <hr className="my-2 border-slate-200 dark:border-slate-700" />
+                  <hr className="my-2 border-border" />
 
                   <button
                     onClick={handleLogout}
@@ -422,7 +450,7 @@ export function SuperCardsNavigation({
                       router.push(NAVIGATION_CONFIG.login)
                       setShowMobileMenu(false)
                     }}
-                    className="w-full flex items-center space-x-2 px-3 py-2 text-left text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                    className="w-full flex items-center space-x-2 px-3 py-2 text-left text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground transition-colors rounded-lg hover:bg-secondary"
                   >
                     <User className="h-4 w-4" />
                     <span>Login</span>

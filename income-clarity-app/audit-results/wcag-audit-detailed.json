@@ -1,0 +1,242 @@
+{
+  "timestamp": "2025-08-22T10:24:11.245Z",
+  "summary": {
+    "totalTests": 25,
+    "passes": 23,
+    "violations": 0,
+    "warnings": 2,
+    "complianceLevel": "AA",
+    "overallScore": 100
+  },
+  "violations": [],
+  "warnings": [
+    {
+      "type": "component-structure",
+      "name": "Potential Accessibility Issues",
+      "count": 167,
+      "severity": "warning"
+    },
+    {
+      "type": "focus-management",
+      "name": "Focus Trap Missing",
+      "implemented": false,
+      "severity": "warning"
+    }
+  ],
+  "passes": [
+    {
+      "type": "contrast",
+      "name": "Primary text on light background",
+      "foreground": "#0f172a",
+      "background": "#ffffff",
+      "ratio": 17.85,
+      "required": 4.5,
+      "compliant": true,
+      "level": "AAA",
+      "context": "Body text, buttons, headings",
+      "severity": "pass"
+    },
+    {
+      "type": "contrast",
+      "name": "Primary text on dark background",
+      "foreground": "#f8fafc",
+      "background": "#0f172a",
+      "ratio": 17.06,
+      "required": 4.5,
+      "compliant": true,
+      "level": "AAA",
+      "context": "Dark mode body text",
+      "severity": "pass"
+    },
+    {
+      "type": "contrast",
+      "name": "Secondary text on light background",
+      "foreground": "#334155",
+      "background": "#ffffff",
+      "ratio": 10.35,
+      "required": 4.5,
+      "compliant": true,
+      "level": "AAA",
+      "context": "Labels, subtitles",
+      "severity": "pass"
+    },
+    {
+      "type": "contrast",
+      "name": "Muted text on light background",
+      "foreground": "#64748b",
+      "background": "#ffffff",
+      "ratio": 4.76,
+      "required": 4.5,
+      "compliant": true,
+      "level": "AA",
+      "context": "Help text, placeholders",
+      "severity": "pass"
+    },
+    {
+      "type": "contrast",
+      "name": "Primary button text",
+      "foreground": "#ffffff",
+      "background": "#1e40af",
+      "ratio": 8.72,
+      "required": 4.5,
+      "compliant": true,
+      "level": "AAA",
+      "context": "Primary action buttons",
+      "severity": "pass"
+    },
+    {
+      "type": "contrast",
+      "name": "Focus indicator",
+      "foreground": "#3b82f6",
+      "background": "#ffffff",
+      "ratio": 3.68,
+      "required": 3,
+      "compliant": true,
+      "level": "AA",
+      "context": "Focus outlines and rings",
+      "severity": "pass"
+    },
+    {
+      "type": "contrast",
+      "name": "Success text",
+      "foreground": "#166534",
+      "background": "#ffffff",
+      "ratio": 7.13,
+      "required": 4.5,
+      "compliant": true,
+      "level": "AAA",
+      "context": "Success messages and indicators",
+      "severity": "pass"
+    },
+    {
+      "type": "contrast",
+      "name": "Warning text",
+      "foreground": "#92400e",
+      "background": "#ffffff",
+      "ratio": 7.09,
+      "required": 4.5,
+      "compliant": true,
+      "level": "AAA",
+      "context": "Warning messages",
+      "severity": "pass"
+    },
+    {
+      "type": "contrast",
+      "name": "Error text",
+      "foreground": "#991b1b",
+      "background": "#ffffff",
+      "ratio": 8.31,
+      "required": 4.5,
+      "compliant": true,
+      "level": "AAA",
+      "context": "Error messages",
+      "severity": "pass"
+    },
+    {
+      "type": "contrast",
+      "name": "Links",
+      "foreground": "#1d4ed8",
+      "background": "#ffffff",
+      "ratio": 6.7,
+      "required": 4.5,
+      "compliant": true,
+      "level": "AA",
+      "context": "Text links",
+      "severity": "pass"
+    },
+    {
+      "type": "css-feature",
+      "name": "Focus Indicators",
+      "implemented": true,
+      "severity": "pass"
+    },
+    {
+      "type": "css-feature",
+      "name": "Reduced Motion",
+      "implemented": true,
+      "severity": "pass"
+    },
+    {
+      "type": "css-feature",
+      "name": "High Contrast",
+      "implemented": true,
+      "severity": "pass"
+    },
+    {
+      "type": "css-feature",
+      "name": "Screen Reader-Support",
+      "implemented": true,
+      "severity": "pass"
+    },
+    {
+      "type": "css-feature",
+      "name": "Touch Targets",
+      "implemented": true,
+      "severity": "pass"
+    },
+    {
+      "type": "css-feature",
+      "name": "Color Scheme",
+      "implemented": true,
+      "severity": "pass"
+    },
+    {
+      "type": "css-feature",
+      "name": "Print Styles",
+      "implemented": true,
+      "severity": "pass"
+    },
+    {
+      "type": "component-structure",
+      "name": "Semantic Elements Usage",
+      "count": 16,
+      "severity": "pass"
+    },
+    {
+      "type": "component-structure",
+      "name": "ARIA Attributes Usage",
+      "count": 289,
+      "severity": "pass"
+    },
+    {
+      "type": "focus-management",
+      "name": "Skip Links Implementation",
+      "implemented": true,
+      "severity": "pass"
+    },
+    {
+      "type": "touch-targets",
+      "name": "Minimum 44px Touch Targets",
+      "implemented": true,
+      "severity": "pass"
+    },
+    {
+      "type": "touch-targets",
+      "name": "Mobile Touch Optimization",
+      "implemented": true,
+      "severity": "pass"
+    },
+    {
+      "type": "motion-sensitivity",
+      "name": "Reduced Motion Support",
+      "implemented": true,
+      "animationCount": 55,
+      "severity": "pass"
+    }
+  ],
+  "recommendations": [],
+  "wcagCompliance": {
+    "AA": {
+      "compliant": true,
+      "score": 20,
+      "total": 20,
+      "percentage": 100
+    },
+    "AAA": {
+      "compliant": false,
+      "score": 7,
+      "total": 10,
+      "percentage": 70
+    }
+  }
+}

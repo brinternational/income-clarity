@@ -182,7 +182,7 @@ const IncomeStabilityCardComponent = () => {
       <div className="flex items-start justify-between mb-6 sm:mb-8">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-base sm:text-lg lg:text-display-xs font-display font-semibold text-slate-800">
+            <h3 className="text-base sm:text-lg lg:text-display-xs font-display font-semibold text-foreground">
               Income Stability Score
             </h3>
             <HelpButton 
@@ -191,7 +191,7 @@ const IncomeStabilityCardComponent = () => {
               position="bottom-left"
             />
           </div>
-          <p className="text-xs sm:text-sm text-slate-500">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             How reliable and sustainable is your dividend income?
           </p>
         </div>
@@ -206,7 +206,7 @@ const IncomeStabilityCardComponent = () => {
           <div className={`text-4xl sm:text-5xl font-bold mb-2 ${getScoreColor(stabilityData.overallScore)}`}>
             {Math.round(animatedValues.overall)}
           </div>
-          <div className="text-sm sm:text-base text-slate-600 mb-2">Stability Score (out of 100)</div>
+          <div className="text-sm sm:text-base text-muted-foreground mb-2">Stability Score (out of 100)</div>
           <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
             stabilityData.overallScore >= 80 ? 'bg-green-100 text-green-800' :
             stabilityData.overallScore >= 60 ? 'bg-yellow-100 text-yellow-800' :
@@ -229,13 +229,13 @@ const IncomeStabilityCardComponent = () => {
             <div className="flex items-center justify-between p-3 sm:p-4 rounded-lg sm:rounded-xl border border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all duration-300">
               <div className="flex items-center space-x-3 sm:space-x-4">
                 <div className="p-1.5 sm:p-2 bg-slate-50 rounded-lg">
-                  <factor.icon className="w-4 h-4 text-slate-600" />
+                  <factor.icon className="w-4 h-4 text-muted-foreground" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm sm:text-base font-medium text-slate-700">
+                  <div className="text-sm sm:text-base font-medium text-foreground/90">
                     {factor.label}
                   </div>
-                  <p className="text-xs text-slate-500 mt-1 group-hover:text-slate-600 transition-colors leading-tight">
+                  <p className="text-xs text-muted-foreground mt-1 group-hover:text-muted-foreground transition-colors leading-tight">
                     {factor.description}
                   </p>
                 </div>
@@ -290,8 +290,8 @@ const IncomeStabilityCardComponent = () => {
         <div className="flex items-start space-x-3">
           <Info className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
           <div>
-            <h4 className="font-semibold text-slate-700 mb-2">Stability Recommendation</h4>
-            <p className="text-sm text-slate-600">
+            <h4 className="font-semibold text-foreground/90 mb-2">Stability Recommendation</h4>
+            <p className="text-sm text-muted-foreground">
               {stabilityData.overallScore >= 80 ? 
                 'Excellent stability! Your dividend income is well-diversified and reliable.' :
                 stabilityData.concentrationRisk > 30 ?

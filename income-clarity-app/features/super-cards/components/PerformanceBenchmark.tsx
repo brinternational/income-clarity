@@ -211,30 +211,30 @@ export function PerformanceBenchmark({ className = '' }: PerformanceBenchmarkPro
   }, 0)
 
   return (
-    <div className={`p-6 bg-white rounded-xl border border-slate-200 ${className}`}>
+    <div className={`p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 ${className}`}>
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-slate-800 mb-2">
+        <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-2">
           Performance Benchmark Dashboard
         </h3>
-        <p className="text-slate-600 text-sm">
+        <p className="text-slate-600 dark:text-slate-300 text-sm">
           Compare Zustand performance vs traditional Context API patterns
         </p>
       </div>
 
       {/* Test Components */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="p-4 bg-gradient-to-br from-primary-50 to-primary-25 rounded-lg">
-          <h4 className="font-semibold text-primary-700 mb-2">Zustand Component</h4>
+        <div className="p-4 bg-gradient-to-br from-primary-50 to-primary-25 dark:from-slate-700 dark:to-slate-800 rounded-lg">
+          <h4 className="font-semibold text-primary-700 dark:text-white mb-2">Zustand Component</h4>
           <ZustandComponent />
         </div>
 
-        <div className="p-4 bg-gradient-to-br from-slate-50 to-slate-25 rounded-lg">
-          <h4 className="font-semibold text-slate-700 mb-2">Context Comparison</h4>
+        <div className="p-4 bg-gradient-to-br from-slate-50 to-slate-25 dark:from-slate-700 dark:to-slate-800 rounded-lg">
+          <h4 className="font-semibold text-slate-700 dark:text-white mb-2">Context Comparison</h4>
           <MockContextComponent />
         </div>
 
-        <div className="p-4 bg-gradient-to-br from-prosperity-50 to-prosperity-25 rounded-lg">
-          <h4 className="font-semibold text-prosperity-700 mb-2">Selective Subscription</h4>
+        <div className="p-4 bg-gradient-to-br from-prosperity-50 to-prosperity-25 dark:from-slate-700 dark:to-slate-800 rounded-lg">
+          <h4 className="font-semibold text-prosperity-700 dark:text-white mb-2">Selective Subscription</h4>
           <SelectiveComponent />
         </div>
       </div>
@@ -303,10 +303,10 @@ export function PerformanceBenchmark({ className = '' }: PerformanceBenchmarkPro
               key={`benchmark-result-${result.scenario || index}`}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-4 border border-slate-200 rounded-lg bg-gradient-to-r from-white to-slate-50"
+              className="p-4 border border-slate-200 dark:border-slate-600 rounded-lg bg-gradient-to-r from-white to-slate-50 dark:from-slate-800 dark:to-slate-700"
             >
               <div className="flex items-center justify-between mb-2">
-                <h5 className="font-medium text-slate-800">{result.scenario}</h5>
+                <h5 className="font-medium text-slate-800 dark:text-white">{result.scenario}</h5>
                 <div className={`px-2 py-1 rounded text-sm font-medium ${
                   result.improvement >= 50 
                     ? 'bg-green-100 text-green-800'
@@ -320,29 +320,29 @@ export function PerformanceBenchmark({ className = '' }: PerformanceBenchmarkPro
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div>
-                  <span className="text-slate-500">Zustand Renders:</span>
-                  <div className="font-mono font-semibold text-primary-600">
+                  <span className="text-slate-500 dark:text-slate-400">Zustand Renders:</span>
+                  <div className="font-mono font-semibold text-primary-600 dark:text-primary-400">
                     {result.zustandRenders}
                   </div>
                 </div>
                 
                 <div>
-                  <span className="text-slate-500">Context Renders:</span>
-                  <div className="font-mono font-semibold text-slate-600">
+                  <span className="text-slate-500 dark:text-slate-400">Context Renders:</span>
+                  <div className="font-mono font-semibold text-slate-600 dark:text-slate-300">
                     {result.contextRenders}
                   </div>
                 </div>
                 
                 <div>
-                  <span className="text-slate-500">Duration:</span>
-                  <div className="font-mono font-semibold text-slate-800">
+                  <span className="text-slate-500 dark:text-slate-400">Duration:</span>
+                  <div className="font-mono font-semibold text-slate-800 dark:text-white">
                     {result.duration.toFixed(2)}ms
                   </div>
                 </div>
                 
                 <div>
-                  <span className="text-slate-500">Renders Saved:</span>
-                  <div className="font-mono font-semibold text-prosperity-600">
+                  <span className="text-slate-500 dark:text-slate-400">Renders Saved:</span>
+                  <div className="font-mono font-semibold text-prosperity-600 dark:text-prosperity-400">
                     {result.contextRenders - result.zustandRenders}
                   </div>
                 </div>
@@ -350,9 +350,9 @@ export function PerformanceBenchmark({ className = '' }: PerformanceBenchmarkPro
             </motion.div>
           ))}
 
-          <div className="mt-6 p-4 bg-gradient-to-r from-primary-50 to-primary-25 rounded-lg border border-primary-200">
-            <h5 className="font-semibold text-primary-800 mb-2">Benchmark Summary</h5>
-            <div className="text-sm text-primary-700">
+          <div className="mt-6 p-4 bg-gradient-to-r from-primary-50 to-primary-25 dark:from-slate-700 dark:to-slate-800 rounded-lg border border-primary-200 dark:border-slate-600">
+            <h5 className="font-semibold text-primary-800 dark:text-white mb-2">Benchmark Summary</h5>
+            <div className="text-sm text-primary-700 dark:text-slate-300">
               <p>
                 ✅ Target: 50% reduction in re-renders
               </p>

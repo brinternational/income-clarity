@@ -110,9 +110,9 @@ export function PeerBenchmarkingView({
       <div className="text-center">
         <div className="flex items-center justify-center mb-2">
           <Users className="w-6 h-6 text-primary-600 mr-2" />
-          <h3 className="text-lg font-semibold text-slate-800">Peer Benchmarking</h3>
+          <h3 className="text-lg font-semibold text-foreground">Peer Benchmarking</h3>
         </div>
-        <p className="text-sm text-slate-600">See how your portfolio performs against similar investors</p>
+        <p className="text-sm text-muted-foreground">See how your portfolio performs against similar investors</p>
       </div>
 
       {/* Your Performance Overview */}
@@ -121,20 +121,20 @@ export function PeerBenchmarkingView({
           <div className={`text-4xl font-bold mb-2 ${getPerformanceColor(yourReturn, selectedPeerGroup.avgReturn)}`}>
             {yourReturn.toFixed(1)}%
           </div>
-          <div className="text-sm text-slate-600 mb-4">Your Annual Return</div>
+          <div className="text-sm text-muted-foreground mb-4">Your Annual Return</div>
           
           <div className="flex items-center justify-center space-x-6 text-sm">
             <div className="text-center">
-              <div className="font-semibold text-slate-800">
+              <div className="font-semibold text-foreground">
                 {selectedPeerGroup.yourRank}{getRankSuffix(selectedPeerGroup.yourRank)}
               </div>
-              <div className="text-xs text-slate-600">Rank</div>
+              <div className="text-xs text-muted-foreground">Rank</div>
             </div>
             <div className="text-center">
               <div className="font-semibold text-primary-600">
                 {getPercentile(selectedPeerGroup.yourRank, selectedPeerGroup.totalParticipants)}%
               </div>
-              <div className="text-xs text-slate-600">Percentile</div>
+              <div className="text-xs text-muted-foreground">Percentile</div>
             </div>
           </div>
         </div>
@@ -142,7 +142,7 @@ export function PeerBenchmarkingView({
 
       {/* Peer Group Selector */}
       <div className="space-y-3">
-        <h4 className="font-semibold text-slate-800">Compare Against:</h4>
+        <h4 className="font-semibold text-foreground">Compare Against:</h4>
         <div className="space-y-2">
           {peerGroups.map((group) => (
             <button
@@ -156,28 +156,28 @@ export function PeerBenchmarkingView({
             >
               <div className="flex items-center justify-between mb-2">
                 <h5 className={`font-semibold ${
-                  selectedGroup === group.id ? 'text-primary-800' : 'text-slate-800'
+                  selectedGroup === group.id ? 'text-primary-800' : 'text-foreground'
                 }`}>
                   {group.name}
                 </h5>
-                <span className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded-full">
+                <span className="text-xs bg-slate-100 text-muted-foreground px-2 py-1 rounded-full">
                   {group.totalParticipants.toLocaleString()} investors
                 </span>
               </div>
-              <p className="text-sm text-slate-600 mb-3">{group.description}</p>
+              <p className="text-sm text-muted-foreground mb-3">{group.description}</p>
               
               <div className="grid grid-cols-3 gap-4 text-xs">
                 <div className="text-center">
-                  <div className="font-semibold text-slate-700">{group.avgReturn.toFixed(1)}%</div>
-                  <div className="text-slate-500">Average</div>
+                  <div className="font-semibold text-foreground/90">{group.avgReturn.toFixed(1)}%</div>
+                  <div className="text-muted-foreground">Average</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-semibold text-slate-700">{group.medianReturn.toFixed(1)}%</div>
-                  <div className="text-slate-500">Median</div>
+                  <div className="font-semibold text-foreground/90">{group.medianReturn.toFixed(1)}%</div>
+                  <div className="text-muted-foreground">Median</div>
                 </div>
                 <div className="text-center">
-                  <div className="font-semibold text-slate-700">{group.topQuartile.toFixed(1)}%</div>
-                  <div className="text-slate-500">Top 25%</div>
+                  <div className="font-semibold text-foreground/90">{group.topQuartile.toFixed(1)}%</div>
+                  <div className="text-muted-foreground">Top 25%</div>
                 </div>
               </div>
             </button>
@@ -187,7 +187,7 @@ export function PeerBenchmarkingView({
 
       {/* Performance Comparison Chart */}
       <div className="bg-white rounded-lg p-4 border border-slate-200">
-        <h4 className="font-semibold text-slate-800 mb-4 flex items-center">
+        <h4 className="font-semibold text-foreground mb-4 flex items-center">
           <BarChart3 className="w-5 h-5 mr-2" />
           Performance Distribution
         </h4>
@@ -205,16 +205,16 @@ export function PeerBenchmarkingView({
           {/* Benchmarks */}
           <div className="space-y-2">
             <div className="flex items-center justify-between p-2 rounded">
-              <span className="text-sm text-slate-600">Top 25% Threshold</span>
+              <span className="text-sm text-muted-foreground">Top 25% Threshold</span>
               <span className="font-semibold text-prosperity-600">{selectedPeerGroup.topQuartile.toFixed(1)}%</span>
             </div>
             <div className="flex items-center justify-between p-2 rounded">
-              <span className="text-sm text-slate-600">Average</span>
-              <span className="font-semibold text-slate-700">{selectedPeerGroup.avgReturn.toFixed(1)}%</span>
+              <span className="text-sm text-muted-foreground">Average</span>
+              <span className="font-semibold text-foreground/90">{selectedPeerGroup.avgReturn.toFixed(1)}%</span>
             </div>
             <div className="flex items-center justify-between p-2 rounded">
-              <span className="text-sm text-slate-600">Median</span>
-              <span className="font-semibold text-slate-700">{selectedPeerGroup.medianReturn.toFixed(1)}%</span>
+              <span className="text-sm text-muted-foreground">Median</span>
+              <span className="font-semibold text-foreground/90">{selectedPeerGroup.medianReturn.toFixed(1)}%</span>
             </div>
           </div>
         </div>

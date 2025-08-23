@@ -58,7 +58,7 @@ export function TaxEfficiencyScore({
       case 'good': return 'text-primary-600 bg-primary-50 border-primary-200';
       case 'fair': return 'text-amber-600 bg-amber-50 border-amber-200';
       case 'poor': return 'text-alert-600 bg-alert-50 border-alert-200';
-      default: return 'text-slate-600 bg-slate-50 border-slate-200';
+      default: return 'text-muted-foreground bg-slate-50 border-slate-200';
     }
   };
 
@@ -68,7 +68,7 @@ export function TaxEfficiencyScore({
       case 'good': return <TrendingUp className="w-4 h-4 text-primary-600" />;
       case 'fair': return <Target className="w-4 h-4 text-amber-600" />;
       case 'poor': return <AlertTriangle className="w-4 h-4 text-alert-600" />;
-      default: return <Shield className="w-4 h-4 text-slate-600" />;
+      default: return <Shield className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
@@ -97,9 +97,9 @@ export function TaxEfficiencyScore({
       <div className="text-center">
         <div className="flex items-center justify-center mb-2">
           <Shield className="w-6 h-6 text-primary-600 mr-2" />
-          <h3 className="text-lg font-semibold text-slate-800">Tax Efficiency Score</h3>
+          <h3 className="text-lg font-semibold text-foreground">Tax Efficiency Score</h3>
         </div>
-        <p className="text-sm text-slate-600">Analyze the tax impact of your holdings and get optimization tips</p>
+        <p className="text-sm text-muted-foreground">Analyze the tax impact of your holdings and get optimization tips</p>
       </div>
 
       {/* Overall Score */}
@@ -125,7 +125,7 @@ export function TaxEfficiencyScore({
 
       {/* Category Distribution */}
       <div className="bg-white rounded-lg p-4 border border-slate-200">
-        <h4 className="font-semibold text-slate-800 mb-4">Holdings by Tax Efficiency</h4>
+        <h4 className="font-semibold text-foreground mb-4">Holdings by Tax Efficiency</h4>
         
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {(['excellent', 'good', 'fair', 'poor'] as const).map((category) => {
@@ -145,7 +145,7 @@ export function TaxEfficiencyScore({
 
       {/* Holdings Breakdown */}
       <div className="space-y-3">
-        <h4 className="font-semibold text-slate-800">Individual Holding Analysis</h4>
+        <h4 className="font-semibold text-foreground">Individual Holding Analysis</h4>
         
         {holdings.map((holding, index) => (
           <div 
@@ -156,7 +156,7 @@ export function TaxEfficiencyScore({
               <div className="flex items-center space-x-3">
                 {getCategoryIcon(holding.category)}
                 <div>
-                  <div className="font-mono font-bold text-slate-800">{holding.symbol}</div>
+                  <div className="font-mono font-bold text-foreground">{holding.symbol}</div>
                   <div className="text-xs opacity-75 capitalize">{holding.category} efficiency</div>
                 </div>
               </div>
@@ -206,16 +206,16 @@ export function TaxEfficiencyScore({
 
       {/* Tax Drag Impact */}
       <div className="bg-white rounded-lg p-4 border border-slate-200">
-        <h4 className="font-semibold text-slate-800 mb-3">Tax Drag Impact</h4>
+        <h4 className="font-semibold text-foreground mb-3">Tax Drag Impact</h4>
         
         <div className="text-center mb-4">
           <div className="text-2xl font-bold text-alert-600 mb-1">
             {(holdings.reduce((sum, h) => sum + h.taxDrag, 0) / holdings.length * 100).toFixed(2)}%
           </div>
-          <div className="text-sm text-slate-600">Average tax drag across portfolio</div>
+          <div className="text-sm text-muted-foreground">Average tax drag across portfolio</div>
         </div>
         
-        <div className="text-sm text-slate-600 text-center">
+        <div className="text-sm text-muted-foreground text-center">
           On a $100,000 portfolio with 8% returns, tax drag costs approximately <strong className="text-alert-600">
             ${((holdings.reduce((sum, h) => sum + h.taxDrag, 0) / holdings.length) * 100000 * 0.08).toLocaleString()}
           </strong> annually in additional taxes.

@@ -269,8 +269,8 @@ export function SinglePageDashboard({ className = '' }: SinglePageDashboardProps
               <LayoutGrid className="h-12 w-12 animate-pulse" />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-slate-800 mt-6 mb-2">Loading Super Cards</h2>
-          <p className="text-slate-600">Preparing your complete financial dashboard...</p>
+          <h2 className="text-2xl font-bold text-foreground mt-6 mb-2">Loading Super Cards</h2>
+          <p className="text-muted-foreground">Preparing your complete financial dashboard...</p>
           <div className="flex justify-center space-x-2 mt-4">
             {Array.from({ length: 5 }, (_, i) => (
               <div 
@@ -304,10 +304,10 @@ export function SinglePageDashboard({ className = '' }: SinglePageDashboardProps
                 </div>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">
+                <h1 className="text-2xl font-bold text-foreground">
                   Complete Dashboard
                 </h1>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-muted-foreground">
                   All 5 Super Cards • Real-time Data
                 </p>
               </div>
@@ -317,13 +317,13 @@ export function SinglePageDashboard({ className = '' }: SinglePageDashboardProps
             <div className="flex items-center space-x-3">
               {/* Layout mode toggle */}
               <div className="hidden md:flex items-center space-x-2 px-3 py-2 rounded-lg bg-slate-100">
-                <span className="text-sm font-medium text-slate-700" id="layout-mode-label">Layout:</span>
+                <span className="text-sm font-medium text-foreground/90" id="layout-mode-label">Layout:</span>
                 <button
                   onClick={() => setLayoutMode(layoutMode === 'equal' ? 'adaptive' : 'equal')}
                   className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
                     layoutMode === 'equal' 
                       ? 'bg-blue-500 text-white' 
-                      : 'bg-white text-slate-700 hover:bg-slate-50'
+                      : 'bg-white text-foreground/90 hover:bg-slate-50'
                   }`}
                   aria-labelledby="layout-mode-label"
                   aria-pressed={layoutMode === 'equal'}
@@ -342,7 +342,7 @@ export function SinglePageDashboard({ className = '' }: SinglePageDashboardProps
               {/* Reset button */}
               <button
                 onClick={resetAllCards}
-                className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-foreground/90 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 aria-label="Reset all cards to default state"
               >
                 Reset All
@@ -469,7 +469,7 @@ export function SinglePageDashboard({ className = '' }: SinglePageDashboardProps
                 {/* Loading overlay for individual cards */}
                 {cardState.isMinimized && (
                   <div className="absolute inset-x-4 bottom-4 flex items-center justify-center">
-                    <div className="px-3 py-1 bg-slate-100 rounded-full text-xs text-slate-600 font-medium">
+                    <div className="px-3 py-1 bg-slate-100 rounded-full text-xs text-muted-foreground font-medium">
                       Minimized • Click to restore
                     </div>
                   </div>
@@ -489,14 +489,14 @@ export function SinglePageDashboard({ className = '' }: SinglePageDashboardProps
           <div className="inline-flex items-center space-x-4 px-6 py-4 rounded-2xl bg-gradient-to-r from-slate-100 to-slate-200 border border-slate-300 shadow-lg">
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
-              <span className="text-slate-800 font-semibold">
+              <span className="text-foreground font-semibold">
                 Dashboard Active
               </span>
             </div>
             
             <div className="h-4 w-px bg-slate-400"></div>
             
-            <div className="flex space-x-2 text-sm text-slate-600">
+            <div className="flex space-x-2 text-sm text-muted-foreground">
               <span>{visibleCards.length} cards visible</span>
               <span>•</span>
               <span>Real-time updates</span>

@@ -62,19 +62,19 @@ export function TaxSavingsCalculatorCard({
       <div className="text-center">
         <div className="flex items-center justify-center mb-2">
           <Calculator className="w-6 h-6 text-primary-600 mr-2" />
-          <h3 className="text-lg font-semibold text-slate-800">Tax Savings Calculator</h3>
+          <h3 className="text-lg font-semibold text-foreground">Tax Savings Calculator</h3>
         </div>
-        <p className="text-sm text-slate-600">Calculate potential savings by relocating to a tax-friendly state</p>
+        <p className="text-sm text-muted-foreground">Calculate potential savings by relocating to a tax-friendly state</p>
       </div>
 
       {/* Income Input */}
       <div className="bg-slate-50 rounded-lg p-4">
-        <label className="block text-sm font-medium text-slate-700 mb-2">
+        <label className="block text-sm font-medium text-foreground/90 mb-2">
           Annual Income
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <DollarSign className="w-4 h-4 text-slate-500" />
+            <DollarSign className="w-4 h-4 text-muted-foreground" />
           </div>
           <input
             type="number"
@@ -102,7 +102,7 @@ export function TaxSavingsCalculatorCard({
               ${getCurrentStateTax().toLocaleString()}
             </div>
             <div className="text-xs text-alert-700">Annual state tax</div>
-            <div className="text-xs text-slate-600">
+            <div className="text-xs text-muted-foreground">
               {currentStateData?.stateRate || 9.3}% tax rate
             </div>
           </div>
@@ -178,21 +178,21 @@ export function TaxSavingsCalculatorCard({
       {/* Break-Even Analysis */}
       {annualSavings > 0 && (
         <div className="bg-white rounded-lg p-4 border border-slate-200">
-          <h4 className="font-semibold text-slate-800 mb-3">Break-Even Analysis</h4>
+          <h4 className="font-semibold text-foreground mb-3">Break-Even Analysis</h4>
           
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-600">Estimated moving costs</span>
-              <span className="font-semibold text-slate-800">${movingCosts.toLocaleString()}</span>
+              <span className="text-sm text-muted-foreground">Estimated moving costs</span>
+              <span className="font-semibold text-foreground">${movingCosts.toLocaleString()}</span>
             </div>
             
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-600">Monthly savings</span>
+              <span className="text-sm text-muted-foreground">Monthly savings</span>
               <span className="font-semibold text-prosperity-600">${monthlySavings.toLocaleString()}</span>
             </div>
             
             <div className="flex items-center justify-between pt-2 border-t">
-              <span className="text-sm font-medium text-slate-700">Break-even time</span>
+              <span className="text-sm font-medium text-foreground/90">Break-even time</span>
               <span className="font-bold text-primary-600">
                 {breakEvenMonths.toFixed(1)} months
               </span>

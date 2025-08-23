@@ -120,10 +120,10 @@ const FIREProgressCardComponent = () => {
       {/* Header */}
       <div className="flex items-start justify-between mb-6 sm:mb-8">
         <div className="flex-1 min-w-0">
-          <h3 className="text-base sm:text-lg lg:text-display-xs font-display font-semibold text-slate-800 mb-1">
+          <h3 className="text-base sm:text-lg lg:text-display-xs font-display font-semibold text-foreground mb-1">
             FIRE Progress Tracker
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Your journey to financial independence and early retirement
           </p>
         </div>
@@ -170,10 +170,10 @@ const FIREProgressCardComponent = () => {
           
           {/* Center content */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div className="text-2xl sm:text-3xl font-bold text-slate-700">
+            <div className="text-2xl sm:text-3xl font-bold text-foreground/90">
               {animatedValues.progress.toFixed(1)}%
             </div>
-            <div className="text-xs sm:text-sm text-slate-500 text-center">
+            <div className="text-xs sm:text-sm text-muted-foreground text-center">
               to FIRE
             </div>
           </div>
@@ -186,14 +186,14 @@ const FIREProgressCardComponent = () => {
           <div className="text-lg sm:text-xl font-bold text-green-600">
             ${Math.round(animatedValues.current / 1000)}K
           </div>
-          <div className="text-xs sm:text-sm text-slate-600">Current Portfolio</div>
+          <div className="text-xs sm:text-sm text-muted-foreground">Current Portfolio</div>
         </div>
         
         <div className="text-center p-3 sm:p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg sm:rounded-xl border border-blue-100">
           <div className="text-lg sm:text-xl font-bold text-blue-600">
             ${Math.round(animatedValues.fireNumber / 1000)}K
           </div>
-          <div className="text-xs sm:text-sm text-slate-600">FIRE Number</div>
+          <div className="text-xs sm:text-sm text-muted-foreground">FIRE Number</div>
         </div>
         
         <div className="text-center p-3 sm:p-4 bg-gradient-to-br from-purple-50 to-violet-50 rounded-lg sm:rounded-xl border border-purple-100">
@@ -201,20 +201,20 @@ const FIREProgressCardComponent = () => {
             <Clock className="w-4 h-4" />
             <span>{animatedValues.years > 50 ? '50+' : animatedValues.years.toFixed(1)}</span>
           </div>
-          <div className="text-xs sm:text-sm text-slate-600">Years to FIRE</div>
+          <div className="text-xs sm:text-sm text-muted-foreground">Years to FIRE</div>
         </div>
         
         <div className="text-center p-3 sm:p-4 bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg sm:rounded-xl border border-orange-100">
           <div className="text-lg sm:text-xl font-bold text-orange-600">
             ${Math.round(animatedValues.contribution).toLocaleString()}
           </div>
-          <div className="text-xs sm:text-sm text-slate-600">Monthly Contribution</div>
+          <div className="text-xs sm:text-sm text-muted-foreground">Monthly Contribution</div>
         </div>
       </div>
 
       {/* FIRE Milestones */}
       <div className="mb-6 sm:mb-8">
-        <h4 className="font-semibold text-slate-700 mb-4">FIRE Milestones</h4>
+        <h4 className="font-semibold text-foreground/90 mb-4">FIRE Milestones</h4>
         <div className="space-y-3">
           {milestones.map((milestone, index) => (
             <div 
@@ -229,17 +229,17 @@ const FIREProgressCardComponent = () => {
                 <div className={`p-1.5 rounded-full ${
                   milestone.achieved 
                     ? 'bg-green-100 text-green-600' 
-                    : 'bg-slate-100 text-slate-400'
+                    : 'bg-slate-100 text-muted-foreground'
                 }`}>
                   <milestone.icon className="w-4 h-4" />
                 </div>
                 <div>
                   <div className={`font-medium ${
-                    milestone.achieved ? 'text-green-700' : 'text-slate-600'
+                    milestone.achieved ? 'text-green-700' : 'text-muted-foreground'
                   }`}>
                     {milestone.label}
                   </div>
-                  <div className="text-xs text-slate-500">
+                  <div className="text-xs text-muted-foreground">
                     {milestone.threshold}% of FIRE number
                   </div>
                 </div>
@@ -259,8 +259,8 @@ const FIREProgressCardComponent = () => {
         <div className="flex items-start space-x-3">
           <Calendar className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
           <div>
-            <h4 className="font-semibold text-slate-700 mb-2">Acceleration Opportunity</h4>
-            <p className="text-sm text-slate-600">
+            <h4 className="font-semibold text-foreground/90 mb-2">Acceleration Opportunity</h4>
+            <p className="text-sm text-muted-foreground">
               {fireData.monthlyContribution < 1000 ? 
                 'Increasing your monthly investment by $500 could reduce your time to FIRE by 3-5 years!' :
                 'You\'re on an excellent savings trajectory! Consider tax optimization strategies to accelerate further.'

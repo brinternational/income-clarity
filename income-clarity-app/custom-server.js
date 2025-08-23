@@ -11,9 +11,9 @@ const { parse } = require('url');
 const next = require('next');
 const { exec } = require('child_process');
 
-// STABLE MODE: Always run in production-like mode for stability
-const dev = false;  // Force production mode for stability
-process.env.NODE_ENV = 'production';  // Override any env setting
+// Production mode: Honor NODE_ENV environment variable
+const dev = process.env.NODE_ENV !== 'production';
+console.log(`🔧 Server mode: ${dev ? 'development' : 'production'} (NODE_ENV=${process.env.NODE_ENV})`)
 const hostname = '0.0.0.0';
 const port = process.env.PORT || 3000;
 
@@ -58,16 +58,16 @@ if (!process.env.VERBOSE) {
   };
 }
 
-// Create the Next.js app with stability config
+// Create the Next.js app with environment-appropriate config
 const app = next({ 
-  dev: false,  // Always production mode for stability
+  dev,
   hostname,
   port,
   conf: {
     typescript: { ignoreBuildErrors: true },
     eslint: { ignoreDuringBuilds: true },
     reactStrictMode: false,
-    swcMinify: false,
+    swcMinify: !dev, // Enable minification in production
   },
   // Disable terminal UI
   customServer: true

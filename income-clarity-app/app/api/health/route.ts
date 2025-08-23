@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { metricsService } from '@/lib/monitoring/metrics.service';
-import { logger } from '@/lib/logging/logger.service';
+import { metricsService } from '@/lib/services/monitoring/metrics.service';
+import { logger } from '@/lib/services/logging/logger.service';
 
 interface HealthCheck {
   name: string;

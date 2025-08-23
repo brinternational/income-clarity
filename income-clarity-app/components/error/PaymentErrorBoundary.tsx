@@ -1,8 +1,8 @@
 'use client';
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { logger } from '@/lib/logging/logger.service';
-import { auditLogger, AuditEventType } from '@/lib/logging/audit-logger.service';
+import { logger } from '@/lib/services/logging/logger.service';
+import { auditLogger, AuditEventType } from '@/lib/services/logging/audit-logger.service';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';

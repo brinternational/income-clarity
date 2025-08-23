@@ -3,7 +3,7 @@
  * Maintains original simple interface while providing production-grade logging
  */
 
-import { Logger, logger as enhancedLogger } from './logging/logger.service';
+import { Logger, logger as enhancedLogger } from './services/logging/logger.service';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 

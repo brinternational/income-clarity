@@ -93,7 +93,7 @@ export function FormModal({
                 {title}
               </h3>
               {description && (
-                <p className="mt-1 text-sm text-slate-300">
+                <p className="mt-1 text-sm text-muted-foreground">
                   {description}
                 </p>
               )}

@@ -145,21 +145,21 @@ export function StateSyncTest({ className = '' }: StateSyncTestProps) {
   }
 
   return (
-    <div className={`p-6 bg-white rounded-xl border border-slate-200 ${className}`}>
+    <div className={`p-6 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 ${className}`}>
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-slate-800 mb-2">
+        <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-2">
           State Synchronization Test Dashboard
         </h3>
-        <p className="text-slate-600 text-sm">
+        <p className="text-slate-600 dark:text-slate-300 text-sm">
           Test the Zustand store performance and synchronization across Super Cards
         </p>
       </div>
 
       {/* Current State Display */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="p-4 bg-gradient-to-br from-primary-50 to-primary-25 rounded-lg">
-          <h4 className="font-semibold text-primary-700 mb-2">Performance Hub</h4>
-          <div className="text-sm space-y-1">
+        <div className="p-4 bg-gradient-to-br from-primary-50 to-primary-25 dark:from-slate-700 dark:to-slate-800 rounded-lg">
+          <h4 className="font-semibold text-primary-700 dark:text-white mb-2">Performance Hub</h4>
+          <div className="text-sm space-y-1 text-slate-700 dark:text-slate-300">
             <div>Portfolio Value: ${performanceHub.portfolioValue.toLocaleString()}</div>
             <div>SPY Outperformance: {performanceHub.spyOutperformance}%</div>
             <div>Status: {syncStatus.performance}</div>
@@ -167,9 +167,9 @@ export function StateSyncTest({ className = '' }: StateSyncTestProps) {
           </div>
         </div>
 
-        <div className="p-4 bg-gradient-to-br from-prosperity-50 to-prosperity-25 rounded-lg">
-          <h4 className="font-semibold text-prosperity-700 mb-2">Income Hub</h4>
-          <div className="text-sm space-y-1">
+        <div className="p-4 bg-gradient-to-br from-prosperity-50 to-prosperity-25 dark:from-slate-700 dark:to-slate-800 rounded-lg">
+          <h4 className="font-semibold text-prosperity-700 dark:text-white mb-2">Income Hub</h4>
+          <div className="text-sm space-y-1 text-slate-700 dark:text-slate-300">
             <div>Monthly Income: ${incomeHub.monthlyIncome.toLocaleString()}</div>
             <div>Available to Reinvest: ${incomeHub.availableToReinvest.toLocaleString()}</div>
             <div>Above Zero: {incomeHub.isAboveZero ? '✅' : '❌'}</div>
@@ -194,7 +194,7 @@ export function StateSyncTest({ className = '' }: StateSyncTestProps) {
           Clear Results
         </button>
 
-        <div className="flex items-center text-sm text-slate-600">
+        <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
           Render Count: <span className="ml-1 font-mono">{renderCount}</span>
         </div>
       </div>
@@ -202,7 +202,7 @@ export function StateSyncTest({ className = '' }: StateSyncTestProps) {
       {/* Test Results */}
       {testResults.length > 0 && (
         <div className="space-y-2">
-          <h4 className="font-semibold text-slate-800">Test Results:</h4>
+          <h4 className="font-semibold text-slate-800 dark:text-white">Test Results:</h4>
           
           {testResults.map((result, index) => (
             <motion.div
@@ -235,8 +235,8 @@ export function StateSyncTest({ className = '' }: StateSyncTestProps) {
             </motion.div>
           ))}
           
-          <div className="mt-4 p-3 bg-slate-50 rounded-lg">
-            <div className="text-sm text-slate-600">
+          <div className="mt-4 p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+            <div className="text-sm text-slate-600 dark:text-slate-300">
               <div>✅ Passed: {testResults.filter(r => r.success).length}</div>
               <div>❌ Failed: {testResults.filter(r => !r.success).length}</div>
               <div>⚡ Average Duration: {(testResults.filter(r => r.duration > 0).reduce((sum, r) => sum + r.duration, 0) / testResults.filter(r => r.duration > 0).length || 0).toFixed(2)}ms</div>

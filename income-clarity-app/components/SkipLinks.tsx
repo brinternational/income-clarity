@@ -51,16 +51,6 @@ export function SkipLinks({ links = DEFAULT_SKIP_LINKS, className = '' }: SkipLi
               href={link.href}
               className="skip-link"
               accessKey={link.accessKey}
-              onFocus={(e) => {
-                // Ensure the link is visible when focused
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.opacity = '1';
-              }}
-              onBlur={(e) => {
-                // Hide the link when focus is lost
-                e.currentTarget.style.transform = 'translateY(-100%)';
-                e.currentTarget.style.opacity = '0';
-              }}
             >
               {link.label}
               {link.accessKey && (

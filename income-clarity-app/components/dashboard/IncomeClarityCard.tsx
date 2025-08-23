@@ -59,9 +59,9 @@ export function IncomeClarityCard({
       <div className="text-center">
         <div className="flex items-center justify-center mb-2">
           <Calculator className="w-6 h-6 text-primary-600 mr-2" />
-          <h3 className="text-lg font-semibold text-slate-800">Income Clarity</h3>
+          <h3 className="text-lg font-semibold text-foreground">Income Clarity</h3>
         </div>
-        <p className="text-sm text-slate-600">{period} income waterfall from gross to available</p>
+        <p className="text-sm text-muted-foreground">{period} income waterfall from gross to available</p>
       </div>
 
       {/* Income Waterfall */}
@@ -88,7 +88,7 @@ export function IncomeClarityCard({
 
         {/* Arrow Down */}
         <div className="flex justify-center">
-          <div className="flex items-center space-x-2 text-slate-500">
+          <div className="flex items-center space-x-2 text-muted-foreground">
             <ArrowRight className="w-4 h-4 rotate-90" />
             <span className="text-xs">Minus taxes</span>
           </div>
@@ -116,7 +116,7 @@ export function IncomeClarityCard({
 
         {/* Arrow Down */}
         <div className="flex justify-center">
-          <div className="flex items-center space-x-2 text-slate-500">
+          <div className="flex items-center space-x-2 text-muted-foreground">
             <ArrowRight className="w-4 h-4 rotate-90" />
             <span className="text-xs">Equals net income</span>
           </div>
@@ -144,7 +144,7 @@ export function IncomeClarityCard({
 
         {/* Arrow Down */}
         <div className="flex justify-center">
-          <div className="flex items-center space-x-2 text-slate-500">
+          <div className="flex items-center space-x-2 text-muted-foreground">
             <ArrowRight className="w-4 h-4 rotate-90" />
             <span className="text-xs">Minus expenses</span>
           </div>
@@ -155,15 +155,15 @@ export function IncomeClarityCard({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-slate-200 rounded-lg">
-                <DollarSign className="w-5 h-5 text-slate-600" />
+                <DollarSign className="w-5 h-5 text-muted-foreground" />
               </div>
               <div>
-                <div className="font-semibold text-slate-800">Expenses</div>
-                <div className="text-xs text-slate-600">{period} living costs</div>
+                <div className="font-semibold text-foreground">Expenses</div>
+                <div className="text-xs text-muted-foreground">{period} living costs</div>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold text-slate-700">
+              <div className="text-2xl font-bold text-foreground/90">
                 -{formatCurrency(displayData.expenses)}
               </div>
             </div>
@@ -172,7 +172,7 @@ export function IncomeClarityCard({
 
         {/* Arrow Down */}
         <div className="flex justify-center">
-          <div className="flex items-center space-x-2 text-slate-500">
+          <div className="flex items-center space-x-2 text-muted-foreground">
             <ArrowRight className="w-4 h-4 rotate-90" />
             <span className="text-xs">Available to invest</span>
           </div>
@@ -187,7 +187,7 @@ export function IncomeClarityCard({
           <div className="text-center">
             <div className="flex items-center justify-center mb-2">
               <Zap className={`w-6 h-6 mr-2 ${isPositive ? 'text-prosperity-600' : 'text-alert-600'}`} />
-              <span className="font-semibold text-slate-800">THE MAGIC NUMBER</span>
+              <span className="font-semibold text-foreground">THE MAGIC NUMBER</span>
             </div>
             
             <div className={`text-4xl font-bold mb-2 ${
@@ -196,7 +196,7 @@ export function IncomeClarityCard({
               {isPositive ? '+' : ''}{formatCurrency(displayData.available)}
             </div>
             
-            <div className="text-sm font-medium text-slate-700 mb-3">
+            <div className="text-sm font-medium text-foreground/90 mb-3">
               Available to Reinvest ({period})
             </div>
             

@@ -123,24 +123,24 @@ export const CoastFIProjectionChart = ({
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.2 }}
         >
-          <div className="font-semibold text-slate-800 mb-2">
+          <div className="font-semibold text-foreground mb-2">
             Age {label} ({data.year})
           </div>
           <div className="space-y-1 text-sm">
             <div className="flex justify-between items-center">
-              <span className="text-slate-600">Net Worth:</span>
+              <span className="text-muted-foreground">Net Worth:</span>
               <span className="font-medium text-blue-600">
                 {formatCurrency(data.netWorth)}
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-slate-600">Annual Contributions:</span>
+              <span className="text-muted-foreground">Annual Contributions:</span>
               <span className="font-medium text-green-600">
                 {formatCurrency(data.contributions)}
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-slate-600">Real Value:</span>
+              <span className="text-muted-foreground">Real Value:</span>
               <span className="font-medium text-purple-600">
                 {formatCurrency(data.realValue)}
               </span>
@@ -163,8 +163,8 @@ export const CoastFIProjectionChart = ({
     <div className={className}>
       <div className="bg-white rounded-xl border border-slate-200 p-6">
         <div className="mb-4">
-          <h3 className="font-semibold text-slate-800 mb-2">{getChartTitle()}</h3>
-          <div className="flex items-center space-x-6 text-sm text-slate-600">
+          <h3 className="font-semibold text-foreground mb-2">{getChartTitle()}</h3>
+          <div className="flex items-center space-x-6 text-sm text-muted-foreground">
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-gradient-to-r from-blue-500 to-blue-600 rounded"></div>
               <span>Contributing Phase</span>
@@ -249,30 +249,30 @@ export const CoastFIProjectionChart = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
             <div className="text-center">
               <div className="font-semibold text-blue-600">Contributing Phase</div>
-              <div className="text-slate-600">
+              <div className="text-muted-foreground">
                 Ages {currentAge} - {Math.floor(coastAge)}
               </div>
-              <div className="text-xs text-slate-500 mt-1">
+              <div className="text-xs text-muted-foreground mt-1">
                 {Math.max(0, Math.floor(coastAge) - currentAge)} years of active saving
               </div>
             </div>
             
             <div className="text-center">
               <div className="font-semibold text-green-600">Coast Phase</div>
-              <div className="text-slate-600">
+              <div className="text-muted-foreground">
                 Ages {Math.floor(coastAge)} - {targetRetirementAge}
               </div>
-              <div className="text-xs text-slate-500 mt-1">
+              <div className="text-xs text-muted-foreground mt-1">
                 {Math.max(0, targetRetirementAge - Math.floor(coastAge))} years of coasting
               </div>
             </div>
 
             <div className="text-center">
               <div className="font-semibold text-purple-600">Total Journey</div>
-              <div className="text-slate-600">
+              <div className="text-muted-foreground">
                 {targetRetirementAge - currentAge} years to retirement
               </div>
-              <div className="text-xs text-slate-500 mt-1">
+              <div className="text-xs text-muted-foreground mt-1">
                 Coast FI at {((Math.floor(coastAge) - currentAge) / (targetRetirementAge - currentAge) * 100).toFixed(0)}% mark
               </div>
             </div>

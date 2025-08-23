@@ -1,0 +1,61 @@
+{
+  "deployment": {
+    "timestamp": "2025-08-22T19:36:49Z",
+    "deployer": "devuser@ubuntu-g-2vcpu-8gb-nyc1-01",
+    "environment": "unknown",
+    "target_url": "https://incomeclarity.ddns.net",
+    "node_version": "v20.18.1"
+  },
+  "application": {
+    "name": "income-clarity-app",
+    "version": "1.0.0",
+    "build_time": "2025-08-22T19:36:49Z"
+  },
+  "git": {
+    "commit": "fc128c91de1ecb4eccce86ffeef217b958905a63",
+    "branch": "master",
+    "uncommitted_changes": 419,
+    "commit_message": "✅ COMPLETE: Progressive Disclosure hero-view functionality working in production"
+  },
+  "files": {
+    "total_count": 28948,
+    "checksums": {"./hooks/useConnectionStatus.ts": "ec49dfde3c843dc771c511b0907c17a5","./hooks/useMultiStateComparison.ts": "78d8f874cd00c7b2b952662fb5c6b283","./hooks/useKeyboardNavigation.ts": "381031df0e5f61bffa682111dbc17540","./hooks/useSPYIntelligence.ts": "1d83e18d0f1ef17bf30896ec9681c17c","./hooks/useGestureHandlers.ts": "3f64537843068d98862ebe453a07af75","./hooks/useOptimizedAnimation.ts": "a1756985b4e2b4883a64dd2038ff52da","./hooks/useUser.ts": "8f21988d8c08c42612c235aefeb61bd0","./hooks/useSPYProjections.ts": "d5d51edde1b814d1d3b809ee971ec50d","./hooks/useStrategyTaxComparison.ts": "5f3d2989aa328dde6749449c2a7a60d8","./hooks/useStrategyComparison.ts": "30ce9b400e316281465f4f45bbc48387"}
+  },
+  "verification": {
+    "expected_features": [
+      "authentication",
+      "dashboard", 
+      "super-cards",
+      "performance-hub",
+      "progressive-disclosure",
+      "yodlee-integration",
+      "premium-features"
+    ],
+    "critical_endpoints": [
+      "/api/health",
+      "/api/auth/me",
+      "/api/auth/login",
+      "/api/super-cards/performance-hub",
+      "/api/super-cards/income-hub",
+      "/api/deployment/status",
+      "/dashboard",
+      "/dashboard/super-cards",
+      "/"
+    ],
+    "required_status_codes": {
+      "/": 200,
+      "/api/health": 200,
+      "/api/auth/me": [200, 401],
+      "/api/deployment/status": 200,
+      "/dashboard": [200, 302, 307],
+      "/dashboard/super-cards": [200, 302, 307]
+    }
+  },
+  "metadata": {
+    "manifest_version": "1.0",
+    "generator": "deployment-manifest.sh",
+    "generated_by": "devuser@ubuntu-g-2vcpu-8gb-nyc1-01",
+    "generation_time": "2025-08-22T19:36:49Z",
+    "log_file": "/tmp/deployment-manifest-20250822_193648.log"
+  }
+}

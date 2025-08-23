@@ -223,7 +223,7 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
       case 'Excellent': return 'text-green-600'
       case 'Good': return 'text-blue-600'
       case 'Steady': return 'text-yellow-600'
-      default: return 'text-slate-600'
+      default: return 'text-muted-foreground'
     }
   }
 
@@ -248,10 +248,10 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
       {/* Header with Time Range Toggle */}
       <div className="flex items-start justify-between mb-6 sm:mb-8">
         <div className="flex-1 min-w-0">
-          <h3 className="text-base sm:text-lg lg:text-display-xs font-display font-semibold text-slate-800 mb-1">
+          <h3 className="text-base sm:text-lg lg:text-display-xs font-display font-semibold text-foreground mb-1">
             Income Progression Journey
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Track your path from $1k to $3k to $5k and beyond
           </p>
         </div>
@@ -262,8 +262,8 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
               onClick={() => setTimeRange(12)}
               className={`px-3 py-1 text-xs font-medium rounded transition-all ${
                 timeRange === 12 
-                  ? 'bg-white text-slate-700 shadow-sm' 
-                  : 'text-slate-500 hover:text-slate-700'
+                  ? 'bg-white text-foreground/90 shadow-sm' 
+                  : 'text-muted-foreground hover:text-foreground/90'
               }`}
             >
               12M
@@ -272,8 +272,8 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
               onClick={() => setTimeRange(24)}
               className={`px-3 py-1 text-xs font-medium rounded transition-all ${
                 timeRange === 24 
-                  ? 'bg-white text-slate-700 shadow-sm' 
-                  : 'text-slate-500 hover:text-slate-700'
+                  ? 'bg-white text-foreground/90 shadow-sm' 
+                  : 'text-muted-foreground hover:text-foreground/90'
               }`}
             >
               24M
@@ -288,13 +288,13 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
       {/* Journey Milestones Overview */}
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="font-semibold text-slate-700 flex items-center space-x-2">
-            <Target className="w-4 h-4 text-slate-500" />
+          <h4 className="font-semibold text-foreground/90 flex items-center space-x-2">
+            <Target className="w-4 h-4 text-muted-foreground" />
             <span>Journey Milestones</span>
           </h4>
           <button
             onClick={() => setShowCustomMilestone(!showCustomMilestone)}
-            className="text-xs px-3 py-1 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-600 transition-colors flex items-center space-x-1"
+            className="text-xs px-3 py-1 bg-slate-100 hover:bg-slate-200 rounded-full text-muted-foreground transition-colors flex items-center space-x-1"
           >
             <Plus className="w-3 h-3" />
             <span>Add Custom</span>
@@ -309,7 +309,7 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
                   ? 'bg-green-50 border-green-200 text-green-700'
                   : milestone.color === 'blue'
                   ? 'bg-blue-50 border-blue-200 text-blue-700'
-                  : 'bg-slate-50 border-slate-200 text-slate-600'
+                  : 'bg-slate-50 border-slate-200 text-muted-foreground'
               }`}
             >
               <div className={`w-2 h-2 rounded-full ${
@@ -331,39 +331,39 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
           <div className="text-lg sm:text-xl font-bold text-green-600">
             ${Math.round(animatedValues.current * formatIncomeValue(1).multiplier).toLocaleString()}
           </div>
-          <div className="text-xs sm:text-sm text-slate-600">Current {viewMode === 'annual' ? 'Annual' : 'Monthly'}</div>
+          <div className="text-xs sm:text-sm text-muted-foreground">Current {viewMode === 'annual' ? 'Annual' : 'Monthly'}</div>
         </div>
         
         <div className="text-center p-3 sm:p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg border border-blue-100">
           <div className="text-lg sm:text-xl font-bold text-blue-600">
             +${Math.round(animatedValues.monthlyGrowth * formatIncomeValue(1).multiplier).toLocaleString()}
           </div>
-          <div className="text-xs sm:text-sm text-slate-600">{viewMode === 'annual' ? 'Annual' : 'Monthly'} Growth</div>
+          <div className="text-xs sm:text-sm text-muted-foreground">{viewMode === 'annual' ? 'Annual' : 'Monthly'} Growth</div>
         </div>
         
         <div className="text-center p-3 sm:p-4 bg-gradient-to-br from-purple-50 to-violet-50 rounded-lg border border-purple-100">
           <div className="text-lg sm:text-xl font-bold text-purple-600">
             ${Math.round(animatedValues.milestone * formatIncomeValue(1).multiplier).toLocaleString()}
           </div>
-          <div className="text-xs sm:text-sm text-slate-600">Next Milestone {formatIncomeValue(1).suffix}</div>
+          <div className="text-xs sm:text-sm text-muted-foreground">Next Milestone {formatIncomeValue(1).suffix}</div>
         </div>
         
         <div className="text-center p-3 sm:p-4 bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg border border-orange-100">
           <div className="text-lg sm:text-xl font-bold text-orange-600">
             {Math.round(animatedValues.months)}m
           </div>
-          <div className="text-xs sm:text-sm text-slate-600">Est. Time to Goal</div>
+          <div className="text-xs sm:text-sm text-muted-foreground">Est. Time to Goal</div>
         </div>
       </div>
 
       {/* Income Progression Chart with Projections */}
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="font-semibold text-slate-700 flex items-center space-x-2">
-            <BarChart3 className="w-4 h-4 text-slate-500" />
+          <h4 className="font-semibold text-foreground/90 flex items-center space-x-2">
+            <BarChart3 className="w-4 h-4 text-muted-foreground" />
             <span>{timeRange}-Month Income Journey</span>
           </h4>
-          <div className="flex items-center space-x-4 text-xs text-slate-500">
+          <div className="flex items-center space-x-4 text-xs text-muted-foreground">
             <div className="flex items-center space-x-1">
               <div className="w-3 h-2 bg-gradient-to-t from-blue-500 to-green-500 rounded-sm"></div>
               <span>Historical</span>
@@ -424,13 +424,13 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
                     {/* Income value on hover */}
                     <div className="opacity-0 hover:opacity-100 transition-opacity absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
                       ${Math.round(data.income).toLocaleString()}
-                      {isProjected && <span className="text-slate-300"> (projected)</span>}
+                      {isProjected && <span className="text-muted-foreground"> (projected)</span>}
                     </div>
                   </div>
                   
                   {/* Month label */}
                   <div className={`text-xs text-center ${
-                    isProjected ? 'text-slate-400' : 'text-slate-500'
+                    isProjected ? 'text-muted-foreground' : 'text-muted-foreground'
                   }`}>
                     {data.month}
                   </div>
@@ -467,7 +467,7 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
               stats.velocityRating === 'Excellent' ? 'bg-green-100 text-green-800' :
               stats.velocityRating === 'Good' ? 'bg-blue-100 text-blue-800' :
               stats.velocityRating === 'Steady' ? 'bg-yellow-100 text-yellow-800' :
-              'bg-slate-100 text-slate-800'
+              'bg-slate-100 text-foreground'
             }`}>
               +${Math.round(stats.monthlyGrowthRate)}/mo
             </div>
@@ -475,13 +475,13 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
               stats.velocityRating === 'Excellent' ? 'bg-green-100 text-green-800' :
               stats.velocityRating === 'Good' ? 'bg-blue-100 text-blue-800' :
               stats.velocityRating === 'Steady' ? 'bg-yellow-100 text-yellow-800' :
-              'bg-slate-100 text-slate-800'
+              'bg-slate-100 text-foreground'
             }`}>
               {stats.growthRate.toFixed(1)}% Annual
             </div>
           </div>
         </div>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-muted-foreground">
           {stats.velocityRating === 'Excellent' ? 
             `Outstanding growth rate of $${Math.round(stats.monthlyGrowthRate)}/month! You're accelerating toward financial independence.` :
             stats.velocityRating === 'Good' ?
@@ -498,16 +498,16 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
         <div className="flex items-start space-x-3">
           <Target className="w-5 h-5 text-indigo-600 mt-0.5 flex-shrink-0" />
           <div className="flex-1">
-            <h4 className="font-semibold text-slate-700 mb-2 flex items-center space-x-2">
+            <h4 className="font-semibold text-foreground/90 mb-2 flex items-center space-x-2">
               <span>Next Milestone Projection</span>
-              <Calendar className="w-4 h-4 text-slate-500" />
+              <Calendar className="w-4 h-4 text-muted-foreground" />
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
               <div>
-                <p className="text-sm text-slate-600 mb-2">
+                <p className="text-sm text-muted-foreground mb-2">
                   At your current growth rate of <strong>+${Math.round(stats.monthlyGrowthRate)}/month</strong>, you'll reach your next milestone in approximately <strong>{stats.monthsToMilestone} months</strong>.
                 </p>
-                <div className="flex items-center space-x-4 text-xs text-slate-500">
+                <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                   <span>• Current: ${Math.round(stats.currentIncome).toLocaleString()}</span>
                   <span>• Gap: ${Math.round(stats.nextMilestone - stats.currentIncome).toLocaleString()}</span>
                 </div>
@@ -515,18 +515,18 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
               <div className="bg-white p-3 rounded-lg border">
                 <div className="text-center">
                   <div className="text-xl font-bold text-indigo-600">${stats.nextMilestone.toLocaleString()}</div>
-                  <div className="text-xs text-slate-500 mb-1">Target Amount</div>
-                  <div className="text-sm font-medium text-slate-700">
+                  <div className="text-xs text-muted-foreground mb-1">Target Amount</div>
+                  <div className="text-sm font-medium text-foreground/90">
                     {new Date(Date.now() + stats.monthsToMilestone * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                   </div>
-                  <div className="text-xs text-slate-500">Projected Achievement</div>
+                  <div className="text-xs text-muted-foreground">Projected Achievement</div>
                 </div>
               </div>
             </div>
             
             {/* Progress bar to next milestone */}
             <div className="mb-3">
-              <div className="flex items-center justify-between text-xs text-slate-600 mb-1">
+              <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
                 <span>Progress to Next Milestone</span>
                 <span>{Math.round(((stats.currentIncome - (journeyMilestones.find(m => m.achieved && m.amount < stats.currentIncome)?.amount || 0)) / (stats.nextMilestone - (journeyMilestones.find(m => m.achieved && m.amount < stats.currentIncome)?.amount || 0))) * 100)}%</span>
               </div>
@@ -541,7 +541,7 @@ const IncomeProgressionCardComponent = ({ viewMode = 'monthly' }: IncomeProgress
             </div>
             
             {/* Acceleration tips */}
-            <div className="text-xs text-slate-500 bg-white p-2 rounded border-l-2 border-indigo-200">
+            <div className="text-xs text-muted-foreground bg-white p-2 rounded border-l-2 border-indigo-200">
               <strong>💡 Acceleration tip:</strong> To reach this milestone faster, consider increasing your dividend reinvestment by 10% or adding $100-200/month to dividend-paying stocks.
             </div>
           </div>

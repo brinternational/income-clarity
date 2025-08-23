@@ -1,0 +1,9 @@
+{
+  "timestamp": "2025-08-23T11:10:10.540Z",
+  "event_type": "slow_response",
+  "message": "Response time: 10.059387999s",
+  "uptime": 2892,
+  "monitor_pid": 103506,
+  "server_status": "unhealthy",
+  "last_deployment": "unknown"
+}

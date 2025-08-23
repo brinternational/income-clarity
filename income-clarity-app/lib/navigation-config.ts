@@ -11,15 +11,15 @@ export const NAVIGATION_CONFIG = {
   signup: '/auth/signup',
   
   // Dashboard routes  
-  dashboard: '/super-cards',
-  superCards: '/super-cards',
+  dashboard: '/dashboard/super-cards',
+  superCards: '/dashboard/super-cards',
   
-  // Individual Super Cards
-  performanceHub: '/super-cards?card=performance',
-  incomeHub: '/super-cards?card=income',
-  taxHub: '/super-cards?card=tax',
-  portfolioHub: '/super-cards?card=portfolio',
-  planningHub: '/super-cards?card=planning',
+  // Individual Super Cards (new dedicated routes)
+  performanceHub: '/dashboard/performance',
+  incomeHub: '/dashboard/income',
+  taxHub: '/dashboard/tax-strategy',
+  portfolioHub: '/dashboard/portfolio-strategy',
+  planningHub: '/dashboard/financial-planning',
   
   // Core app pages
   settings: '/settings',
@@ -31,27 +31,38 @@ export const NAVIGATION_CONFIG = {
   
   // Redirect logic based on auth state
   getAuthRedirect: (isAuthenticated: boolean) => {
-    return isAuthenticated ? '/super-cards' : '/auth/login'
+    return isAuthenticated ? '/dashboard/super-cards' : '/auth/login'
   },
   
   // Get the appropriate dashboard route
   getDashboardRoute: () => {
-    return '/super-cards'
+    return '/dashboard/super-cards'
   },
 
   // Get post-auth redirect route (onboarding for new users, Super Cards for existing)
   getPostAuthRedirect: (isNewUser: boolean = false) => {
-    return isNewUser ? '/onboarding' : '/super-cards'
+    return isNewUser ? '/onboarding' : '/dashboard/super-cards'
   },
   
   // Map old card routes to new Super Card routes
   mapOldRouteToNew: (oldRoute: string): string => {
     const routeMap: Record<string, string> = {
-      '/dashboard': '/super-cards',
-      '/dashboard/income': '/super-cards?card=income',
-      '/dashboard/expenses': '/super-cards?card=planning',
-      '/dashboard/portfolio': '/super-cards?card=portfolio',
-      '/dashboard/strategy': '/super-cards?card=tax',
+      '/dashboard': '/dashboard/super-cards',
+      '/dashboard/income': '/dashboard/income',
+      '/dashboard/expenses': '/dashboard/financial-planning',
+      '/dashboard/portfolio': '/dashboard/portfolio-strategy',
+      '/dashboard/strategy': '/dashboard/tax-strategy',
+      '/dashboard/performance': '/dashboard/performance',
+      
+      // Legacy query parameter routes to new dedicated routes
+      '/super-cards?card=performance': '/dashboard/performance',
+      '/super-cards?card=income': '/dashboard/income',
+      '/super-cards?card=tax': '/dashboard/tax-strategy',
+      '/super-cards?card=portfolio': '/dashboard/portfolio-strategy',
+      '/super-cards?card=planning': '/dashboard/financial-planning',
+      
+      // Map old standalone /super-cards to new dashboard route
+      '/super-cards': '/dashboard/super-cards',
     }
     
     return routeMap[oldRoute] || oldRoute

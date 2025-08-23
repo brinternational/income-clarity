@@ -184,7 +184,7 @@ export function FastLinkConnect({ onSuccess, onError, onExit }: FastLinkConnectP
         <Card>
           <CardHeader>
             <CardTitle>Connect Your Bank Accounts</CardTitle>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Securely link your financial accounts to automatically import transactions and holdings
             </p>
           </CardHeader>
@@ -213,7 +213,7 @@ export function FastLinkConnect({ onSuccess, onError, onExit }: FastLinkConnectP
                   <XCircle className="h-4 w-4 mt-0.5" />
                   <div>
                     <p>{error}</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">
                       Click "Retry Connection" to try again.
                     </p>
                   </div>
@@ -229,7 +229,7 @@ export function FastLinkConnect({ onSuccess, onError, onExit }: FastLinkConnectP
         <Card className="overflow-hidden">
           <CardHeader>
             <CardTitle>Link Your Account</CardTitle>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Follow the prompts to securely connect your financial institution
             </p>
           </CardHeader>
@@ -267,22 +267,22 @@ export function FastLinkConnect({ onSuccess, onError, onExit }: FastLinkConnectP
                     <Database className="w-8 h-8 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">
+                    <h3 className="font-semibold text-foreground mb-2">
                       Bank Selection Interface
                     </h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                    <p className="text-sm text-muted-foreground mb-4">
                       Users will see a secure interface to select and connect their bank
                     </p>
                     <div className="space-y-2">
-                      <div className="flex items-center justify-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
+                      <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
                         <CheckCircle className="w-4 h-4 text-green-500" />
                         <span>Search from 15,000+ financial institutions</span>
                       </div>
-                      <div className="flex items-center justify-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
+                      <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
                         <CheckCircle className="w-4 h-4 text-green-500" />
                         <span>Secure OAuth authentication</span>
                       </div>
-                      <div className="flex items-center justify-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
+                      <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
                         <CheckCircle className="w-4 h-4 text-green-500" />
                         <span>Real-time transaction sync</span>
                       </div>
@@ -321,7 +321,7 @@ export function FastLinkConnect({ onSuccess, onError, onExit }: FastLinkConnectP
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Connected Accounts</CardTitle>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   Your linked financial accounts
                 </p>
               </div>
@@ -352,17 +352,17 @@ export function FastLinkConnect({ onSuccess, onError, onExit }: FastLinkConnectP
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="h-5 w-5 text-green-500" />
                     <div>
-                      <p className="font-medium text-slate-900 dark:text-slate-100">{account.accountName}</p>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                      <p className="font-medium text-foreground">{account.accountName}</p>
+                      <p className="text-sm text-muted-foreground">
                         {account.accountType} • {account.institution}
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium text-slate-900 dark:text-slate-100">
+                    <p className="font-medium text-foreground">
                       ${account.balance.toLocaleString()}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-500">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                       Last updated: {new Date(account.lastRefreshed).toLocaleDateString()}
                     </p>
                   </div>

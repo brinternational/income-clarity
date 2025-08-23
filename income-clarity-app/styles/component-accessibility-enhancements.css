@@ -1,0 +1,679 @@
+/**
+ * COMPONENT ACCESSIBILITY ENHANCEMENTS
+ * 
+ * Comprehensive CSS enhancements for component-level accessibility
+ * Supports the AccessibilitySettings component preferences
+ * Following WCAG 2.1 AAA compliance standards
+ * 
+ * Features:
+ * - Enhanced focus indicators (standard/enhanced/high-contrast)
+ * - High contrast mode support
+ * - Large text scaling
+ * - Screen reader optimizations
+ * - Reduced motion support
+ * - Touch target enhancements
+ * - Semantic HTML improvements
+ */
+
+/* ========================================
+   ACCESSIBILITY PREFERENCE CLASSES
+   ======================================== */
+
+/* High Contrast Mode */
+.high-contrast {
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #1a1a1a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #cccccc;
+  --color-border: #666666;
+  --color-focus-ring: #ffff00;
+  --color-link: #00ffff;
+  --color-button-primary: #ffffff;
+  --color-button-primary-text: #000000;
+  --color-success: #00ff00;
+  --color-warning: #ffff00;
+  --color-error: #ff0000;
+}
+
+.high-contrast * {
+  border-color: var(--color-border) !important;
+}
+
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+  background-color: var(--color-bg-primary) !important;
+  color: var(--color-text-primary) !important;
+  border: 2px solid var(--color-border) !important;
+}
+
+.high-contrast button {
+  background-color: var(--color-button-primary) !important;
+  color: var(--color-button-primary-text) !important;
+  border: 2px solid var(--color-border) !important;
+}
+
+.high-contrast a {
+  color: var(--color-link) !important;
+  text-decoration: underline !important;
+}
+
+/* Large Text Mode */
+.large-text {
+  font-size: 120%;
+}
+
+.large-text h1 { font-size: 3rem; }
+.large-text h2 { font-size: 2.5rem; }
+.large-text h3 { font-size: 2rem; }
+.large-text h4 { font-size: 1.75rem; }
+.large-text h5 { font-size: 1.5rem; }
+.large-text h6 { font-size: 1.25rem; }
+
+.large-text button,
+.large-text input,
+.large-text select,
+.large-text textarea {
+  font-size: 1.125rem;
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+}
+
+.large-text .text-sm { font-size: 1rem; }
+.large-text .text-xs { font-size: 0.875rem; }
+
+/* Screen Reader Optimizations */
+.screen-reader-optimized {
+  /* Enhance semantic structure visibility for testing */
+}
+
+.screen-reader-optimized .sr-only {
+  /* Ensure sr-only content is properly hidden but accessible */
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.screen-reader-optimized .sr-only:focus {
+  /* Make focusable sr-only content visible when focused */
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0.5rem !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  z-index: 9999 !important;
+}
+
+/* ========================================
+   FOCUS INDICATOR ENHANCEMENTS
+   ======================================== */
+
+/* Standard Focus Indicators (2px) */
+.focus-standard *:focus,
+.focus-standard *:focus-visible {
+  outline: 2px solid #2563eb !important;
+  outline-offset: 2px !important;
+  border-radius: 4px;
+}
+
+/* Enhanced Focus Indicators (3px) */
+.focus-enhanced *:focus,
+.focus-enhanced *:focus-visible {
+  outline: 3px solid #2563eb !important;
+  outline-offset: 2px !important;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2) !important;
+}
+
+/* High Contrast Focus Indicators (4px) */
+.focus-high-contrast *:focus,
+.focus-high-contrast *:focus-visible {
+  outline: 4px solid #ffff00 !important;
+  outline-offset: 2px !important;
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px #000000 !important;
+}
+
+/* ========================================
+   REDUCED MOTION SUPPORT
+   ======================================== */
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* CSS Custom Property Support for JavaScript Control */
+:root {
+  --animation-duration: 0.3s;
+  --transition-duration: 0.15s;
+}
+
+* {
+  animation-duration: var(--animation-duration) !important;
+  transition-duration: var(--transition-duration) !important;
+}
+
+/* ========================================
+   COMPONENT-SPECIFIC ACCESSIBILITY FIXES
+   ======================================== */
+
+/* Super Cards Accessibility */
+.super-card {
+  /* Ensure minimum touch targets */
+  min-height: 44px;
+}
+
+.super-card button,
+.super-card [role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.75rem;
+}
+
+.super-card .card-title {
+  /* Ensure proper heading structure */
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.super-card .metric-value {
+  /* Ensure sufficient color contrast */
+  color: var(--color-text-primary, #0f172a);
+  font-weight: 600;
+}
+
+.super-card .status-indicator {
+  /* Provide non-color indicators */
+  position: relative;
+}
+
+.super-card .status-indicator::before {
+  content: '';
+  position: absolute;
+  left: -1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.super-card .status-positive::before {
+  background: #10b981;
+  content: '↑';
+  color: #10b981;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  font-weight: bold;
+}
+
+.super-card .status-negative::before {
+  background: #ef4444;
+  content: '↓';
+  color: #ef4444;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  font-weight: bold;
+}
+
+/* Navigation Accessibility */
+.navigation-menu {
+  /* Ensure proper semantic structure */
+}
+
+.navigation-menu [role="menuitem"] {
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.navigation-menu [role="menuitem"]:focus {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.navigation-menu .active-item {
+  /* Provide multiple indicators for active state */
+  background-color: rgba(37, 99, 235, 0.1);
+  border-left: 4px solid #2563eb;
+  font-weight: 600;
+}
+
+.navigation-menu .active-item::before {
+  content: '→';
+  margin-right: 0.5rem;
+  color: #2563eb;
+  font-weight: bold;
+}
+
+/* Form Accessibility */
+.form-field {
+  margin-bottom: 1.5rem;
+}
+
+.form-field label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-primary, #0f172a);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  min-height: 44px;
+  padding: 0.75rem;
+  border: 2px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-field .error-message {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+}
+
+.form-field .error-message::before {
+  content: '⚠';
+  margin-right: 0.25rem;
+  font-weight: bold;
+}
+
+.form-field .help-text {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Button Accessibility */
+.btn {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 0.15s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  color: #9ca3af !important;
+  background-color: #f3f4f6 !important;
+  border-color: #d1d5db !important;
+}
+
+.btn:disabled::after {
+  content: ' (disabled)';
+  speak: literal;
+}
+
+.btn:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading States */
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.loading[aria-busy="true"]::before {
+  content: 'Loading...';
+  position: absolute;
+  left: -9999px;
+  speak: literal;
+}
+
+/* Modal Accessibility */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-content:focus {
+  outline: none;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Touch Target Enhancements */
+@media (pointer: coarse) {
+  /* Mobile/touch device enhancements */
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"] {
+    min-height: 48px !important;
+    min-width: 48px !important;
+    padding: 0.875rem 1.5rem !important;
+  }
+  
+  .clickable,
+  [onclick] {
+    min-height: 48px !important;
+    min-width: 48px !important;
+  }
+}
+
+/* ========================================
+   SKIP LINKS ENHANCEMENT
+   ======================================== */
+
+.skip-links-container {
+  position: absolute;
+  top: -100vh;
+  left: 0;
+  z-index: 9999;
+}
+
+.skip-links-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  font-weight: 600;
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: all 0.15s ease-in-out;
+  z-index: 10000;
+}
+
+.skip-link:focus {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  position: fixed !important;
+  top: 0.5rem !important;
+  left: 0.5rem !important;
+}
+
+/* ========================================
+   LIVE REGION STYLES
+   ======================================== */
+
+[aria-live] {
+  /* Ensure live regions are properly positioned */
+  position: relative;
+}
+
+[aria-live="polite"]:not(.sr-only):not([hidden]) {
+  /* Visual indicator for polite live regions */
+  border-left: 3px solid #2563eb;
+  padding-left: 0.75rem;
+  background-color: rgba(37, 99, 235, 0.05);
+}
+
+[aria-live="assertive"]:not(.sr-only):not([hidden]) {
+  /* Visual indicator for assertive live regions */
+  border-left: 3px solid #dc2626;
+  padding-left: 0.75rem;
+  background-color: rgba(220, 38, 38, 0.05);
+}
+
+/* ========================================
+   TABLE ACCESSIBILITY
+   ======================================== */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+th[scope="col"]::after {
+  content: ' (column header)';
+  speak: literal;
+  position: absolute;
+  left: -9999px;
+}
+
+th[scope="row"]::after {
+  content: ' (row header)';
+  speak: literal;
+  position: absolute;
+  left: -9999px;
+}
+
+/* Sortable table headers */
+th[role="columnheader"] {
+  cursor: pointer;
+  user-select: none;
+}
+
+th[role="columnheader"]:hover {
+  background-color: #f3f4f6;
+}
+
+th[aria-sort="ascending"]::after {
+  content: ' ↑';
+  font-weight: bold;
+}
+
+th[aria-sort="descending"]::after {
+  content: ' ↓';
+  font-weight: bold;
+}
+
+/* ========================================
+   TOOLTIP ACCESSIBILITY
+   ======================================== */
+
+[role="tooltip"] {
+  position: absolute;
+  background: #1f2937;
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+[role="tooltip"]::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: #1f2937;
+}
+
+/* ========================================
+   PRINT ACCESSIBILITY
+   ======================================== */
+
+@media print {
+  /* Ensure accessibility features work in print */
+  .skip-links-container,
+  [aria-hidden="true"] {
+    display: none !important;
+  }
+  
+  .sr-only {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    clip: auto !important;
+    overflow: visible !important;
+  }
+  
+  a::after {
+    content: ' (' attr(href) ')';
+  }
+  
+  abbr::after {
+    content: ' (' attr(title) ')';
+  }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Not screen reader only (make visible) */
+.not-sr-only {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+}
+
+/* Focus-visible only (hide unless focused) */
+.focus-visible-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.focus-visible-only:focus,
+.focus-visible-only:focus-visible {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0.5rem !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  z-index: 9999 !important;
+}

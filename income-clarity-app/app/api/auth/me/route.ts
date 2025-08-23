@@ -14,10 +14,16 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Find session with user
+    // Find session with user and subscription information
     const session = await prisma.session.findUnique({
       where: { sessionToken },
-      include: { user: true }
+      include: { 
+        user: {
+          include: {
+            subscription: true
+          }
+        }
+      }
     });
 
     if (!session || session.expiresAt < new Date()) {
@@ -45,7 +51,12 @@ export async function GET(request: NextRequest) {
         id: session.user.id,
         email: session.user.email,
         onboarding_completed: session.user.onboarding_completed,
-        createdAt: session.user.createdAt
+        createdAt: session.user.createdAt,
+        isPremium: session.user.isPremium,
+        subscription: session.user.subscription ? {
+          plan: session.user.subscription.plan,
+          status: session.user.subscription.status
+        } : null
       }
     });
   } catch (error) {

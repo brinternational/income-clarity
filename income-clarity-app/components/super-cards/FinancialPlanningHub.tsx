@@ -89,7 +89,7 @@ const TABS: TabConfig[] = [
     label: 'Goals',
     description: 'SMART goal setting',
     icon: Settings,
-    color: 'text-slate-600',
+    color: 'text-muted-foreground',
     bgColor: 'bg-slate-50'
   },
   {
@@ -398,10 +398,10 @@ const FinancialPlanningHubComponent = ({
             exit={{ scale: 0 }}
           >
             <div className="text-6xl mb-4">🎉</div>
-            <h3 className="text-2xl font-bold text-slate-800 mb-2">
+            <h3 className="text-2xl font-bold text-foreground mb-2">
               FIRE Milestone Achieved!
             </h3>
-            <p className="text-slate-600 mb-6">
+            <p className="text-muted-foreground mb-6">
               You've reached {activeData.fireProgress.toFixed(1)}% toward financial independence!
             </p>
             <button
@@ -436,7 +436,7 @@ const FinancialPlanningHubComponent = ({
         </motion.div>
         
         <motion.div 
-          className="text-slate-600 font-medium text-sm sm:text-base mb-2"
+          className="text-muted-foreground font-medium text-sm sm:text-base mb-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
@@ -454,7 +454,7 @@ const FinancialPlanningHubComponent = ({
         </motion.div>
 
         <motion.div 
-          className="text-slate-600 text-sm mb-4"
+          className="text-muted-foreground text-sm mb-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
@@ -480,28 +480,28 @@ const FinancialPlanningHubComponent = ({
           <div className="text-lg font-bold text-prosperity-600 mb-1">
             ${Math.round(animatedValues.netWorth)}K
           </div>
-          <div className="text-xs text-slate-600">Net Worth</div>
+          <div className="text-xs text-muted-foreground">Net Worth</div>
         </div>
         
         <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-blue-25 rounded-lg border border-blue-100">
           <div className="text-lg font-bold text-blue-600 mb-1">
             {Math.round(animatedValues.savingsRate)}%
           </div>
-          <div className="text-xs text-slate-600">Savings Rate</div>
+          <div className="text-xs text-muted-foreground">Savings Rate</div>
         </div>
         
         <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-25 rounded-lg border border-green-100">
           <div className="text-lg font-bold text-green-600 mb-1">
             ${Math.round(animatedValues.monthlyInvestment).toLocaleString()}
           </div>
-          <div className="text-xs text-slate-600">Monthly Investment</div>
+          <div className="text-xs text-muted-foreground">Monthly Investment</div>
         </div>
         
         <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-orange-25 rounded-lg border border-orange-100">
           <div className="text-lg font-bold text-orange-600 mb-1">
             {Math.round(animatedValues.aboveZeroStreak)}
           </div>
-          <div className="text-xs text-slate-600">Above Zero Streak</div>
+          <div className="text-xs text-muted-foreground">Above Zero Streak</div>
         </div>
       </div>
 
@@ -509,7 +509,7 @@ const FinancialPlanningHubComponent = ({
       <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <h3 className="text-lg sm:text-xl font-display font-semibold text-slate-800">
+            <h3 className="text-lg sm:text-xl font-display font-semibold text-foreground">
               Financial Planning Hub
             </h3>
             
@@ -551,13 +551,13 @@ const FinancialPlanningHubComponent = ({
             {/* Mobile swipe indicators */}
             <div className="flex items-center space-x-2 sm:hidden">
               {currentTabIndex > 0 && (
-                <ChevronLeft className="w-5 h-5 text-slate-400" />
+                <ChevronLeft className="w-5 h-5 text-muted-foreground" />
               )}
-              <span className="text-xs text-slate-500 font-medium">
+              <span className="text-xs text-muted-foreground font-medium">
                 {currentTabIndex + 1} / {TABS.length}
               </span>
               {currentTabIndex < TABS.length - 1 && (
-                <ChevronRight className="w-5 h-5 text-slate-400" />
+                <ChevronRight className="w-5 h-5 text-muted-foreground" />
               )}
             </div>
           </div>
@@ -582,7 +582,7 @@ const FinancialPlanningHubComponent = ({
                 className={`flex-1 relative px-3 py-3 sm:py-4 text-center transition-all duration-300 rounded-md sm:rounded-lg touch-friendly focus:outline-none focus:ring-2 focus:ring-primary-500 ${
                   isActive
                     ? 'text-white shadow-lg'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-white/50'
                 }`}
                 onClick={() => setActiveTab(tab.id)}
                 whileHover={{ scale: 1.02 }}
@@ -603,7 +603,7 @@ const FinancialPlanningHubComponent = ({
                     {tab.label}
                   </div>
                   <div className={`text-xs ${
-                    isActive ? 'text-primary-100' : 'text-slate-500'
+                    isActive ? 'text-primary-100' : 'text-muted-foreground'
                   } hidden sm:block`}>
                     {tab.description}
                   </div>
@@ -733,7 +733,7 @@ const FinancialPlanningHubComponent = ({
       </AnimatePresence>
 
       {/* Mobile swipe hint */}
-      <div className="mt-6 text-center text-xs text-slate-500 sm:hidden">
+      <div className="mt-6 text-center text-xs text-muted-foreground sm:hidden">
         👈 Swipe left or right to switch tabs
       </div>
     </motion.div>

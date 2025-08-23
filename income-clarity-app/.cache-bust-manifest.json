@@ -1,0 +1,8 @@
+{
+        "buildId": "build-1755916496",
+        "timestamp": "2025-08-23T02:34:56Z",
+        "commit": "fc128c91de1ecb4eccce86ffeef217b958905a63",
+        "cacheBustVersion": "1755916496",
+        "environment": "localhost",
+        "targetUrl": "http://localhost:3000"
+    }

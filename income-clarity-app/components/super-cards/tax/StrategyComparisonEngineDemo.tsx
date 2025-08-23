@@ -20,10 +20,10 @@ export default function StrategyComparisonEngineDemo() {
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-8">
       <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold text-slate-900">
+        <h1 className="text-3xl font-bold text-foreground">
           Strategy Comparison Engine Demo
         </h1>
-        <p className="text-slate-600 max-w-2xl mx-auto">
+        <p className="text-muted-foreground max-w-2xl mx-auto">
           This is Income Clarity's competitive moat - showing users which investment strategy 
           maximizes after-tax income based on their location and tax situation.
         </p>
@@ -31,13 +31,13 @@ export default function StrategyComparisonEngineDemo() {
 
       {/* Configuration Controls */}
       <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900 mb-4">
+        <h2 className="text-lg font-semibold text-foreground mb-4">
           Configuration
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-foreground/90 mb-2">
               Annual Portfolio Value
             </label>
             <input
@@ -49,13 +49,13 @@ export default function StrategyComparisonEngineDemo() {
               step="10000"
               className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Portfolio value for income calculation
             </p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-foreground/90 mb-2">
               Tax Location
             </label>
             <select
@@ -69,13 +69,13 @@ export default function StrategyComparisonEngineDemo() {
                 </option>
               ))}
             </select>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Your tax residence for calculation
             </p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-foreground/90 mb-2">
               Filing Status
             </label>
             <select
@@ -86,7 +86,7 @@ export default function StrategyComparisonEngineDemo() {
               <option value="single">Single</option>
               <option value="marriedJoint">Married Filing Jointly</option>
             </select>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Federal tax filing status
             </p>
           </div>
@@ -164,14 +164,14 @@ export default function StrategyComparisonEngineDemo() {
 
       {/* Technical Notes */}
       <div className="p-6 bg-slate-50 rounded-xl border border-slate-200">
-        <h3 className="text-lg font-semibold text-slate-900 mb-4">
+        <h3 className="text-lg font-semibold text-foreground mb-4">
           Technical Implementation Notes
         </h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-semibold text-slate-800 mb-2">Strategy Tax Treatment</h4>
-            <ul className="text-sm text-slate-600 space-y-1">
+            <h4 className="font-semibold text-foreground mb-2">Strategy Tax Treatment</h4>
+            <ul className="text-sm text-muted-foreground space-y-1">
               <li><strong>SPY Sell:</strong> Capital gains rates (0%, 15%, 20%)</li>
               <li><strong>Dividends:</strong> Qualified dividend rates (same as cap gains)</li>
               <li><strong>Covered Calls:</strong> Ordinary income rates (10%-37%)</li>
@@ -180,8 +180,8 @@ export default function StrategyComparisonEngineDemo() {
           </div>
           
           <div>
-            <h4 className="font-semibold text-slate-800 mb-2">Key Features</h4>
-            <ul className="text-sm text-slate-600 space-y-1">
+            <h4 className="font-semibold text-foreground mb-2">Key Features</h4>
+            <ul className="text-sm text-muted-foreground space-y-1">
               <li>✅ Real-time tax calculations for all 50 states + territories</li>
               <li>✅ 10-year income projections with 3% growth assumption</li>
               <li>✅ Puerto Rico special highlighting (0% qualified dividends)</li>

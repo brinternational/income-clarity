@@ -107,7 +107,7 @@ export default function DemoPage() {
                   {" "}Dividend Income
                 </span>
               </h1>
-              <p className="text-xl text-slate-300 mb-8 leading-relaxed">
+              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
                 The only portfolio tool that combines{" "}
                 <strong className="text-emerald-400">emotional validation</strong>,{" "}
                 <strong className="text-blue-400">tax intelligence</strong>, and{" "}
@@ -139,15 +139,15 @@ export default function DemoPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
                 <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
                   <div className="text-3xl font-bold text-emerald-400 mb-2">$0</div>
-                  <div className="text-slate-300">Subscription Fee</div>
+                  <div className="text-muted-foreground">Subscription Fee</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
                   <div className="text-3xl font-bold text-blue-400 mb-2">0%</div>
-                  <div className="text-slate-300">Tax in Puerto Rico</div>
+                  <div className="text-muted-foreground">Tax in Puerto Rico</div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
                   <div className="text-3xl font-bold text-purple-400 mb-2">5</div>
-                  <div className="text-slate-300">Super Cards</div>
+                  <div className="text-muted-foreground">Super Cards</div>
                 </div>
               </div>
             </div>
@@ -160,7 +160,7 @@ export default function DemoPage() {
             <h2 className="text-4xl font-bold text-white mb-6">
               Features That Actually Matter
             </h2>
-            <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Built for dividend investors who want more than just portfolio tracking. 
               Get emotional validation, tax optimization, and clear progress toward financial independence.
             </p>
@@ -176,7 +176,7 @@ export default function DemoPage() {
                   {feature.icon}
                 </div>
                 <h3 className="text-xl font-bold text-white mb-4">{feature.title}</h3>
-                <p className="text-slate-400 mb-6 leading-relaxed">{feature.description}</p>
+                <p className="text-muted-foreground mb-6 leading-relaxed">{feature.description}</p>
                 <Button 
                   href={feature.demo}
                   variant="ghost" 
@@ -197,7 +197,7 @@ export default function DemoPage() {
             <h2 className="text-4xl font-bold text-white mb-6">
               Gamified Financial Milestones
             </h2>
-            <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Track your progress toward financial independence with clear, achievable milestones 
               that make every dividend payment feel like a victory.
             </p>
@@ -212,7 +212,7 @@ export default function DemoPage() {
                 <div className="text-4xl mb-4">{milestone.icon}</div>
                 <h3 className="text-lg font-bold text-white mb-2">{milestone.name}</h3>
                 <div className="text-2xl font-bold text-emerald-400 mb-2">{milestone.amount}</div>
-                <p className="text-slate-400 text-sm">{milestone.description}</p>
+                <p className="text-muted-foreground text-sm">{milestone.description}</p>
                 <div className="mt-4 flex items-center text-emerald-400">
                   <CheckCircle className="h-4 w-4 mr-2" />
                   <span className="text-sm">Milestone Unlocked</span>
@@ -241,10 +241,10 @@ export default function DemoPage() {
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-slate-300 mb-6 italic">"{testimonial.quote}"</p>
+                <p className="text-muted-foreground mb-6 italic">"{testimonial.quote}"</p>
                 <div>
                   <div className="font-bold text-white">{testimonial.name}</div>
-                  <div className="text-slate-400 text-sm">{testimonial.role}</div>
+                  <div className="text-muted-foreground text-sm">{testimonial.role}</div>
                 </div>
               </div>
             ))}
@@ -257,7 +257,7 @@ export default function DemoPage() {
             <h2 className="text-4xl font-bold text-white mb-6">
               Ready to Transform Your Portfolio?
             </h2>
-            <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               Join thousands of dividend investors who've discovered the emotional satisfaction 
               of tax-optimized, milestone-driven portfolio management.
             </p>
@@ -282,7 +282,7 @@ export default function DemoPage() {
               </Button>
             </div>
 
-            <div className="mt-8 text-slate-400 text-sm">
+            <div className="mt-8 text-muted-foreground text-sm">
               ✅ No credit card required • ✅ Local SQLite storage • ✅ Full privacy control
             </div>
           </div>
@@ -291,7 +291,7 @@ export default function DemoPage() {
         {/* Footer */}
         <div className="border-t border-white/20 py-8">
           <div className="container mx-auto px-4">
-            <div className="text-center text-slate-400">
+            <div className="text-center text-muted-foreground">
               <p className="mb-4">
                 Income Clarity - Making dividend investing emotionally rewarding since 2024
               </p>

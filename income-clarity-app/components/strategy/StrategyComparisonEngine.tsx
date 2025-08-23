@@ -77,7 +77,7 @@ export function StrategyComparisonEngine({
   const getMetricColor = (strategy: StrategyData, metric: string) => {
     const best = getBestStrategy(metric);
     if (strategy.name === best.name) return 'text-prosperity-600 bg-prosperity-50';
-    return 'text-slate-700 bg-slate-50';
+    return 'text-foreground/90 bg-slate-50';
   };
 
   return (
@@ -86,9 +86,9 @@ export function StrategyComparisonEngine({
       <div className="text-center">
         <div className="flex items-center justify-center mb-2">
           <BarChart3 className="w-6 h-6 text-primary-600 mr-2" />
-          <h3 className="text-lg font-semibold text-slate-800">Strategy Comparison</h3>
+          <h3 className="text-lg font-semibold text-foreground">Strategy Comparison</h3>
         </div>
-        <p className="text-sm text-slate-600">Compare different portfolio strategies across key metrics</p>
+        <p className="text-sm text-muted-foreground">Compare different portfolio strategies across key metrics</p>
       </div>
 
       {/* Metric Selector */}
@@ -100,7 +100,7 @@ export function StrategyComparisonEngine({
             className={`flex-1 min-w-0 px-3 py-2 text-xs font-medium rounded-md transition-all ${
               selectedMetric === metric.key
                 ? 'bg-primary-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                : 'text-muted-foreground hover:text-foreground hover:bg-slate-50'
             }`}
           >
             {metric.label}
@@ -132,7 +132,7 @@ export function StrategyComparisonEngine({
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center space-x-2">
                   {isBest && <Award className="w-4 h-4 text-prosperity-600" />}
-                  <span className={`font-semibold ${isBest ? 'text-prosperity-800' : 'text-slate-800'}`}>
+                  <span className={`font-semibold ${isBest ? 'text-prosperity-800' : 'text-foreground'}`}>
                     {strategy.name}
                   </span>
                   {isBest && (
@@ -141,7 +141,7 @@ export function StrategyComparisonEngine({
                     </span>
                   )}
                 </div>
-                <div className={`font-bold ${isBest ? 'text-prosperity-600' : 'text-slate-700'}`}>
+                <div className={`font-bold ${isBest ? 'text-prosperity-600' : 'text-foreground/90'}`}>
                   {currentMetric?.format(value)}{currentMetric?.suffix}
                 </div>
               </div>
@@ -167,13 +167,13 @@ export function StrategyComparisonEngine({
           <div className="text-2xl font-bold text-primary-600">
             {strategies.length}
           </div>
-          <div className="text-xs text-slate-600">Strategies</div>
+          <div className="text-xs text-muted-foreground">Strategies</div>
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-slate-700">
+          <div className="text-2xl font-bold text-foreground/90">
             {getBestStrategy(selectedMetric).name}
           </div>
-          <div className="text-xs text-slate-600">Best Strategy</div>
+          <div className="text-xs text-muted-foreground">Best Strategy</div>
         </div>
       </div>
 

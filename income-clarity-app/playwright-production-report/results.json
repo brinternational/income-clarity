@@ -1,0 +1,172 @@
+{
+  "config": {
+    "configFile": "/public/MasterV2/income-clarity/income-clarity-app/playwright.production.config.ts",
+    "rootDir": "/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": "/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/global-setup.ts",
+    "globalTeardown": "/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/global-teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-production-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "playwright-production-report/results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "playwright-production-report/results.xml"
+        }
+      ],
+      [
+        "line",
+        null
+      ],
+      [
+        "/public/MasterV2/income-clarity/income-clarity-app/lib/reporters/production-e2e-reporter.ts",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/public/MasterV2/income-clarity/income-clarity-app/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "production-chromium-desktop",
+        "name": "production-chromium-desktop",
+        "testDir": "/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/desktop",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/public/MasterV2/income-clarity/income-clarity-app/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "production-firefox-desktop",
+        "name": "production-firefox-desktop",
+        "testDir": "/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/desktop",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/public/MasterV2/income-clarity/income-clarity-app/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "production-webkit-desktop",
+        "name": "production-webkit-desktop",
+        "testDir": "/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/desktop",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/public/MasterV2/income-clarity/income-clarity-app/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "production-mobile-chrome",
+        "name": "production-mobile-chrome",
+        "testDir": "/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/mobile",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/public/MasterV2/income-clarity/income-clarity-app/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "production-mobile-safari",
+        "name": "production-mobile-safari",
+        "testDir": "/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/mobile",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/public/MasterV2/income-clarity/income-clarity-app/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "production-tablet-chrome",
+        "name": "production-tablet-chrome",
+        "testDir": "/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/tablet",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [],
+  "errors": [
+    {
+      "message": "Error: ❌ CRITICAL: Production environment https://incomeclarity.ddns.net is not accessible",
+      "stack": "Error: ❌ CRITICAL: Production environment https://incomeclarity.ddns.net is not accessible\n    at globalSetup (/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/global-setup.ts:37:11)",
+      "location": {
+        "file": "/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/global-setup.ts",
+        "column": 11,
+        "line": 37
+      },
+      "snippet": "\u001b[90m   at \u001b[39mglobal-setup.ts:37\n\n  35 |   const isProductionAccessible = await envValidator.validateProductionConnectivity(PRODUCTION_URL)\n  36 |   if (!isProductionAccessible) {\n> 37 |     throw new Error(`❌ CRITICAL: Production environment ${PRODUCTION_URL} is not accessible`)\n     |           ^\n  38 |   }\n  39 |   console.log('✅ Production environment connectivity verified')\n  40 |   "
+    },
+    {
+      "message": "Error: ENOENT: no such file or directory, open '/public/MasterV2/income-clarity/income-clarity-app/playwright-production-report/comprehensive-test-report.json'",
+      "stack": "Error: ENOENT: no such file or directory, open '/public/MasterV2/income-clarity/income-clarity-app/playwright-production-report/comprehensive-test-report.json'\n    at TestReportGenerator.saveReport (/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/utils/test-report-generator.ts:358:5)\n    at TestReportGenerator.generateProductionReport (/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/utils/test-report-generator.ts:97:7)\n    at globalTeardown (/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/global-teardown.ts:28:24)",
+      "location": {
+        "file": "/public/MasterV2/income-clarity/income-clarity-app/__tests__/e2e-production/utils/test-report-generator.ts",
+        "column": 5,
+        "line": 358
+      },
+      "snippet": "\u001b[90m   at \u001b[39mutils/test-report-generator.ts:358\n\n  356 |     // Save JSON report\n  357 |     const jsonPath = path.join(this.reportDir, 'comprehensive-test-report.json')\n> 358 |     await fs.writeFile(jsonPath, JSON.stringify(report, null, 2))\n      |     ^\n  359 |     \n  360 |     // Generate and save HTML report\n  361 |     const htmlPath = await this.generateHTMLReport(report)"
+    }
+  ],
+  "stats": {
+    "startTime": "2025-08-21T20:15:14.068Z",
+    "duration": 9653.497000000001,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

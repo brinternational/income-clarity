@@ -38,7 +38,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const baseClasses = `
       w-full px-4 py-3 border rounded-lg transition-all duration-200
       focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-400/50 focus:outline-none
-      disabled:bg-white/5 disabled:text-slate-500 disabled:cursor-not-allowed
+      disabled:bg-white/5 disabled:text-muted-foreground disabled:cursor-not-allowed
       appearance-none bg-white/10 backdrop-blur cursor-pointer text-white
     `;
     
@@ -58,7 +58,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           <label 
             htmlFor={selectId}
             className={`block text-sm font-medium mb-2 ${
-              error ? 'text-red-400' : 'text-slate-300'
+              error ? 'text-red-400' : 'text-muted-foreground'
             }`}
           >
             {label}
@@ -71,7 +71,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         <div className="relative">
           {leftIcon && (
             <div 
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 z-10"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground z-10"
               aria-hidden="true"
             >
               {leftIcon}
@@ -112,7 +112,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           </select>
         
           <div 
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground pointer-events-none"
             aria-hidden="true"
           >
             <ChevronDown className="w-5 h-5" />
@@ -132,7 +132,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {helperText && (
           <p 
             id={helperId}
-            className="mt-1 text-sm text-slate-400"
+            className="mt-1 text-sm text-muted-foreground"
           >
             {helperText}
           </p>

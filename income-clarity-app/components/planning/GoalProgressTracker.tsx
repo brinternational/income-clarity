@@ -156,7 +156,7 @@ export const GoalProgressTracker = ({
         <div className="flex-1">
           <div className="flex items-center space-x-3 mb-2">
             {getStatusIcon()}
-            <h3 className="text-lg font-semibold text-slate-800">{goal.title}</h3>
+            <h3 className="text-lg font-semibold text-foreground">{goal.title}</h3>
             <span className={`px-2 py-1 text-xs rounded-full ${
               goal.priority === 'high' ? 'bg-red-100 text-red-600' :
               goal.priority === 'medium' ? 'bg-yellow-100 text-yellow-600' :
@@ -175,7 +175,7 @@ export const GoalProgressTracker = ({
       {/* Progress Bar */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-slate-600">Progress</span>
+          <span className="text-sm font-medium text-muted-foreground">Progress</span>
           <span className={`text-sm font-bold ${getStatusColor()}`}>
             {animatedValues.progressPercentage.toFixed(1)}%
           </span>
@@ -202,50 +202,50 @@ export const GoalProgressTracker = ({
           <div className="text-lg font-bold text-blue-600">
             {formatCurrency(animatedValues.currentAmount)}
           </div>
-          <div className="text-xs text-slate-600">Current Amount</div>
+          <div className="text-xs text-muted-foreground">Current Amount</div>
         </div>
         
         <div className="text-center p-3 bg-gradient-to-br from-green-50 to-green-25 rounded-lg border border-green-100">
           <div className="text-lg font-bold text-green-600">
             {formatCurrency(goal.targetAmount)}
           </div>
-          <div className="text-xs text-slate-600">Target Amount</div>
+          <div className="text-xs text-muted-foreground">Target Amount</div>
         </div>
         
         <div className="text-center p-3 bg-gradient-to-br from-orange-50 to-orange-25 rounded-lg border border-orange-100">
           <div className="text-lg font-bold text-orange-600">
             {formatCurrency(animatedValues.remainingAmount)}
           </div>
-          <div className="text-xs text-slate-600">Remaining</div>
+          <div className="text-xs text-muted-foreground">Remaining</div>
         </div>
         
         <div className="text-center p-3 bg-gradient-to-br from-purple-50 to-purple-25 rounded-lg border border-purple-100">
           <div className="text-lg font-bold text-purple-600">
             {progressMetrics.daysRemaining}
           </div>
-          <div className="text-xs text-slate-600">Days Left</div>
+          <div className="text-xs text-muted-foreground">Days Left</div>
         </div>
       </div>
 
       {/* Smart Insights */}
       {!progressMetrics.isCompleted && (
         <div className="bg-gradient-to-br from-slate-50 to-slate-25 rounded-lg p-4 mb-6 border border-slate-200">
-          <h4 className="font-semibold text-slate-800 mb-3 flex items-center space-x-2">
+          <h4 className="font-semibold text-foreground mb-3 flex items-center space-x-2">
             <Calculator className="w-4 h-4" />
             <span>Smart Insights</span>
           </h4>
           
           <div className="space-y-2 text-sm">
             <div className="flex items-center justify-between">
-              <span className="text-slate-600">Required monthly savings:</span>
-              <span className="font-semibold text-slate-800">
+              <span className="text-muted-foreground">Required monthly savings:</span>
+              <span className="font-semibold text-foreground">
                 {formatCurrency(animatedValues.requiredMonthlySavings)}
               </span>
             </div>
             
             {availableToReinvest > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-slate-600">Available monthly:</span>
+                <span className="text-muted-foreground">Available monthly:</span>
                 <span className="font-semibold text-green-600">
                   {formatCurrency(availableToReinvest)}
                 </span>
@@ -254,7 +254,7 @@ export const GoalProgressTracker = ({
             
             {progressMetrics.projectedCompletion && (
               <div className="flex items-center justify-between">
-                <span className="text-slate-600">Projected completion:</span>
+                <span className="text-muted-foreground">Projected completion:</span>
                 <span className={`font-semibold ${progressMetrics.onTrack ? 'text-green-600' : 'text-orange-600'}`}>
                   {progressMetrics.projectedCompletion.toLocaleDateString()}
                 </span>
@@ -262,8 +262,8 @@ export const GoalProgressTracker = ({
             )}
             
             <div className="flex items-center justify-between">
-              <span className="text-slate-600">Target date:</span>
-              <span className="font-semibold text-slate-800">
+              <span className="text-muted-foreground">Target date:</span>
+              <span className="font-semibold text-foreground">
                 {formatDate(goal.targetDate)}
               </span>
             </div>
@@ -274,7 +274,7 @@ export const GoalProgressTracker = ({
       {/* Progress Update Section */}
       <div className="border-t border-slate-200 pt-4">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-slate-600">Update Progress</span>
+          <span className="text-sm font-medium text-muted-foreground">Update Progress</span>
           
           {isEditing ? (
             <div className="flex items-center space-x-2">
@@ -297,7 +297,7 @@ export const GoalProgressTracker = ({
                   setIsEditing(false);
                   setNewAmount(goal.currentAmount.toString());
                 }}
-                className="px-3 py-1 bg-slate-300 text-slate-700 text-sm rounded hover:bg-slate-400 transition-colors"
+                className="px-3 py-1 bg-slate-300 text-foreground/90 text-sm rounded hover:bg-slate-400 transition-colors"
               >
                 Cancel
               </button>
